@@ -1,0 +1,72 @@
+{
+  "name": "nove",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "@material-ui/core": "^4.9.14",
+    "@reach/accordion": "^0.10.1",
+    "@reach/combobox": "^0.10.1",
+    "@reach/dialog": "^0.10.3",
+    "@reach/listbox": "^0.10.1",
+    "@reach/menu-button": "^0.10.2",
+    "@reach/tabs": "^0.10.3",
+    "@reach/tooltip": "^0.10.3",
+    "@reach/visually-hidden": "^0.10.1",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@theme-ui/color": "^0.3.1",
+    "@types/dompurify": "^2.0.1",
+    "@types/jest": "^25.2.1",
+    "@types/lodash.debounce": "^4.0.6",
+    "@types/node": "^13.11.0",
+    "@types/react": "^16.9.32",
+    "@types/react-dom": "^16.9.6",
+    "@types/react-helmet": "^5.0.15",
+    "@types/react-query": "^1.1.1",
+    "@types/styled-components": "^5.0.1",
+    "dompurify": "^2.0.10",
+    "focus-visible": "^5.1.0",
+    "framer-motion": "^2.0.0-beta.55",
+    "history": "^5.0.0-beta.9",
+    "lodash.debounce": "^4.0.8",
+    "polished": "^3.6.5",
+    "react": "^0.0.0-experimental-33c3af284",
+    "react-dom": "^0.0.0-experimental-33c3af284",
+    "react-error-boundary": "^2.2.1",
+    "react-helmet-async": "^1.0.6",
+    "react-icons": "^3.9.0",
+    "react-query": "^1.2.1",
+    "react-query-devtools": "^1.1.3",
+    "react-router": "^0.0.0-experimental-b1ff171f",
+    "react-router-dom": "^0.0.0-experimental-b1ff171f",
+    "react-scripts": "3.4.1",
+    "theme-ui": "^0.3.1",
+    "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "i18n-extract": "^0.6.7"
+  }
+}

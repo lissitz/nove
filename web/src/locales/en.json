@@ -1,0 +1,124 @@
+{
+  "periods": {
+    "hour": "now",
+    "today": "today",
+    "week": "this week",
+    "month": "this month",
+    "year": "this year",
+    "all": "all time"
+  },
+  "meta": {
+    "description": "A client for reddit"
+  },
+  "error": {
+    "serverConnection": "Couldn't connect to the server"
+  },
+  "xPoint": "{} point",
+  "xPoints": "{} points",
+  "scoreHidden": "score hidden",
+  "comment": {
+    "collapse": "Collapse tree",
+    "expand": "Expand tree",
+    "loading": "loading...",
+    "error": {
+      "more": "error loading more replies"
+    },
+    "OP": "OP",
+    "originalPoster": "Original Poster",
+    "mod": "mod",
+    "moderatorOfX": "moderator of {}",
+    "edited": "edited",
+    "admin": "admin"
+  },
+  "edit": "edit",
+  "delete": "delete",
+  "sticky": "sticky",
+  "{} more reply": "{} more reply",
+  "{} more replies": "{} more replies",
+  "about": "About",
+  "rules": "Rules",
+  "sidebar": "Sidebar",
+  "login": "Login",
+  "siteFeeds": "Site feeds",
+  "communities": "Communities",
+  "myCommunities": "My communities",
+  "postedBy": "posted by",
+  "xComment": "{} comment",
+  "xComments": "{} comments",
+  "postList": {
+    "loadingMore": "Loading more...",
+    "loadMore": "Load more",
+    "nothing": "Nothing more to load"
+  },
+  "search": {
+    "label": "search",
+    "placeholder": "Search...",
+    "noResults": "No results found"
+  },
+  "sortPosts": "Sort posts",
+  "top": "top",
+  "<aMinute": "less than a minute ago",
+  "aMinute": "less than a minute ago",
+  "xMinutes": "{} minutes ago",
+  "anHour": "an hour ago",
+  "xHours": "{} hours ago",
+  "aDay": "a day ago",
+  "xDays": "{} days ago",
+  "aMonth": "a month ago",
+  "xMonths": "{} months ago",
+  "aYear": "a year ago",
+  "xYears": "{} years ago",
+  "xm": "{}m",
+  "xk": "{}k",
+  "commentForm": {
+    "add": "Add",
+    "addAComment": "Add a comment",
+    "loginToComment": "Login to comment",
+    "edit": "edit"
+  },
+  "join": "Join",
+  "joined": "Joined",
+  "leave": "Leave",
+  "logOut": "Log Out",
+  "memberSince": "Member since",
+  "internetPoints": "Internet Points",
+  "subscribers": "subscribers",
+  "created": "Created",
+  "myProfile": "My Profile",
+  "userBar": {
+    "filter": "Filter"
+  },
+  "sortUser": "Sort",
+  "postForm": {
+    "cancel": "Cancel",
+    "title": "Title",
+    "textOptional": "Text (optional)",
+    "oc": "OC",
+    "spoiler": "spoiler",
+    "nsfw": "NSFW",
+    "post": "Post",
+    "link": "Link"
+  },
+  "sortComments": "Sort Comments",
+  "createPost": "Create post",
+  "drawer": {
+    "close": "close",
+    "open": "open"
+  },
+  "{} comment": "{} comment",
+  "{} comments": "{} comments",
+  "hour": "hour",
+  "todat": "today",
+  "week": "week",
+  "month": "month",
+  "year": "year",
+  "all": "all",
+  "loginToVote": "Login to vote",
+  "themes": {
+    "default": "Light",
+    "deep": "Dark"
+  },
+  "themeListbox": {
+    "choose": "Choose a theme"
+  }
+}
