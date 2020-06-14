@@ -7,18 +7,25 @@ import { useLogOut } from "../contexts/authContext";
 import { useTranslation } from "../i18n";
 import rem from "../utils/rem";
 import Button from "./Button";
+import { FiUser } from "react-icons/fi";
+import { useIsDesktop } from "../contexts/MediaQueryContext";
 
 export default function UserMenu({ name }: { name: string }) {
   const t = useTranslation();
   const logOut = useLogOut();
+  const isDesktop = useIsDesktop();
   return (
     <div
       sx={{
-        width: rem(128),
+        width: [rem(48), rem(128)],
         height: "100%",
         ml: "auto",
-        position: "relative",
+        position: [undefined, "relative"],
         textAlign: "start",
+        "[data-reach-menu-popover]": {
+          right: [2, 0],
+          width: ["auto", "100%"],
+        },
       }}
       css={`
         :root {
@@ -28,7 +35,6 @@ export default function UserMenu({ name }: { name: string }) {
         [data-reach-menu-popover] {
           display: block;
           position: absolute;
-          width: 100%;
         }
 
         [data-reach-menu][hidden],
@@ -70,7 +76,11 @@ export default function UserMenu({ name }: { name: string }) {
             height: "100%",
           }}
         >
-          {name}
+          {isDesktop ? (
+            name
+          ) : (
+            <FiUser sx={{ width: rem(20), height: rem(20), verticalAlign: "middle" }} />
+          )}
         </Button>
         <MenuList
           sx={{
@@ -81,6 +91,9 @@ export default function UserMenu({ name }: { name: string }) {
           }}
           portal={false}
         >
+          {!isDesktop && (
+            <div sx={{ px: [3, null, 2], py: [2, null, 1], borderRadius: 4 }}>{name}</div>
+          )}
           <MenuLink as={Link} sx={menuItemStyles} to={`/u/${name}`}>
             {t("myProfile")}
           </MenuLink>
@@ -99,8 +112,8 @@ export default function UserMenu({ name }: { name: string }) {
 }
 
 const menuItemStyles = {
-  px: 2,
-  py: 1,
+  px: 3,
+  py: 2,
   borderRadius: 4,
   "&[data-selected]": {
     outline: "none",

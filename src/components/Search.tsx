@@ -28,7 +28,7 @@ export default function Search() {
   const [transition, isPending] = unstable_useTransition({ timeoutMs: 2000 });
   return (
     <Combobox
-      sx={{ width: "100%", position: "relative" }}
+      sx={{ width: "100%", position: [undefined, "relative", null] }}
       aria-label={t("search.label")}
       onSelect={(value) => {
         setInputValue("");
@@ -64,7 +64,10 @@ export default function Search() {
         value={inputValue}
         placeholder={t("search.placeholder")}
       />
-      <ComboboxPopover portal={false} sx={{ position: "absolute", width: "100%" }}>
+      <ComboboxPopover
+        portal={false}
+        sx={{ position: "absolute", width: ["100vw", "100%", null], left: 0 }}
+      >
         <div
           sx={{
             mt: 3,
