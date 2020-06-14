@@ -1,2 +1,3 @@
 # Nove
-A client for Reddit
+
+A client for Reddit. https://nove.vercel.app/
