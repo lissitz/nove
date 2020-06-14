@@ -34,7 +34,7 @@ export default function PostSortMenu({ community, sort }: { community: string; s
       </Stack>
     </Stack>
   ) : (
-    <Columns as="ul" sx={{ width: "100%", "*": { wordBreak: "normal" }, overflow: "auto" }}>
+    <Columns as="ul" sx={{ width: "100%", "*": { wordBreak: "normal" } }}>
       {currentOptions.map((x) => (
         <Column as="li" key={x} sx={{ flex: "1 1 auto" }}>
           <ButtonLink to={`/r/${community}/${x}`} selected={x === sort} sx={tabStyles}>
