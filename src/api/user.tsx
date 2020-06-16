@@ -1,6 +1,11 @@
 import { queryCache, useInfiniteQuery, useQuery } from "react-query";
 import { useAccessToken } from "../contexts/authContext";
-import type { Account, Fullname, UserInfo, UserOverviewResponse } from "../types";
+import type {
+  Account,
+  Fullname,
+  UserInfo,
+  UserOverviewResponse,
+} from "../types";
 import { fetchAuth, getFetchMore } from "./common";
 
 function getUserInfo(username: string, token?: string) {
@@ -18,12 +23,16 @@ export function prefetchUserInfo(token: string | undefined, username: string) {
 
 export function useUserInfo(username: string) {
   const token = useAccessToken();
-  return useQuery(["about/user", username, !!token], () => getUserInfo(username, token));
+  return useQuery(["about/user", username, !!token], () =>
+    getUserInfo(username, token)
+  );
 }
 
-const getUserPage = (token?: string) => (username: string, where: string, query: string) => (
-  ...args: any
-) => {
+const getUserPage = (token?: string) => (
+  username: string,
+  where: string,
+  query: string
+) => (...args: any) => {
   const cursor: string = args[args.length - 1] || "";
   let url = `/user/${username}/${where}.json?q=""&raw_json=1${
     cursor ? `&after=${cursor}` : ""
@@ -32,7 +41,11 @@ const getUserPage = (token?: string) => (username: string, where: string, query:
     (x) =>
       x as {
         kind: "Listing";
-        data: { after: Fullname | null; before: Fullname | null; children: UserOverviewResponse[] };
+        data: {
+          after: Fullname | null;
+          before: Fullname | null;
+          children: UserOverviewResponse[];
+        };
       }
   );
 };
@@ -48,7 +61,11 @@ export function prefetchUserPage(
   );
 }
 
-export function useUserPage(username: string, where: string, query: string = "") {
+export function useUserPage(
+  username: string,
+  where: string,
+  query: string = ""
+) {
   const token = useAccessToken();
   return useInfiniteQuery(
     ["userPage", username, where, query] as any,

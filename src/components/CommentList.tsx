@@ -16,7 +16,13 @@ import Stack from "./Stack";
 import CommentForm from "./CommentForm";
 
 const maxSkeletonComments = 100;
-export default function CommentList({ community, postId }: { community: string; postId: string }) {
+export default function CommentList({
+  community,
+  postId,
+}: {
+  community: string;
+  postId: string;
+}) {
   const [params] = useSearchParams();
   const sort = parseCommentSort(params.get("sort"));
   const { data, status } = usePostComments(community, postId, sort, "");
@@ -38,7 +44,10 @@ export default function CommentList({ community, postId }: { community: string; 
           <Skeleton
             as={Card}
             height={rem(
-              100 * (post?.num_comments ? Math.min(maxSkeletonComments, post.num_comments) : 10)
+              100 *
+                (post?.num_comments
+                  ? Math.min(maxSkeletonComments, post.num_comments)
+                  : 10)
             )}
           />
         ) : status === "error" ? (

@@ -4,7 +4,9 @@ import { useLocation } from "react-router";
 import useDifferent from "../hooks/useDifferent";
 
 const ScrollContext = React.createContext<ScrollState>({});
-const ScrollDispatchContext = React.createContext<React.Dispatch<ScrollEvent> | null>(null);
+const ScrollDispatchContext = React.createContext<React.Dispatch<
+  ScrollEvent
+> | null>(null);
 
 type ScrollState = {
   [key: string]: { x: number; y: number };
@@ -74,11 +76,13 @@ export function ScrollProvider({ children }: { children: React.ReactNode }) {
 
 export function useScrollDict() {
   const context = useContext(ScrollContext);
-  if (!context) throw new Error("Must be used useScrollDict inside a ScrollProvider");
+  if (!context)
+    throw new Error("Must be used useScrollDict inside a ScrollProvider");
   return context;
 }
 export function useDispatchScroll() {
   const context = useContext(ScrollDispatchContext);
-  if (!context) throw new Error("Must be used useDispatchScroll inside a ScrollProvider");
+  if (!context)
+    throw new Error("Must be used useDispatchScroll inside a ScrollProvider");
   return context;
 }

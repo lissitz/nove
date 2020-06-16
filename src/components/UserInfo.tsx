@@ -23,13 +23,17 @@ export default function UserInfo({ username }: { username: string }) {
               <div sx={{ fontWeight: "600", fontSize: 2 }}>{user.name}</div>
               <Stack space={2}>
                 <div>
-                  <span sx={{ fontWeight: "600" }}>{formatQuantity(user.comment_karma, t)}</span>
+                  <span sx={{ fontWeight: "600" }}>
+                    {formatQuantity(user.comment_karma, t)}
+                  </span>
                   {" " + t("internetPoints")}
                 </div>
                 <div>
                   {t("memberSince") + " "}
                   <span sx={{ fontWeight: "600" }}>
-                    {new Date(user.created_utc * 1000).toLocaleDateString("en-US")}
+                    {new Date(user.created_utc * 1000).toLocaleDateString(
+                      "en-US"
+                    )}
                   </span>
                 </div>
               </Stack>

@@ -20,8 +20,14 @@ export function Columns({
   [key: string]: any;
 }) {
   return (
-    <Component sx={{ display: "flex", ml: -space }} className={className} {...rest}>
-      <ColumnsContext.Provider value={space}>{children}</ColumnsContext.Provider>
+    <Component
+      sx={{ display: "flex", ml: -space }}
+      className={className}
+      {...rest}
+    >
+      <ColumnsContext.Provider value={space}>
+        {children}
+      </ColumnsContext.Provider>
     </Component>
   );
 }

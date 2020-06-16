@@ -10,7 +10,12 @@ import { useIsAuthenticated } from "../contexts/authContext";
 import { useTranslation } from "../i18n";
 import { CommentChild, Fullname, ID, PostData, Vote } from "../types";
 import type { CommentData, CommentSortType, MoreChildrenData } from "../types";
-import { formatQuantity, formatTimestamp, sanitize, likesToVote } from "../utils/format";
+import {
+  formatQuantity,
+  formatTimestamp,
+  sanitize,
+  likesToVote,
+} from "../utils/format";
 import { getUserColor } from "../utils/getUserColor";
 import Link from "./Link";
 import LinkButton from "./LinkButton";
@@ -40,7 +45,9 @@ export default function Comment({
     onSuccess: () => {
       queryCache.refetchQueries(["comments", postId]);
       queryCache.setQueryData(["content", postId], (data: PostData) => {
-        return data?.num_comments != null ? { ...data, num_comments: data.num_comments - 1 } : data;
+        return data?.num_comments != null
+          ? { ...data, num_comments: data.num_comments - 1 }
+          : data;
       });
     },
   });
@@ -109,7 +116,9 @@ export default function Comment({
               {comment.data.author}
             </Link>
           </div>
-          {comment.data.distinguished === "admin" && <span>{t("comment.admin")}</span>}
+          {comment.data.distinguished === "admin" && (
+            <span>{t("comment.admin")}</span>
+          )}
           {comment.data.distinguished === "moderator" && (
             <abbr
               title={t("comment.moderatorOfX", [comment.data.subreddit])}
@@ -136,7 +145,9 @@ export default function Comment({
           <span>{formatTimestamp(Number(comment.data.created_utc), t)}</span>
           {comment.data.edited !== false && (
             <span sx={{ textDecoration: "italic" }}>
-              {t("comment.edited") + " " + formatTimestamp(Number(comment.data.edited), t)}
+              {t("comment.edited") +
+                " " +
+                formatTimestamp(Number(comment.data.edited), t)}
             </span>
           )}
           {isAuthenticated && comment.data.author === me?.name && (
@@ -163,8 +174,12 @@ export default function Comment({
           )}
           {showContext && (
             <React.Fragment>
-              <Link to={`/r/${comment.data.subreddit}`}>{`/r/${comment.data.subreddit}`}</Link>
-              <Link to={contextUrl(comment.data)}>{comment.data.link_title}</Link>
+              <Link
+                to={`/r/${comment.data.subreddit}`}
+              >{`/r/${comment.data.subreddit}`}</Link>
+              <Link to={contextUrl(comment.data)}>
+                {comment.data.link_title}
+              </Link>
             </React.Fragment>
           )}
           {comment.data.stickied && (
@@ -234,7 +249,9 @@ export default function Comment({
                   },
                 }),
               }}
-              aria-label={expanded ? t("comment.collapse") : t("comment.expand")}
+              aria-label={
+                expanded ? t("comment.collapse") : t("comment.expand")
+              }
               onClick={() => {
                 setExpanded((x) => !x);
               }}
@@ -272,7 +289,11 @@ export default function Comment({
               animate={
                 expanded
                   ? { opacity: 1, height: "auto", visibility: "inherit" }
-                  : { opacity: 0, height: 10, transitionEnd: { visibility: "hidden" } }
+                  : {
+                      opacity: 0,
+                      height: 10,
+                      transitionEnd: { visibility: "hidden" },
+                    }
               }
               transition={{ type: "tween" }}
             >
@@ -327,19 +348,35 @@ function More({
       {more.json.data.things.map((x) =>
         x.kind === Type.Comment ? (
           <li key={x.data.id}>
-            <Comment comment={x} community={community} postId={postId} sort={sort} />
+            <Comment
+              comment={x}
+              community={community}
+              postId={postId}
+              sort={sort}
+            />
           </li>
         ) : x.kind === "more" ? (
-          <More postId={postId} community={community} data={x.data} sort={sort} key={x.data.id} />
+          <More
+            postId={postId}
+            community={community}
+            data={x.data}
+            sort={sort}
+            key={x.data.id}
+          />
         ) : null
       )}
     </React.Fragment>
   ) : status === "loading" ? (
     <div sx={{ color: "link", fontSize: 1, ml: 3 }}>{t("comment.loading")}</div>
   ) : status === "error" ? (
-    <div sx={{ color: "link", fontSize: 1, ml: 3 }}>{t("comment.error.more")}</div>
+    <div sx={{ color: "link", fontSize: 1, ml: 3 }}>
+      {t("comment.error.more")}
+    </div>
   ) : (
-    <LinkButton sx={{ color: "link", fontSize: 1, ml: 3 }} onClick={() => setExpanded((x) => !x)}>
+    <LinkButton
+      sx={{ color: "link", fontSize: 1, ml: 3 }}
+      onClick={() => setExpanded((x) => !x)}
+    >
       {data.count === 1
         ? t("{} more reply", [data.count.toString()])
         : t("{} more replies", [formatQuantity(data.count, t)])}
@@ -370,15 +407,20 @@ function CommentEditor({
 }) {
   const [edit] = useEdit({
     onSuccess: (response, { id, text }) => {
-      queryCache.setQueryData(["comments", postId, community, sort, ""], (data: any) => {
-        const index = data?.comments?.findIndex((x: any) => x.data.name === id);
-        if (index != null && response) {
-          const comments = data?.comments?.slice();
-          comments[index] = { kind: Type.Comment, data: response };
-          return { comments };
+      queryCache.setQueryData(
+        ["comments", postId, community, sort, ""],
+        (data: any) => {
+          const index = data?.comments?.findIndex(
+            (x: any) => x.data.name === id
+          );
+          if (index != null && response) {
+            const comments = data?.comments?.slice();
+            comments[index] = { kind: Type.Comment, data: response };
+            return { comments };
+          }
+          return data;
         }
-        return data;
-      });
+      );
     },
     onMutate: () => {},
   });

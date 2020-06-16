@@ -41,7 +41,14 @@ export default function User() {
           >
             <UserBar username={username} where={where} />
           </div>
-          <div sx={{ maxWidth: "100%", width: maxWidth, margin: "0 auto", height: "100%" }}>
+          <div
+            sx={{
+              maxWidth: "100%",
+              width: maxWidth,
+              margin: "0 auto",
+              height: "100%",
+            }}
+          >
             <MainLayout as="main">
               <Start>
                 <NavPanel sortMenu={<UserOverviewSortMenu sort={sort} />} />

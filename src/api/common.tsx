@@ -15,5 +15,5 @@ export const fetchAuth = (pathname: string, token?: string) => {
   );
 };
 export const getFetchMore = (lastGroup: any, allGroups: any) => {
-  return lastGroup.data.after 
+  return lastGroup.data.after;
 };

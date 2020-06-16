@@ -4,7 +4,12 @@ import { Column, Columns } from "../components/Columns";
 import rem from "../utils/rem";
 import { useIsDesktop } from "../contexts/MediaQueryContext";
 
-export default function MainLayout({ ...rest }: { className?: string; [key: string]: any }) {
+export default function MainLayout({
+  ...rest
+}: {
+  className?: string;
+  [key: string]: any;
+}) {
   return <Columns space={3} sx={{ px: [null, null, 2] }} {...rest} />;
 }
 

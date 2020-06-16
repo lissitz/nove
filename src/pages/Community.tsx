@@ -18,7 +18,9 @@ export default function Community() {
   return (
     <MainLayout as="main">
       <Start>
-        <NavPanel sortMenu={<PostSortMenu community={community} sort={sort} />} />
+        <NavPanel
+          sortMenu={<PostSortMenu community={community} sort={sort} />}
+        />
       </Start>
       <Mid>
         <Stack space={[2, null, 3]}>

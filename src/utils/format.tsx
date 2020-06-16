@@ -3,7 +3,10 @@ import type { Vote } from "../types";
 
 export { sanitize };
 
-export function formatTimestamp(timestamp: number, t: (s: string, replace?: string[]) => string) {
+export function formatTimestamp(
+  timestamp: number,
+  t: (s: string, replace?: string[]) => string
+) {
   let delta = Date.now() / 1000 - timestamp;
   delta = Math.floor(delta / 60);
   if (delta === 0) return t("<aMinute");
@@ -23,7 +26,10 @@ export function formatTimestamp(timestamp: number, t: (s: string, replace?: stri
   else return t("xYears", [delta.toString()]);
 }
 
-export function formatQuantity(quantity: number, t: (s: string, replace?: string[]) => string) {
+export function formatQuantity(
+  quantity: number,
+  t: (s: string, replace?: string[]) => string
+) {
   if (quantity > 999999) {
     return t("xm", [
       (quantity / 1000000).toLocaleString(undefined, {

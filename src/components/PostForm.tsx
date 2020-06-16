@@ -106,8 +106,9 @@ function Form({
       sessionStorage.setItem(storageKey, JSON.stringify(state));
     } catch {}
   }, [storageKey, state]);
-  const handleCheckboxChange = (key: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) =>
-    dispatch({ [key]: event.target.checked });
+  const handleCheckboxChange = (key: keyof State) => (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => dispatch({ [key]: event.target.checked });
   const { title, text, nsfw, spoiler } = state;
   return (
     <Card sx={{ width: "100%", display: "flex" }}>
@@ -149,13 +150,19 @@ function Form({
           */}
           <Inline>
             <Label>
-              <Checkbox checked={spoiler} onChange={handleCheckboxChange("spoiler")} />
+              <Checkbox
+                checked={spoiler}
+                onChange={handleCheckboxChange("spoiler")}
+              />
               {t("postForm.spoiler")}
             </Label>
           </Inline>
           <Inline>
             <Label>
-              <Checkbox checked={nsfw} onChange={handleCheckboxChange("nsfw")} />
+              <Checkbox
+                checked={nsfw}
+                onChange={handleCheckboxChange("nsfw")}
+              />
               {t("postForm.nsfw")}
             </Label>
           </Inline>

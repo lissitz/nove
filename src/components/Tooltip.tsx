@@ -4,7 +4,9 @@ import { jsx } from "theme-ui";
 import { default as ReachTooltip } from "@reach/tooltip";
 import "@reach/tooltip/styles.css";
 
-export default function Tooltip(props: React.ComponentProps<typeof ReachTooltip>) {
+export default function Tooltip(
+  props: React.ComponentProps<typeof ReachTooltip>
+) {
   return (
     <ReachTooltip
       sx={{

@@ -3,7 +3,13 @@ import * as React from "react";
 import VisuallyHidden from "@reach/visually-hidden";
 import { jsx, useColorMode, Box } from "theme-ui";
 import { useTranslation } from "../i18n";
-import { ListboxButton, ListboxInput, ListboxList, ListboxOption, ListboxPopover } from "./Listbox";
+import {
+  ListboxButton,
+  ListboxInput,
+  ListboxList,
+  ListboxOption,
+  ListboxPopover,
+} from "./Listbox";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { themes } from "../constants";
 import rem from "../utils/rem";
@@ -24,7 +30,10 @@ const Icons = {
 
 export default function ThemeListbox() {
   const t = useTranslation();
-  const [colorMode, setColorMode]: [string, (x: string) => void] = useColorMode();
+  const [colorMode, setColorMode]: [
+    string,
+    (x: string) => void
+  ] = useColorMode();
 
   return (
     <React.Fragment>
@@ -37,8 +46,18 @@ export default function ThemeListbox() {
           setColorMode(value);
         }}
       >
-        <ListboxButton sx={{ backgroundColor: "transparent", width: "100%", height: "100%", p: 2 }}>
-          <Box as={Icons[colorMode]} sx={{ ...iconStyle, width: rem(20), height: rem(20) }} />
+        <ListboxButton
+          sx={{
+            backgroundColor: "transparent",
+            width: "100%",
+            height: "100%",
+            p: 2,
+          }}
+        >
+          <Box
+            as={Icons[colorMode]}
+            sx={{ ...iconStyle, width: rem(20), height: rem(20) }}
+          />
           <VisuallyHidden>{t(`themes.${colorMode}`)}</VisuallyHidden>
         </ListboxButton>
         <ListboxPopover sx={{ width: "auto" }}>
@@ -50,7 +69,10 @@ export default function ThemeListbox() {
               >
                 <Columns space={3} sx={{ width: "100%" }}>
                   <Column sx={{ width: rem(30) }}>
-                    <Box as={Icons[theme]} sx={{ ...iconStyle, width: rem(16), height: rem(16) }} />
+                    <Box
+                      as={Icons[theme]}
+                      sx={{ ...iconStyle, width: rem(16), height: rem(16) }}
+                    />
                   </Column>
                   <Column>
                     <span

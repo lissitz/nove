@@ -129,7 +129,9 @@ function ComboboxContent({
               to={data.url}
               tabIndex={-1}
               sx={{
-                animation: isPending ? `200ms linear 500ms forwards ${makeVisible}` : undefined,
+                animation: isPending
+                  ? `200ms linear 500ms forwards ${makeVisible}`
+                  : undefined,
               }}
               onClick={onClick}
             >

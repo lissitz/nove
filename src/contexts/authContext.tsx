@@ -7,7 +7,9 @@ import { fetchJson } from "../utils/fetch";
 const AuthContext = React.createContext<AuthState>({
   status: "pending",
 });
-const AuthDispatchContext = React.createContext<React.Dispatch<AuthEvent> | null>(null);
+const AuthDispatchContext = React.createContext<React.Dispatch<
+  AuthEvent
+> | null>(null);
 
 type AuthResponse = {
   access_token: string;
@@ -115,7 +117,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
   useEffect(() => {
     try {
-      sessionStorage.setItem(key, JSON.stringify({ ...authState, refreshToken: "" }));
+      sessionStorage.setItem(
+        key,
+        JSON.stringify({ ...authState, refreshToken: "" })
+      );
     } catch {}
   }, [authState]);
 
@@ -125,7 +130,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const isFetching = useRef(false);
   const epsilon = 120000;
   useEffect(() => {
-    if (authState?.expirationDate && authState.expirationDate < Date.now() + epsilon) {
+    if (
+      authState?.expirationDate &&
+      authState.expirationDate < Date.now() + epsilon
+    ) {
       dispatch({ status: "expired" });
     }
     const code = params.get("code");
@@ -137,7 +145,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       fetchJson("https://www.reddit.com/api/v1/access_token", {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: "Basic " + btoa(`${process.env.REACT_APP_REDDIT_CLIENT_ID}:`),
+          Authorization:
+            "Basic " + btoa(`${process.env.REACT_APP_REDDIT_CLIENT_ID}:`),
         },
         method: "POST",
         body: `grant_type=authorization_code&code=${code}&redirect_uri=${redirect_uri}`,
@@ -163,7 +172,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
       navigate("/");
     }
-    if (authState.status === "pending" && !code && !error && !state && !isFetching.current) {
+    if (
+      authState.status === "pending" &&
+      !code &&
+      !error &&
+      !state &&
+      !isFetching.current
+    ) {
       dispatch({ status: "unitialized" });
     }
     if (error) {
@@ -178,7 +193,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         fetchJson("https://www.reddit.com/api/v1/access_token", {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: "Basic " + btoa(`${process.env.REACT_APP_REDDIT_CLIENT_ID}:`),
+            Authorization:
+              "Basic " + btoa(`${process.env.REACT_APP_REDDIT_CLIENT_ID}:`),
           },
           method: "POST",
           body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
@@ -230,8 +246,14 @@ export function useAuth() {
 
 export function useLogOut() {
   const dispatch = useContext(AuthDispatchContext);
-  const logOut = useCallback(() => dispatch && dispatch({ status: "signout" }), [dispatch]);
-  if (!dispatch) throw new Error("useSignOut must be used inside a AuthDispatchContext Provider");
+  const logOut = useCallback(
+    () => dispatch && dispatch({ status: "signout" }),
+    [dispatch]
+  );
+  if (!dispatch)
+    throw new Error(
+      "useSignOut must be used inside a AuthDispatchContext Provider"
+    );
   return logOut;
 }
 

@@ -1,6 +1,6 @@
 import * as React from "react";
-import {} from 'react/experimental'
-import {} from 'react-dom/experimental'
+import {} from "react/experimental";
+import {} from "react-dom/experimental";
 declare global {
   namespace JSX {
     interface IntrinsicAttributes {

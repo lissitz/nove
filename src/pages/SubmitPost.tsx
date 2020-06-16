@@ -13,7 +13,10 @@ export default function SubmitPost() {
     <MainLayout as="main">
       <Start />
       <Mid>
-        <PostForm storageKey={`nove_post_form_draft${community}`} community={community} />
+        <PostForm
+          storageKey={`nove_post_form_draft${community}`}
+          community={community}
+        />
       </Mid>
       <End>
         <CommunityInfo community={community} />

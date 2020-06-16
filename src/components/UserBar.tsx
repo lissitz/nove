@@ -22,7 +22,13 @@ const privateUserBarOptions = [
   "gilded",
 ];
 const publicUserBarOptions = ["overview", "submitted", "comments", "gilded"];
-export default function UserBar({ username, where }: { username: string; where: string }) {
+export default function UserBar({
+  username,
+  where,
+}: {
+  username: string;
+  where: string;
+}) {
   const { data: me } = useMe();
   const t = useTranslation();
   const isDesktop = useIsDesktop();
@@ -35,15 +41,19 @@ export default function UserBar({ username, where }: { username: string; where: 
             <Stack space={2} sx={{ width: "100%" }}>
               <div sx={{ fontWeight: "600" }}>{t("userBar.filter")}</div>
               <Inlines space={2} as="ul">
-                {(me && me.name === username ? privateUserBarOptions : publicUserBarOptions).map(
-                  (option) => (
-                    <Inline as="li">
-                      <ButtonLink to={`/u/${username}/${option}`} selected={where === option}>
-                        {option}
-                      </ButtonLink>
-                    </Inline>
-                  )
-                )}
+                {(me && me.name === username
+                  ? privateUserBarOptions
+                  : publicUserBarOptions
+                ).map((option) => (
+                  <Inline as="li">
+                    <ButtonLink
+                      to={`/u/${username}/${option}`}
+                      selected={where === option}
+                    >
+                      {option}
+                    </ButtonLink>
+                  </Inline>
+                ))}
               </Inlines>
             </Stack>
           </div>
@@ -53,20 +63,24 @@ export default function UserBar({ username, where }: { username: string; where: 
     </MainLayout>
   ) : (
     <Stack space={2} sx={{ width: "100%" }}>
-      <Columns as="ul" sx={{ overflow: "auto", width: "100%", "*": { wordBreak: "normal" } }}>
-        {(me && me.name === username ? privateUserBarOptions : publicUserBarOptions).map(
-          (option) => (
-            <Column as="li" sx={{ minWidth: "25%" }}>
-              <ButtonLink
-                to={`/u/${username}/${option}`}
-                selected={where === option}
-                sx={tabStyles}
-              >
-                {option}
-              </ButtonLink>
-            </Column>
-          )
-        )}
+      <Columns
+        as="ul"
+        sx={{ overflow: "auto", width: "100%", "*": { wordBreak: "normal" } }}
+      >
+        {(me && me.name === username
+          ? privateUserBarOptions
+          : publicUserBarOptions
+        ).map((option) => (
+          <Column as="li" sx={{ minWidth: "25%" }}>
+            <ButtonLink
+              to={`/u/${username}/${option}`}
+              selected={where === option}
+              sx={tabStyles}
+            >
+              {option}
+            </ButtonLink>
+          </Column>
+        ))}
       </Columns>
     </Stack>
   );

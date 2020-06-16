@@ -11,7 +11,9 @@ export default function MyCommunitiesSkeleton() {
   const t = useTranslation();
   return (
     <Stack space={2} sx={{ width: "100%" }}>
-      <div sx={{ fontWeight: "600", color:"transparent" }}>{t("myCommunities")}</div>
+      <div sx={{ fontWeight: "600", color: "transparent" }}>
+        {t("myCommunities")}
+      </div>
       <Stack
         as="ul"
         space={2}
@@ -22,7 +24,12 @@ export default function MyCommunitiesSkeleton() {
         {Array(5)
           .fill(undefined)
           .map((_, index) => (
-            <Skeleton key={index} as={ButtonSkeleton} sx={{ bg: "gray.0" }} height={height} />
+            <Skeleton
+              key={index}
+              as={ButtonSkeleton}
+              sx={{ bg: "gray.0" }}
+              height={height}
+            />
           ))}
       </Stack>
     </Stack>

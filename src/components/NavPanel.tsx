@@ -51,7 +51,8 @@ export default function NavPanel({
         </Stack>
         {authStatus === "pending" || status === "loading" ? (
           <NavPanelSkeleton />
-        ) : status === "error" ? null : authStatus === "unitialized" || authStatus === "error" ? (
+        ) : status === "error" ? null : authStatus === "unitialized" ||
+          authStatus === "error" ? (
           <MyCommunities communities={defaultCommunities} onClick={onClick} />
         ) : (
           communities &&

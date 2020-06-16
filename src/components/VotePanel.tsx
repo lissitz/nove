@@ -47,7 +47,8 @@ export default function VotePanel({
     onSuccess: (_data, mutationVariables) => {
       mounted.current && setVote(mutationVariables.dir);
       queryCache.refetchQueries([postId]);
-      sort && queryCache.refetchQueries(["infinitePosts", community, sort, query]);
+      sort &&
+        queryCache.refetchQueries(["infinitePosts", community, sort, query]);
     },
     onError: (_data, mutationVariables, rollback) => {
       //@ts-ignore
@@ -72,16 +73,24 @@ export default function VotePanel({
     <Stack space={1} align="center">
       <CondTooltip cond={authStatus !== "success"} label={t("loginToVote")}>
         <div>
-          <VoteButton onClick={sendVote(vote === 1 ? 0 : 1)} selected={vote === 1}>
+          <VoteButton
+            onClick={sendVote(vote === 1 ? 0 : 1)}
+            selected={vote === 1}
+          >
             <VisuallyHidden>{t("upvote")}</VisuallyHidden>
             <FiChevronUp aria-hidden />
           </VoteButton>
         </div>
       </CondTooltip>
-      <div sx={{ textAlign: "center" }}>{score && formatQuantity(score, t)}</div>
+      <div sx={{ textAlign: "center" }}>
+        {score && formatQuantity(score, t)}
+      </div>
       <CondTooltip cond={authStatus !== "success"} label={t("loginToVote")}>
         <div>
-          <VoteButton onClick={sendVote(vote === -1 ? 0 : -1)} selected={vote === -1}>
+          <VoteButton
+            onClick={sendVote(vote === -1 ? 0 : -1)}
+            selected={vote === -1}
+          >
             <VisuallyHidden>{t("downvote")}</VisuallyHidden>
             <FiChevronDown aria-hidden />
           </VoteButton>

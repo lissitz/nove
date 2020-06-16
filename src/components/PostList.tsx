@@ -16,7 +16,13 @@ import PostPreview from "./PostPreview";
 import Skeleton from "./Skeleton";
 import Stack from "./Stack";
 
-export default function PostList({ community, sort }: { community: string; sort: PostSortType }) {
+export default function PostList({
+  community,
+  sort,
+}: {
+  community: string;
+  sort: PostSortType;
+}) {
   return (
     <div sx={{ width: "100%" }}>
       <ErrorBoundary FallbackComponent={ErrorFallback}>
@@ -42,7 +48,13 @@ export default function PostList({ community, sort }: { community: string; sort:
     </div>
   );
 }
-function Content({ community, sort }: { community: string; sort: PostSortType }) {
+function Content({
+  community,
+  sort,
+}: {
+  community: string;
+  sort: PostSortType;
+}) {
   const [searchParams] = useSearchParams();
   const query = searchParams.toString();
   let {

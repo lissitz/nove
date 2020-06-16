@@ -19,8 +19,14 @@ export function Inlines({
 }) {
   return (
     <div sx={{ mt: -space }}>
-      <Comp sx={{ display: "flex", flexWrap: "wrap", ml: -space }} className={className} {...rest}>
-        <InlinesContext.Provider value={space}>{children}</InlinesContext.Provider>
+      <Comp
+        sx={{ display: "flex", flexWrap: "wrap", ml: -space }}
+        className={className}
+        {...rest}
+      >
+        <InlinesContext.Provider value={space}>
+          {children}
+        </InlinesContext.Provider>
       </Comp>
     </div>
   );

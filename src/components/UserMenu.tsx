@@ -1,5 +1,11 @@
 /** @jsx jsx */
-import { Menu, MenuButton, MenuItem, MenuLink, MenuList } from "@reach/menu-button";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuLink,
+  MenuList,
+} from "@reach/menu-button";
 import { alpha } from "@theme-ui/color";
 import { Link } from "react-router-dom";
 import { jsx } from "theme-ui";
@@ -79,7 +85,9 @@ export default function UserMenu({ name }: { name: string }) {
           {isDesktop ? (
             name
           ) : (
-            <FiUser sx={{ width: rem(20), height: rem(20), verticalAlign: "middle" }} />
+            <FiUser
+              sx={{ width: rem(20), height: rem(20), verticalAlign: "middle" }}
+            />
           )}
         </Button>
         <MenuList
@@ -92,7 +100,9 @@ export default function UserMenu({ name }: { name: string }) {
           portal={false}
         >
           {!isDesktop && (
-            <div sx={{ px: [3, null, 2], py: [2, null, 1], borderRadius: 4 }}>{name}</div>
+            <div sx={{ px: [3, null, 2], py: [2, null, 1], borderRadius: 4 }}>
+              {name}
+            </div>
           )}
           <MenuLink as={Link} sx={menuItemStyles} to={`/u/${name}`}>
             {t("myProfile")}

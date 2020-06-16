@@ -7,7 +7,14 @@ export const Type = {
   Award: "t6",
 } as const;
 
-export const commentSortOptions = ["new", "best", "top", "controversial", "old", "qa"] as const;
+export const commentSortOptions = [
+  "new",
+  "best",
+  "top",
+  "controversial",
+  "old",
+  "qa",
+] as const;
 export const defaultCommentSort = "best";
 
 export const postSortOptions = ["hot", "new", "top"] as const;

@@ -17,12 +17,16 @@ export default function UserOverviewComment({
   return (
     <Card
       sx={{ width: "100%", cursor: "pointer" }}
-      onClick={(event: React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
+      onClick={(
+        event: React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>
+      ) => {
         if (!hasAnInteractiveElementUnderneath(event)) {
           navigate(contextUrl(comment.data));
         }
       }}
-      onMouseDown={(event: React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
+      onMouseDown={(
+        event: React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>
+      ) => {
         if (!hasAnInteractiveElementUnderneath(event)) {
           preload(contextUrl(comment.data));
         }

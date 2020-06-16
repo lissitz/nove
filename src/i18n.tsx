@@ -18,7 +18,10 @@ const translate = (language: Languages, x: string) => {
   }
   return dict[x] || x;
 };
-const translator = (language: Languages) => (key: string, replace?: string[]) => {
+const translator = (language: Languages) => (
+  key: string,
+  replace?: string[]
+) => {
   let translation = translate(language, key);
   if (replace) {
     translation = replace.reduce((a, b) => a.replace("{}", b), translation);
@@ -35,12 +38,17 @@ const LanguageContext = createContext({
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language] = useState(defaultLanguage);
   const t = useCallback(translator(language), [language]);
-  return <LanguageContext.Provider value={{ language, t }}>{children}</LanguageContext.Provider>;
+  return (
+    <LanguageContext.Provider value={{ language, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
 }
 
 export function useTranslation() {
   const t = useContext(LanguageContext)?.t;
-  if (!t) throw new Error("useTranslation must have a LanguageProvider as a parent");
+  if (!t)
+    throw new Error("useTranslation must have a LanguageProvider as a parent");
   return t;
 }
 

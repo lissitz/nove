@@ -9,10 +9,18 @@ import { useIsDesktop } from "../contexts/MediaQueryContext";
 import { Columns, Column } from "./Columns";
 import { tabStyles } from "../theme/theme";
 
-export default function PostSortMenu({ community, sort }: { community: string; sort: string }) {
+export default function PostSortMenu({
+  community,
+  sort,
+}: {
+  community: string;
+  sort: string;
+}) {
   const t = useTranslation();
   const currentOptions =
-    sort === "top" ? options.filter((x) => x !== "top") : (options as ReadonlyArray<string>);
+    sort === "top"
+      ? options.filter((x) => x !== "top")
+      : (options as ReadonlyArray<string>);
   const isDesktop = useIsDesktop();
   return isDesktop ? (
     <Stack space={2} sx={{ width: "100%" }}>
@@ -37,7 +45,11 @@ export default function PostSortMenu({ community, sort }: { community: string; s
     <Columns as="ul" sx={{ width: "100%", "*": { wordBreak: "normal" } }}>
       {currentOptions.map((x) => (
         <Column as="li" key={x} sx={{ flex: "1 1 auto" }}>
-          <ButtonLink to={`/r/${community}/${x}`} selected={x === sort} sx={tabStyles}>
+          <ButtonLink
+            to={`/r/${community}/${x}`}
+            selected={x === sort}
+            sx={tabStyles}
+          >
             {x}
           </ButtonLink>
         </Column>

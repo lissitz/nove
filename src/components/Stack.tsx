@@ -31,7 +31,11 @@ export default function Stack({
         return (
           x && (
             <ChildComponent
-              sx={{ display: "flex", flexDirection: "column", alignItems: align }}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: align,
+              }}
               key={index}
             >
               {x}

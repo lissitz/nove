@@ -70,7 +70,8 @@ export default function Drawer({ children }: { children?: React.ReactNode }) {
               maxWidth: rem(400),
               left: 0,
               height: "100%",
-              backgroundColor: colorMode === "default" ? "surface" : "background",
+              backgroundColor:
+                colorMode === "default" ? "surface" : "background",
               px: 2,
               pb: 2,
               pt: 0,
@@ -80,7 +81,11 @@ export default function Drawer({ children }: { children?: React.ReactNode }) {
           >
             <Stack space={1}>
               <Button
-                sx={{ width: rem(48), height: rem(48), backgroundColor: "transparent" }}
+                sx={{
+                  width: rem(48),
+                  height: rem(48),
+                  backgroundColor: "transparent",
+                }}
                 onClick={() => {
                   setIsOpen(false);
                 }}

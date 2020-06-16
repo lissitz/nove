@@ -54,7 +54,10 @@ export default function CommentVotePanel({
     <Fragment>
       <CondTooltip cond={authStatus !== "success"} label={t("loginToVote")}>
         <div sx={{ display: "inline" }}>
-          <VoteButton onClick={sendVote(vote === 1 ? 0 : 1)} selected={vote === 1}>
+          <VoteButton
+            onClick={sendVote(vote === 1 ? 0 : 1)}
+            selected={vote === 1}
+          >
             <VisuallyHidden>{t("upvote")}</VisuallyHidden>
             <FiChevronUp aria-hidden />
           </VoteButton>
@@ -62,7 +65,10 @@ export default function CommentVotePanel({
       </CondTooltip>
       <CondTooltip cond={authStatus !== "success"} label={t("loginToVote")}>
         <div sx={{ display: "inline" }}>
-          <VoteButton onClick={sendVote(vote === -1 ? 0 : -1)} selected={vote === -1}>
+          <VoteButton
+            onClick={sendVote(vote === -1 ? 0 : -1)}
+            selected={vote === -1}
+          >
             <VisuallyHidden>{t("downvote")}</VisuallyHidden>
             <FiChevronDown aria-hidden />
           </VoteButton>

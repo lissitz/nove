@@ -103,7 +103,8 @@ function Content({
               right: 0,
               transition: "opacity 0.2s",
               opacity: loaded && info ? 1 : 0,
-              backgroundColor: loaded && info ? info.data.key_color || "text" : "transparent",
+              backgroundColor:
+                loaded && info ? info.data.key_color || "text" : "transparent",
             },
           }}
         />
@@ -127,7 +128,8 @@ function Content({
             <div sx={{ display: "flex", alignItems: "center", height: "100%" }}>
               <div
                 sx={{
-                  backgroundColor: loaded && info ? info.data.key_color || "text" : "gray.5",
+                  backgroundColor:
+                    loaded && info ? info.data.key_color || "text" : "gray.5",
                   borderRadius: "50%",
                   height: rem(100),
                   width: rem(100),

@@ -34,7 +34,9 @@ export default function CommentForm({
         return data;
       });
       queryCache.setQueryData(contentQueryKey, (data: PostData) => {
-        return data?.num_comments != null ? { ...data, num_comments: data.num_comments + 1 } : data;
+        return data?.num_comments != null
+          ? { ...data, num_comments: data.num_comments + 1 }
+          : data;
       });
       setValue("");
     },
@@ -70,7 +72,9 @@ export default function CommentForm({
       }}
     >
       <Stack space={2}>
-        <div sx={{ ...textAreaStyles, cursor: "pointer" }}>{t("commentForm.loginToComment")}</div>
+        <div sx={{ ...textAreaStyles, cursor: "pointer" }}>
+          {t("commentForm.loginToComment")}
+        </div>
         <Button disabled sx={{ marginLeft: "auto" }}>
           {t("commentForm.add")}
         </Button>

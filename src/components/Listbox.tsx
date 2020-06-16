@@ -75,9 +75,20 @@ function ListboxLink(props: React.ComponentProps<typeof Link>) {
     <Link
       tabIndex={-1}
       onClick={(event: any) => event.preventDefault()}
-      sx={{ display: "block", overflow: "hidden", "&:hover": { textDecoration: "none" } }}
+      sx={{
+        display: "block",
+        overflow: "hidden",
+        "&:hover": { textDecoration: "none" },
+      }}
       {...props}
     />
   );
 }
-export { ListboxInput, ListboxButton, ListboxOption, ListboxPopover, ListboxLink, ListboxList };
+export {
+  ListboxInput,
+  ListboxButton,
+  ListboxOption,
+  ListboxPopover,
+  ListboxLink,
+  ListboxList,
+};

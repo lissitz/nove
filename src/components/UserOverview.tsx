@@ -17,7 +17,13 @@ import Skeleton from "./Skeleton";
 import Stack from "./Stack";
 import UserOverviewComment from "./UserOverviewComment";
 
-export default function UserOverview({ username, where }: { username: string; where: string }) {
+export default function UserOverview({
+  username,
+  where,
+}: {
+  username: string;
+  where: string;
+}) {
   const [params] = useSearchParams();
   const sort = parseUserOverviewSort(params.get("sort"));
   const {
@@ -71,7 +77,11 @@ export default function UserOverview({ username, where }: { username: string; wh
         )
       )}
       {status === "success" && overview && (canFetchMore || isFetchingMore) && (
-        <Button sx={{ margin: "16px auto" }} onClick={() => fetchMore()} disabled={isFetchingMore}>
+        <Button
+          sx={{ margin: "16px auto" }}
+          onClick={() => fetchMore()}
+          disabled={isFetchingMore}
+        >
           {isFetchingMore ? t("postList.loadingMore") : t("postList.loadMore")}
         </Button>
       )}

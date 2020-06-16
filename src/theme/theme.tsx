@@ -72,8 +72,10 @@ export const theme = {
   breakpoints: ["52em", "64em"],
   space: pxsToRem([0, 4, 8, 16, 32, 64, 128, 256, 512]),
   fonts: {
-    body: "Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji",
-    heading: "Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji",
+    body:
+      "Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji",
+    heading:
+      "Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji",
     monospace: "Menlo, monospace",
   },
   fontSizes: pxsToRem([12, 14, 16, 20, 24, 32, 48, 64, 96]),
@@ -157,7 +159,8 @@ export const theme = {
     primary: {
       padding: 3,
       borderRadius: [0, null, 4],
-      boxShadow: "0px 0px 0px 1px  rgba(0, 0, 0, 0.1) ,  0px 1px 3px  rgba(0, 0, 0, 0.1)",
+      boxShadow:
+        "0px 0px 0px 1px  rgba(0, 0, 0, 0.1) ,  0px 1px 3px  rgba(0, 0, 0, 0.1)",
       backgroundColor: "surface",
     },
   },

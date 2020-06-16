@@ -8,7 +8,12 @@ import { useDelete, useEdit, useMe, usePostContent } from "../api";
 import { useTranslation } from "../i18n";
 import { useNavigate } from "../router";
 import { Fullname, ID, PostData } from "../types";
-import { formatQuantity, formatTimestamp, likesToVote, sanitize } from "../utils/format";
+import {
+  formatQuantity,
+  formatTimestamp,
+  likesToVote,
+  sanitize,
+} from "../utils/format";
 import { getUserColor } from "../utils/getUserColor";
 import rem from "../utils/rem";
 import CardError from "./CardError";
@@ -21,7 +26,13 @@ import Stack from "./Stack";
 import TextEditor from "./TextEditor";
 import VotePanel from "./VotePanel";
 
-export default function PostContent({ community, postId }: { community: string; postId: string }) {
+export default function PostContent({
+  community,
+  postId,
+}: {
+  community: string;
+  postId: string;
+}) {
   const t = useTranslation();
   const { data: post, status } = usePostContent(postId, community);
   const { data: me } = useMe();
@@ -65,7 +76,8 @@ export default function PostContent({ community, postId }: { community: string; 
                             ? "white"
                             : "black"
                           : "text",
-                        backgroundColor: post.link_flair_background_color || "gray.1",
+                        backgroundColor:
+                          post.link_flair_background_color || "gray.1",
                         display: "inline-block",
                         fontSize: 1,
                         fontWeight: "600",
@@ -98,7 +110,10 @@ export default function PostContent({ community, postId }: { community: string; 
                 >
                   <Inline>
                     {t("postedBy")}{" "}
-                    <Link to={`/u/${post.author}`} sx={{ color: getUserColor(post.distinguished) }}>
+                    <Link
+                      to={`/u/${post.author}`}
+                      sx={{ color: getUserColor(post.distinguished) }}
+                    >
                       {" " + post.author}
                     </Link>
                     {" " + formatTimestamp(Number(post.created_utc), t)}
@@ -112,7 +127,9 @@ export default function PostContent({ community, postId }: { community: string; 
                     <Inline>
                       <abbr
                         title={t("comment.moderatorOfX", [community])}
-                        sx={{ "&&": { textDecoration: "none", cursor: "default" } }}
+                        sx={{
+                          "&&": { textDecoration: "none", cursor: "default" },
+                        }}
                       >
                         {t("comment.mod")}
                       </abbr>
@@ -208,7 +225,10 @@ export default function PostContent({ community, postId }: { community: string; 
               data-shaka-player
             >
               <source src={post.url + "/DASHPlaylist.mpd"} />
-              <source src={post.url + "/HLSPlaylist.m3u8"} type="application/vnd.apple.mpegURL" />
+              <source
+                src={post.url + "/HLSPlaylist.m3u8"}
+                type="application/vnd.apple.mpegURL"
+              />
               <source src={post.url + "/DASH_1080"} type="video/mp4" />
               <source src={post.url + "/DASH_720"} type="video/mp4" />
               <source src={post.url + "/DASH_480"} type="video/mp4" />

@@ -35,7 +35,8 @@ export default function NavBar({ children }: { children?: React.ReactNode }) {
           width: "100%",
           height: rem(headerHeight),
           backgroundColor: "surface",
-          boxShadow: "0px 0px 0px 1px  rgba(0, 0, 0, 0.1) ,  0px 1px 3px  rgba(0, 0, 0, 0.1)",
+          boxShadow:
+            "0px 0px 0px 1px  rgba(0, 0, 0, 0.1) ,  0px 1px 3px  rgba(0, 0, 0, 0.1)",
           zIndex: 1000,
         }}
       >
@@ -46,7 +47,10 @@ export default function NavBar({ children }: { children?: React.ReactNode }) {
             height: "100%",
           }}
         >
-          <Columns space={3} sx={{ height: "100%", alignItems: "center", px: 2 }}>
+          <Columns
+            space={3}
+            sx={{ height: "100%", alignItems: "center", px: 2 }}
+          >
             <Column sx={{ flex: "0 0 auto", width: ["auto", null, rem(192)] }}>
               {isDesktop ? (
                 <div
@@ -96,12 +100,19 @@ export default function NavBar({ children }: { children?: React.ReactNode }) {
                   </div>
                 </Column>
                 <Column sx={{ marginLeft: "auto" }}>
-                  <div sx={{ display: "flex", alignItems: "center", height: "100%" }}>
+                  <div
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      height: "100%",
+                    }}
+                  >
                     {authStatus === "success" ? (
                       status === "success" && me ? (
                         <UserMenu name={me.name} />
                       ) : null
-                    ) : authStatus === "pending" || status === "loading" ? null : (
+                    ) : authStatus === "pending" ||
+                      status === "loading" ? null : (
                       <ButtonLink
                         external
                         to={loginUrl}

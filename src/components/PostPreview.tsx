@@ -5,7 +5,12 @@ import { allowEmbeds } from "../constants";
 import { useTranslation } from "../i18n";
 import { useNavigate, usePreload } from "../router";
 import type { PostData, PostSortType } from "../types";
-import { formatQuantity, formatTimestamp, likesToVote, sanitize } from "../utils/format";
+import {
+  formatQuantity,
+  formatTimestamp,
+  likesToVote,
+  sanitize,
+} from "../utils/format";
 import { getUserColor } from "../utils/getUserColor";
 import { hasAnInteractiveElementUnderneath } from "../utils/hasAnInteractiveElementUnderneath";
 import rem from "../utils/rem";
@@ -45,7 +50,9 @@ export default function PostPreview({
           navigate(post.permalink);
         }
       }}
-      onMouseDown={(event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
+      onMouseDown={(
+        event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>
+      ) => {
         if (!hasAnInteractiveElementUnderneath(event)) {
           preload(post.permalink);
         }
@@ -75,7 +82,8 @@ export default function PostPreview({
                             ? "white"
                             : "black"
                           : "text",
-                        backgroundColor: post.link_flair_background_color || "gray.1",
+                        backgroundColor:
+                          post.link_flair_background_color || "gray.1",
                         display: "inline-block",
                         fontSize: 1,
                         fontWeight: "600",
@@ -111,23 +119,32 @@ export default function PostPreview({
                 >
                   <div sx={{ display: "inline" }}>
                     {t("postedBy")}{" "}
-                    <Link to={`/u/${post.author}`} sx={{ color: getUserColor(post.distinguished) }}>
+                    <Link
+                      to={`/u/${post.author}`}
+                      sx={{ color: getUserColor(post.distinguished) }}
+                    >
                       {" " + post.author}
                     </Link>
                     {" " + formatTimestamp(Number(post.created_utc), t)}
                   </div>
-                  {post.distinguished === "admin" && <span>{t("comment.admin")}</span>}
+                  {post.distinguished === "admin" && (
+                    <span>{t("comment.admin")}</span>
+                  )}
                   {post.distinguished === "moderator" && (
                     <abbr
                       title={t("comment.moderatorOfX", [community])}
-                      sx={{ "&&": { textDecoration: "none", cursor: "default" } }}
+                      sx={{
+                        "&&": { textDecoration: "none", cursor: "default" },
+                      }}
                     >
                       {t("comment.mod")}
                     </abbr>
                   )}
                   {showContext && (
                     <div sx={{ display: "inline" }}>
-                      <Link to={`/r/${post.subreddit}`}>{`/r/${post.subreddit}`}</Link>
+                      <Link
+                        to={`/r/${post.subreddit}`}
+                      >{`/r/${post.subreddit}`}</Link>
                     </div>
                   )}
                 </div>
@@ -136,7 +153,8 @@ export default function PostPreview({
                     flex: "1 1 auto",
                     maxHeight: rem(256),
                     overflow: "hidden",
-                    maskImage: "linear-gradient(180deg, black 70%, transparent)",
+                    maskImage:
+                      "linear-gradient(180deg, black 70%, transparent)",
                   }}
                 >
                   <div
@@ -192,7 +210,12 @@ export default function PostPreview({
         </div>
         {hasImage && (
           <img
-            sx={{ maxWidth: "100%", margin: "0 auto", maxHeight: "80vh", borderRadius: 4 }}
+            sx={{
+              maxWidth: "100%",
+              margin: "0 auto",
+              maxHeight: "80vh",
+              borderRadius: 4,
+            }}
             alt=""
             src={post.url}
           />
@@ -200,10 +223,18 @@ export default function PostPreview({
         {hasVideo &&
           (hasRedditVideo ? (
             <video
-              sx={{ width: "100%", margin: "0 auto", maxHeight: "80vh", borderRadius: 4 }}
+              sx={{
+                width: "100%",
+                margin: "0 auto",
+                maxHeight: "80vh",
+                borderRadius: 4,
+              }}
               controls
             >
-              <source src={post.url + "/HLSPlaylist.m3u8"} type="application/vnd.apple.mpegURL" />
+              <source
+                src={post.url + "/HLSPlaylist.m3u8"}
+                type="application/vnd.apple.mpegURL"
+              />
               <source src={post.url + "/DASH_1080"} type="video/mp4" />
               <source src={post.url + "/DASH_720"} type="video/mp4" />
               <source src={post.url + "/DASH_480"} type="video/mp4" />
@@ -221,7 +252,9 @@ export default function PostPreview({
                 justifyContent: "center",
                 "*": { maxWidth: "100%" },
               }}
-              dangerouslySetInnerHTML={{ __html: post.secure_media?.oembed?.html || "" }}
+              dangerouslySetInnerHTML={{
+                __html: post.secure_media?.oembed?.html || "",
+              }}
             />
           ) : null)}
       </Stack>

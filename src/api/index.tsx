@@ -1,4 +1,9 @@
-import { queryCache, useInfiniteQuery, useMutation, useQuery } from "react-query";
+import {
+  queryCache,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+} from "react-query";
 import type { MutationOptions } from "react-query";
 import { defaultCommentSort, Type } from "../constants";
 import { useAccessToken } from "../contexts/authContext";
@@ -29,10 +34,20 @@ export function getPostContent(token?: string) {
   };
 }
 
-export function prefetchPostContent(token: string | undefined, postId: string, community?: string) {
-  return queryCache.prefetchQuery(["content", postId], () => getPostContent(token)(postId), {
-    ...(community && { initialData: postContentInitialData(postId, community) }),
-  });
+export function prefetchPostContent(
+  token: string | undefined,
+  postId: string,
+  community?: string
+) {
+  return queryCache.prefetchQuery(
+    ["content", postId],
+    () => getPostContent(token)(postId),
+    {
+      ...(community && {
+        initialData: postContentInitialData(postId, community),
+      }),
+    }
+  );
 }
 
 export function usePostContent(postId: string, community?: string) {
@@ -69,7 +84,12 @@ function postContentInitialData(postId: string, community: string) {
 }
 
 export function getPostComments(token?: string) {
-  return function (postId: string, community: string, sort: CommentSortType, query?: string) {
+  return function (
+    postId: string,
+    community: string,
+    sort: CommentSortType,
+    query?: string
+  ) {
     let pathname = `/r/${community}/comments/${postId}.json`;
     query = query || "";
     pathname = `${pathname}?q=${query}&raw_json=1&sort=${sort}`;
@@ -94,20 +114,30 @@ export function usePostComments(
   );
 }
 
-export function prefetchPostComments(token: string | undefined, postId: string, community: string) {
-  return queryCache.prefetchQuery(["comments", postId, community, defaultCommentSort, ""], () =>
-    getPostComments(token)(postId, community, defaultCommentSort, "")
+export function prefetchPostComments(
+  token: string | undefined,
+  postId: string,
+  community: string
+) {
+  return queryCache.prefetchQuery(
+    ["comments", postId, community, defaultCommentSort, ""],
+    () => getPostComments(token)(postId, community, defaultCommentSort, "")
   );
 }
 
 function getCommunityInfo(token?: string) {
   return (community: string) => {
     const pathname = `/r/${community}/about.json?q=""&raw_json=1`;
-    return fetchAuth(pathname, token).then((x) => x as { data: CommunityInfoData });
+    return fetchAuth(pathname, token).then(
+      (x) => x as { data: CommunityInfoData }
+    );
   };
 }
 
-export function prefetchCommunityInfo(token: string | undefined, community: string) {
+export function prefetchCommunityInfo(
+  token: string | undefined,
+  community: string
+) {
   return queryCache.prefetchQuery(
     !(community === "all" || community === "popular") && ["about", community],
     () => getCommunityInfo(token)(community)
@@ -136,8 +166,9 @@ export function prefetchCommunityRules(community: string) {
 }
 
 export function useCommunityRules(community: string) {
-  return useQuery(!(community === "all" || community === "popular") && ["rules", community], () =>
-    getCommunityRules(community)
+  return useQuery(
+    !(community === "all" || community === "popular") && ["rules", community],
+    () => getCommunityRules(community)
   );
 }
 
@@ -179,9 +210,11 @@ type InfinitePostsResponse = {
   };
 };
 
-const getInfinitePosts = (token?: string) => (community: string, sort: string, query: string) => (
-  ...args: any
-) => {
+const getInfinitePosts = (token?: string) => (
+  community: string,
+  sort: string,
+  query: string
+) => (...args: any) => {
   const cursor: string = args[args.length - 1] || "";
   let url = `/r/${community}/${sort}.json?q=""&raw_json=1${
     cursor ? `&after=${cursor}` : ""
@@ -194,12 +227,22 @@ export function prefetchInfinitePosts(
   sort: string,
   query: string = ""
 ) {
-  return queryCache.prefetchQuery(["infinitePosts", community, sort, query], () =>
-    getInfinitePosts(token)(community, sort, query)("", "").then((x: any) => [x])
+  return queryCache.prefetchQuery(
+    ["infinitePosts", community, sort, query],
+    () =>
+      getInfinitePosts(token)(
+        community,
+        sort,
+        query
+      )("", "").then((x: any) => [x])
   );
 }
 
-export function useInfinitePosts(community: string, sort: string, query: string = "") {
+export function useInfinitePosts(
+  community: string,
+  sort: string,
+  query: string = ""
+) {
   const token = useAccessToken();
   return useInfiniteQuery(
     ["infinitePosts", community, sort, query] as any,
@@ -241,7 +284,9 @@ function getMyCommunities(token?: string) {
       Authorization: `bearer ${token}`,
     },
   }).then((x) =>
-    x.data?.children.sort((a: any, b: any) => b.data.subscribers - a.data.subscribers)
+    x.data?.children.sort(
+      (a: any, b: any) => b.data.subscribers - a.data.subscribers
+    )
   ) as Promise<{ data: CommunityInfoData }[]>;
 }
 
@@ -313,8 +358,15 @@ export function useMoreChildren({
   limit_children?: boolean;
 }) {
   const token = useAccessToken();
-  return useQuery(should_fetch && ["morechildren", postId, children.join(",")], () =>
-    getMoreChildren(token)(`${Type.Link}_${postId}`, children, sort, limit_children)
+  return useQuery(
+    should_fetch && ["morechildren", postId, children.join(",")],
+    () =>
+      getMoreChildren(token)(
+        `${Type.Link}_${postId}`,
+        children,
+        sort,
+        limit_children
+      )
   );
 }
 
@@ -363,7 +415,13 @@ export function useDelete(options?: MutationOptions<any, Fullname>) {
 }
 
 function subscribe(token?: string) {
-  return ({ action, communities }: { action: "sub" | "unsub"; communities: string[] }) =>
+  return ({
+    action,
+    communities,
+  }: {
+    action: "sub" | "unsub";
+    communities: string[];
+  }) =>
     fetchJson("https://oauth.reddit.com/api/subscribe", {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -375,7 +433,10 @@ function subscribe(token?: string) {
 }
 
 export function useSubscribe(
-  options?: MutationOptions<any, { action: "sub" | "unsub"; communities: string[] }>
+  options?: MutationOptions<
+    any,
+    { action: "sub" | "unsub"; communities: string[] }
+  >
 ) {
   const token = useAccessToken();
   return useMutation(subscribe(token), options);
@@ -395,7 +456,9 @@ function edit(token?: string) {
     });
 }
 
-export function useEdit(options?: MutationOptions<any, { id: Fullname; text: string }>) {
+export function useEdit(
+  options?: MutationOptions<any, { id: Fullname; text: string }>
+) {
   const token = useAccessToken();
   return useMutation(edit(token), options);
 }

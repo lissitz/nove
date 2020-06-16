@@ -12,7 +12,9 @@ import { useIsDesktop } from "../contexts/MediaQueryContext";
 export default function UserOverviewSortMenu({ sort }: { sort: string }) {
   const t = useTranslation();
   const currentOptions =
-    sort === "top" ? options.filter((x) => x !== "top") : (options as ReadonlyArray<string>);
+    sort === "top"
+      ? options.filter((x) => x !== "top")
+      : (options as ReadonlyArray<string>);
   const isDesktop = useIsDesktop();
   return isDesktop ? (
     <Stack space={2} sx={{ width: "100%" }}>

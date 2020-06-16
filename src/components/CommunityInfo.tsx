@@ -1,6 +1,11 @@
 //https://www.reddit.com/r/reactjs/about.json
 /** @jsx jsx */
-import { Accordion, AccordionButton, AccordionItem, AccordionPanel } from "@reach/accordion";
+import {
+  Accordion,
+  AccordionButton,
+  AccordionItem,
+  AccordionPanel,
+} from "@reach/accordion";
 import * as React from "react";
 import { ComponentProps, Suspense, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -39,13 +44,17 @@ function Success({ community }: { community: string }) {
               }}
             />
             <div>
-              <span sx={{ fontWeight: "600" }}>{formatQuantity(info.data.subscribers, t)}</span>
+              <span sx={{ fontWeight: "600" }}>
+                {formatQuantity(info.data.subscribers, t)}
+              </span>
               {" " + t("subscribers")}
             </div>
             <div>
               {t("created") + " "}
               <span sx={{ fontWeight: "600" }}>
-                {new Date(info.data.created_utc * 1000).toLocaleDateString("en-US")}
+                {new Date(info.data.created_utc * 1000).toLocaleDateString(
+                  "en-US"
+                )}
               </span>
             </div>
           </Stack>
@@ -60,7 +69,11 @@ function Success({ community }: { community: string }) {
             {isAuthenticated && !location.pathname.endsWith("submit") && (
               <ButtonLink
                 to={`/r/${community}/submit`}
-                sx={{ ...callToActionStyles, width: "100%", textAlign: "center" }}
+                sx={{
+                  ...callToActionStyles,
+                  width: "100%",
+                  textAlign: "center",
+                }}
               >
                 {t("createPost")}
               </ButtonLink>
@@ -142,7 +155,9 @@ function JoinButton({
           );
           newData.splice(index, 1);
         }
-        newData.sort((a: any, b: any) => b.data.subscribers - a.data.subscribers);
+        newData.sort(
+          (a: any, b: any) => b.data.subscribers - a.data.subscribers
+        );
         queryCache.setQueryData(["myCommunities"], newData);
       }
       return () => {
@@ -218,7 +233,9 @@ function CommunityRules({ community }: { community: string }) {
         >
           {rules.map((rule, index) => (
             <AccordionItem key={index}>
-              <AccordionButton sx={{ pl: 0, pr: 0, textAlign: "start", width: "100%" }}>
+              <AccordionButton
+                sx={{ pl: 0, pr: 0, textAlign: "start", width: "100%" }}
+              >
                 <div sx={{ display: "flex" }}>
                   <div>{rule.short_name}</div>
                   <VisuallyHidden>{" " + t("expandRule")}</VisuallyHidden>
