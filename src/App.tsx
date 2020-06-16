@@ -5,7 +5,6 @@ import { ReactQueryConfigProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query-devtools";
 import { BrowserRouter } from "react-router-dom";
 import { jsx, ThemeProvider } from "theme-ui";
-import NavBar from "./components/NavBar";
 import Stack from "./components/Stack";
 import { AuthProvider } from "./contexts/authContext";
 import { MediaQueryProvider } from "./contexts/MediaQueryContext";

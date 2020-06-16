@@ -5,7 +5,6 @@ import { jsx } from "theme-ui";
 import { Tabs as ReachTabs, Tab as ReachTab } from "@reach/tabs";
 import "@reach/tooltip/styles.css";
 import { Global, css } from "@emotion/core";
-import { theme } from "../theme/theme";
 import Button from "./Button";
 
 function Tabs(props: React.ComponentProps<typeof ReachTabs>) {

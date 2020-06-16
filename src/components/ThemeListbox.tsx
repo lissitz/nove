@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import * as React from "react";
 import VisuallyHidden from "@reach/visually-hidden";
-import { FiChevronDown } from "react-icons/fi";
 import { jsx, useColorMode, Box } from "theme-ui";
 import { useTranslation } from "../i18n";
 import { ListboxButton, ListboxInput, ListboxList, ListboxOption, ListboxPopover } from "./Listbox";

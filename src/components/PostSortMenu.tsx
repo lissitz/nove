@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Card } from "theme-ui";
+import { jsx } from "theme-ui";
 import { postSortOptions as options } from "../constants";
 import { useTranslation } from "../i18n";
 import ButtonLink from "./ButtonLink";
@@ -7,7 +7,7 @@ import Stack from "./Stack";
 import TopMenu from "./TopMenu";
 import { useIsDesktop } from "../contexts/MediaQueryContext";
 import { Columns, Column } from "./Columns";
-import { theme, tabStyles } from "../theme/theme";
+import { tabStyles } from "../theme/theme";
 
 export default function PostSortMenu({ community, sort }: { community: string; sort: string }) {
   const t = useTranslation();

@@ -37,7 +37,9 @@ export default function CommentList({ community, postId }: { community: string; 
         {status === "loading" ? (
           <Skeleton
             as={Card}
-            height={rem(100 * (post?.num_comments ? Math.min(100, post.num_comments) : 10))}
+            height={rem(
+              100 * (post?.num_comments ? Math.min(maxSkeletonComments, post.num_comments) : 10)
+            )}
           />
         ) : status === "error" ? (
           <CardError />

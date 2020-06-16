@@ -1,6 +1,6 @@
 import { queryCache, useInfiniteQuery, useMutation, useQuery } from "react-query";
 import type { MutationOptions } from "react-query";
-import { defaultCommentSort, Type, postKind } from "../constants";
+import { defaultCommentSort, Type } from "../constants";
 import { useAccessToken } from "../contexts/authContext";
 import { useIsDesktop } from "../contexts/MediaQueryContext";
 import type {

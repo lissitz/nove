@@ -108,7 +108,7 @@ function Form({
   }, [storageKey, state]);
   const handleCheckboxChange = (key: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) =>
     dispatch({ [key]: event.target.checked });
-  const { title, text, nsfw, oc, spoiler } = state;
+  const { title, text, nsfw, spoiler } = state;
   return (
     <Card sx={{ width: "100%", display: "flex" }}>
       <Stack space={2} sx={{ width: "100%" }}>
