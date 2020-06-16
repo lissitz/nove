@@ -77,5 +77,6 @@ export const allowEmbeds = true;
 export const themes = ["default", "deep"] as const;
 if (process.env.NODE_ENV === "development") {
   const t = (x: any) => {};
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const _ = [t("themes.default"), t("themes.deep")];
 }
