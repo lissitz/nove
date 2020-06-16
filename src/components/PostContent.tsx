@@ -25,6 +25,8 @@ import Skeleton from "./Skeleton";
 import Stack from "./Stack";
 import TextEditor from "./TextEditor";
 import VotePanel from "./VotePanel";
+import { hasVideo } from "../utils/hasVideo";
+import Video from "./Video";
 
 export default function PostContent({
   community,
@@ -46,7 +48,6 @@ export default function PostContent({
   if (status === "loading" || !post) return <Skeleton as={Card} />;
   else if (status === "error") return <CardError />;
   const external = !post.is_self;
-  const hasVideo = post.is_video && post.domain === "v.redd.it";
   const hasImage = post.domain === "i.redd.it";
   return (
     <React.Fragment>
@@ -181,7 +182,7 @@ export default function PostContent({
               </Stack>
             </Column>
             {external &&
-              !hasVideo &&
+              !hasVideo(post) &&
               !hasImage &&
               post.thumbnail &&
               post.thumbnail !== "default" &&
@@ -217,26 +218,7 @@ export default function PostContent({
               src={post.url}
             />
           )}
-          {hasVideo && (
-            <video
-              sx={{ width: "100%", height: "auto", borderRadius: 4 }}
-              controls
-              src={post.url + "/DASHPlaylist.mpd"}
-              data-shaka-player
-            >
-              <source src={post.url + "/DASHPlaylist.mpd"} />
-              <source
-                src={post.url + "/HLSPlaylist.m3u8"}
-                type="application/vnd.apple.mpegURL"
-              />
-              <source src={post.url + "/DASH_1080"} type="video/mp4" />
-              <source src={post.url + "/DASH_720"} type="video/mp4" />
-              <source src={post.url + "/DASH_480"} type="video/mp4" />
-              <source src={post.url + "/DASH_360"} type="video/mp4" />
-              <source src={post.url + "/DASH_240"} type="video/mp4" />
-              <source src={post.url + "/DASH_96"} type="video/mp4" />
-            </video>
-          )}
+          <Video post={post} />
         </Stack>
       </Card>
     </React.Fragment>

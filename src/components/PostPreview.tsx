@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { MouseEvent } from "react";
 import { Card, Heading, jsx } from "theme-ui";
-import { allowEmbeds } from "../constants";
 import { useTranslation } from "../i18n";
 import { useNavigate, usePreload } from "../router";
 import type { PostData, PostSortType } from "../types";
@@ -12,12 +11,14 @@ import {
   sanitize,
 } from "../utils/format";
 import { getUserColor } from "../utils/getUserColor";
+import { hasVideo } from "../utils/hasVideo";
 import { hasAnInteractiveElementUnderneath } from "../utils/hasAnInteractiveElementUnderneath";
 import rem from "../utils/rem";
 import { Column, Columns } from "./Columns";
 import Link from "./Link";
 import Stack from "./Stack";
 import VotePanel from "./VotePanel";
+import Video from "./Video";
 
 export default function PostPreview({
   post,
@@ -35,11 +36,6 @@ export default function PostPreview({
   const t = useTranslation();
   const external = !post.is_self;
   const navigate = useNavigate();
-  const hasRedditVideo = post.is_video && post.domain === "v.redd.it";
-  const hasVideo =
-    hasRedditVideo ||
-    post.domain === "gfycat.com" ||
-    (post.secure_media?.oembed?.type === "video" && allowEmbeds);
   const preload = usePreload();
   const hasImage = post.domain === "i.redd.it";
   return (
@@ -178,7 +174,7 @@ export default function PostPreview({
               </Stack>
             </Column>
             {external &&
-              !hasVideo &&
+              !hasVideo(post) &&
               !hasImage &&
               post.thumbnail &&
               post.thumbnail !== "default" &&
@@ -220,43 +216,7 @@ export default function PostPreview({
             src={post.url}
           />
         )}
-        {hasVideo &&
-          (hasRedditVideo ? (
-            <video
-              sx={{
-                width: "100%",
-                margin: "0 auto",
-                maxHeight: "80vh",
-                borderRadius: 4,
-              }}
-              controls
-            >
-              <source
-                src={post.url + "/HLSPlaylist.m3u8"}
-                type="application/vnd.apple.mpegURL"
-              />
-              <source src={post.url + "/DASH_1080"} type="video/mp4" />
-              <source src={post.url + "/DASH_720"} type="video/mp4" />
-              <source src={post.url + "/DASH_480"} type="video/mp4" />
-              <source src={post.url + "/DASH_360"} type="video/mp4" />
-              <source src={post.url + "/DASH_240"} type="video/mp4" />
-              <source src={post.url + "/DASH_96"} type="video/mp4" />
-            </video>
-          ) : post.secure_media?.oembed?.html ? (
-            <div
-              sx={{
-                width: "100%",
-                maxWidth: "100%",
-                overflow: "hidden",
-                display: "flex",
-                justifyContent: "center",
-                "*": { maxWidth: "100%" },
-              }}
-              dangerouslySetInnerHTML={{
-                __html: post.secure_media?.oembed?.html || "",
-              }}
-            />
-          ) : null)}
+        <Video post={post} />
       </Stack>
     </Card>
   );
