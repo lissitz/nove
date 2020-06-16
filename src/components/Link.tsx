@@ -36,13 +36,13 @@ export default function Link({
       className={className}
       sx={linkStyles}
       {...rest}
-      onMouseDown={(event) => {
+      onMouseDown={(event:MouseEvent) => {
         rest.onMouseDown?.(event);
         if (preload) {
           preloadFn(to);
         }
       }}
-      onClick={(event) => {
+      onClick={(event:MouseEvent) => {
         rest.onClick?.(event);
         dispatch({ [location.key]: { x: window.scrollX, y: window.scrollY } });
       }}

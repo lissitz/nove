@@ -17,7 +17,11 @@ import {
 } from "../api";
 import { prefetchUserInfo, prefetchUserPage } from "../api/user";
 import { defaultPostSort, defaultUserWhere } from "../constants";
-import { AuthStatus, useAccessToken, useAuthStatus } from "../contexts/authContext";
+import {
+  AuthStatus,
+  useAccessToken,
+  useAuthStatus,
+} from "../contexts/authContext";
 import { useDispatchScroll } from "../contexts/scrollContext";
 import Comments from "../pages/Comments";
 import Community from "../pages/Community";
@@ -60,7 +64,11 @@ export const routes = (authStatus: AuthStatus, token: string) => {
     element: <User />,
     caseSensitive: false,
     preload: (params: Params) => {
-      prefetchUserPage(token, params.username, params.where || defaultUserWhere);
+      prefetchUserPage(
+        token,
+        params.username,
+        params.where || defaultUserWhere
+      );
       prefetchUserInfo(token, params.username);
     },
   };
@@ -106,7 +114,7 @@ export function usePreload() {
     const matches = matchRoutes(routes(authStatus, token || ""), to);
     if (matches) {
       matches.forEach(
-        ({ route, params }, index) =>
+        ({ route, params }: any, index: any) =>
           //@ts-ignore
           route.preload && route.preload(params)
       );
