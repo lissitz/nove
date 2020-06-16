@@ -2,9 +2,15 @@
 import { motion } from "framer-motion";
 import * as React from "react";
 import { useState, useReducer } from "react";
-import { queryCache } from "react-query";
+import { queryCache, AnyQueryKey } from "react-query";
 import { jsx, useColorMode } from "theme-ui";
-import { useDelete, useEdit, useMe, useMoreChildren } from "../api";
+import {
+  useDelete,
+  useEdit,
+  useMe,
+  useMoreChildren,
+  useSubmitComment,
+} from "../api";
 import { Type } from "../constants";
 import { useIsAuthenticated } from "../contexts/authContext";
 import { useTranslation } from "../i18n";
@@ -25,6 +31,7 @@ import CommentVotePanel from "./CommentVotePanel";
 
 type VoteState = { vote: Vote; score: number | undefined };
 type VoteAction = { dir: Vote };
+
 export default function Comment({
   comment,
   community,
@@ -53,6 +60,7 @@ export default function Comment({
   });
   const [expanded, setExpanded] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [isReplying, setIsReplying] = useState(false);
   const [colorMode] = useColorMode();
   const [{ score }, setScore] = useReducer(
     ({ score, vote }: VoteState, { dir }: VoteAction): VoteState => {
@@ -150,6 +158,17 @@ export default function Comment({
                 formatTimestamp(Number(comment.data.edited), t)}
             </span>
           )}
+          {isAuthenticated && comment.data.send_replies && (
+            <div sx={{ display: "inline" }}>
+              <LinkButton
+                onClick={() => {
+                  setIsReplying(true);
+                }}
+              >
+                {t("reply")}
+              </LinkButton>
+            </div>
+          )}
           {isAuthenticated && comment.data.author === me?.name && (
             <React.Fragment>
               <div sx={{ display: "inline" }}>
@@ -220,7 +239,7 @@ export default function Comment({
         )}
       </Stack>
       <div sx={{ position: "relative", mt: 3, mb: 3 }}>
-        {comment.data.replies && (
+        {(comment.data.replies || isReplying) && (
           <React.Fragment>
             <button
               sx={{
@@ -297,25 +316,35 @@ export default function Comment({
               }
               transition={{ type: "tween" }}
             >
-              {comment.data.replies.data.children.map((x) =>
-                x.kind === Type.Comment ? (
-                  <Comment
-                    comment={x}
-                    postId={postId}
-                    sort={sort}
-                    key={x.data.id}
-                    community={community}
-                  />
-                ) : x.kind === "more" ? (
-                  <More
-                    postId={postId}
-                    data={x.data}
-                    sort={sort}
-                    key={x.data.id}
-                    community={community}
-                  />
-                ) : null
+              {isReplying && (
+                <Reply
+                  parentId={comment.data.name}
+                  setIsReplying={setIsReplying}
+                  commentsQueryKey={["comments", postId, community, sort, ""]}
+                  comment={comment}
+                  contentQueryKey={["content", postId]}
+                />
               )}
+              {comment.data.replies &&
+                comment.data.replies.data.children.map((x) =>
+                  x.kind === Type.Comment ? (
+                    <Comment
+                      comment={x}
+                      postId={postId}
+                      sort={sort}
+                      key={x.data.id}
+                      community={community}
+                    />
+                  ) : x.kind === "more" ? (
+                    <More
+                      postId={postId}
+                      data={x.data}
+                      sort={sort}
+                      key={x.data.id}
+                      community={community}
+                    />
+                  ) : null
+                )}
             </Stack>
           </React.Fragment>
         )}
@@ -435,5 +464,60 @@ function CommentEditor({
         setIsEditing(false);
       }}
     />
+  );
+}
+
+function Reply({
+  commentsQueryKey,
+  contentQueryKey,
+  comment,
+  parentId,
+  setIsReplying,
+}: {
+  commentsQueryKey: string | AnyQueryKey;
+  contentQueryKey: string | AnyQueryKey;
+  comment: any;
+  parentId: Fullname;
+  setIsReplying: (x: boolean) => void;
+}) {
+  const [mutate] = useSubmitComment({
+    onSuccess: (response) => {
+      queryCache.setQueryData(commentsQueryKey, (data: any) => {
+        // hack: we are mutating the cache to avoid searching the whole comment tree for the replies array to update
+        // and recreating it. Probably not what react-query expects.
+        const reply = response?.json?.data?.things?.[0];
+        if (comment.data.replies) {
+          comment.data.replies.data.children = [reply, ...comment.data.replies];
+        } else {
+          comment.data.replies = {
+            data: {
+              children: [reply],
+            },
+          };
+        }
+        return { ...data };
+      });
+      queryCache.setQueryData(contentQueryKey, (data: PostData) => {
+        return data?.num_comments != null
+          ? { ...data, num_comments: data.num_comments + 1 }
+          : data;
+      });
+    },
+  });
+  return (
+    <div sx={{ pl: 3, width: "100%" }}>
+      <div sx={{ pl: 2, pt: 1 }}>
+        <TextEditor
+          text=""
+          onEdit={({ text }) => {
+            mutate({ parent: parentId, text });
+            setIsReplying(false);
+          }}
+          onCancel={() => {
+            setIsReplying(false);
+          }}
+        />
+      </div>
+    </div>
   );
 }

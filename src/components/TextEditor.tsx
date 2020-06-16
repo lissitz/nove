@@ -40,7 +40,7 @@ export default function TextEditor({
             onEdit({ text });
           }}
         >
-          {t("textEditor.edit")}
+          {t("textEditor.submit")}
         </Button>
       </div>
     </Stack>

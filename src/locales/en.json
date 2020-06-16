@@ -120,5 +120,9 @@
   },
   "themeListbox": {
     "choose": "Choose a theme"
+  },
+  "textEditor": {
+    "submit": "Submit",
+    "cancel": "Cancel"
   }
 }

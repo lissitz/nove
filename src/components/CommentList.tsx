@@ -62,7 +62,7 @@ export default function CommentList({
               }}
             >
               <Stack>
-                {comments.map((comment) => (
+                {comments.map((comment, index) => (
                   <Comment
                     community={community}
                     comment={comment}
