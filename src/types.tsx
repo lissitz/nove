@@ -70,7 +70,7 @@ export type CommentData = {
   likes: boolean | null;
   link_title: string;
   parent_id: Fullname;
-  send_replies: boolean;
+  locked: boolean;
   //not sure what "" vs undefined represents
   replies?:
     | ""

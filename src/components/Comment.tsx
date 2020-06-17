@@ -158,7 +158,7 @@ export default function Comment({
                 formatTimestamp(Number(comment.data.edited), t)}
             </span>
           )}
-          {isAuthenticated && comment.data.send_replies && (
+          {isAuthenticated && !comment.data.locked && (
             <div sx={{ display: "inline" }}>
               <LinkButton
                 onClick={() => {
