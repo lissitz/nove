@@ -101,9 +101,15 @@ function Content({
 function Meta({ community }: { community: string }) {
   let { data: info } = useCommunityInfo(community);
   return isCombinedCommunity(community) ? (
-    <Helmet>
-      <title>{`r/${community}`}</title>
-    </Helmet>
+    community === "" ? (
+      <Helmet>
+        <title />
+      </Helmet>
+    ) : (
+      <Helmet>
+        <title>{`r/${community}`}</title>
+      </Helmet>
+    )
   ) : (
     <Helmet>
       <title>{info?.data.title || ""}</title>
