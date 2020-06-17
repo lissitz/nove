@@ -8,11 +8,6 @@ export default function BaseStyles() {
   return (
     <Global
       styles={css`
-        /* these transitions may need to only be turned on when we swith color mode for performance. */
-        * {
-          transition: color 0.2s ease-out;
-          transition: background-color 0.2s ease-out;
-        }
         * {
           word-break: break-word;
         }

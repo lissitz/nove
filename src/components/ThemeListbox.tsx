@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import * as React from "react";
+import { useState } from "react";
 import VisuallyHidden from "@reach/visually-hidden";
 import { jsx, useColorMode, Box } from "theme-ui";
 import { useTranslation } from "../i18n";
@@ -15,6 +16,7 @@ import { themes } from "../constants";
 import rem from "../utils/rem";
 import { Columns, Column } from "./Columns";
 import { IconType } from "react-icons/lib/cjs";
+import { Global } from "@emotion/core";
 
 const labelId = "theme-listbox";
 const iconStyle = {
@@ -34,15 +36,32 @@ export default function ThemeListbox() {
     string,
     (x: string) => void
   ] = useColorMode();
+  const [addTransitions, setAddTransitions] = useState(false);
 
   return (
     <React.Fragment>
       <VisuallyHidden id={labelId}>{t("themeListbox.choose")}</VisuallyHidden>
+      <Global
+        styles={
+          addTransitions
+            ? `
+          * {
+            transition: color 0.2s ease-out;
+            transition: background-color 0.2s ease-out;
+          }
+        `
+            : ""
+        }
+      />
       <ListboxInput
         sx={{ width: "100%", height: "100%" }}
         aria-labelledby={labelId}
         value={colorMode}
         onChange={(value) => {
+          setAddTransitions(true);
+          setTimeout(() => {
+            setAddTransitions(false);
+          }, 500);
           setColorMode(value);
         }}
       >
