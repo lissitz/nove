@@ -56,8 +56,10 @@ export function prefetchUserPage(
   where: string,
   query: string = ""
 ) {
-  return queryCache.prefetchQuery(["userPage", username, where, query], () =>
-    getUserPage(token)(username, where, query)("", "").then((x: any) => [x])
+  return queryCache.prefetchQuery(
+    ["userPage", username, where, query, !!token],
+    () =>
+      getUserPage(token)(username, where, query)("", "").then((x: any) => [x])
   );
 }
 
@@ -68,7 +70,7 @@ export function useUserPage(
 ) {
   const token = useAccessToken();
   return useInfiniteQuery(
-    ["userPage", username, where, query] as any,
+    ["userPage", username, where, query, !!token] as any,
     getUserPage(token)(username, where, query),
     {
       getFetchMore,

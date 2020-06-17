@@ -41,7 +41,7 @@ export function prefetchPostContent(
   community?: string
 ) {
   return queryCache.prefetchQuery(
-    ["content", postId],
+    ["content", postId, !!token],
     () => getPostContent(token)(postId),
     {
       ...(community && {
@@ -53,11 +53,15 @@ export function prefetchPostContent(
 
 export function usePostContent(postId: string, community?: string) {
   const token = useAccessToken();
-  return useQuery(["content", postId], () => getPostContent(token)(postId), {
-    ...(community && {
-      initialData: postContentInitialData(postId, community),
-    }),
-  });
+  return useQuery(
+    ["content", postId, !!token],
+    () => getPostContent(token)(postId),
+    {
+      ...(community && {
+        initialData: postContentInitialData(postId, community),
+      }),
+    }
+  );
 }
 
 function postContentInitialData(postId: string, community: string) {
@@ -110,7 +114,7 @@ export function usePostComments(
   query: string
 ) {
   let token = useAccessToken();
-  return useQuery(["comments", postId, community, sort, query], () =>
+  return useQuery(["comments", postId, community, sort, query, !!token], () =>
     getPostComments(token)(postId, community, sort, query)
   );
 }
@@ -121,7 +125,7 @@ export function prefetchPostComments(
   community: string
 ) {
   return queryCache.prefetchQuery(
-    ["comments", postId, community, defaultCommentSort, ""],
+    ["comments", postId, community, defaultCommentSort, "", !!token],
     () => getPostComments(token)(postId, community, defaultCommentSort, "")
   );
 }
@@ -232,7 +236,7 @@ export function prefetchInfinitePosts(
   query: string = ""
 ) {
   return queryCache.prefetchQuery(
-    ["infinitePosts", community, sort, query],
+    ["infinitePosts", community, sort, query, !!token],
     () =>
       getInfinitePosts(token)(
         community,
@@ -249,7 +253,7 @@ export function useInfinitePosts(
 ) {
   const token = useAccessToken();
   return useInfiniteQuery(
-    ["infinitePosts", community, sort, query] as any,
+    ["infinitePosts", community, sort, query, !!token] as any,
     getInfinitePosts(token)(community, sort, query),
     {
       getFetchMore,
@@ -363,7 +367,7 @@ export function useMoreChildren({
 }) {
   const token = useAccessToken();
   return useQuery(
-    should_fetch && ["morechildren", postId, children.join(",")],
+    should_fetch && ["morechildren", postId, children.join(","), !!token],
     () =>
       getMoreChildren(token)(
         `${Type.Link}_${postId}`,
