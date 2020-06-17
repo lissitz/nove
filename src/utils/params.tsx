@@ -8,7 +8,7 @@ import {
 } from "../constants";
 
 export function parseCommunity(community: string) {
-  return community ? community.toLowerCase() : "popular";
+  return (community || "").toLowerCase();
 }
 export function parseSort(sort: string | null) {
   if (!sort || !(postSortOptions as ReadonlyArray<string>).includes(sort))

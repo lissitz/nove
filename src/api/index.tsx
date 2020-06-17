@@ -24,6 +24,7 @@ import type {
 } from "../types";
 import { fetchJson } from "../utils/fetch";
 import { fetchAuth, getFetchMore } from "./common";
+import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 
 export function getPostContent(token?: string) {
   return function (postId: string) {
@@ -139,7 +140,7 @@ export function prefetchCommunityInfo(
   community: string
 ) {
   return queryCache.prefetchQuery(
-    !(community === "all" || community === "popular") && ["about", community],
+    !isCombinedCommunity(community) && ["about", community],
     () => getCommunityInfo(token)(community)
   );
 }
@@ -147,7 +148,7 @@ export function prefetchCommunityInfo(
 export function useCommunityInfo(community: string) {
   const token = useAccessToken();
   return useQuery(
-    !(community === "all" || community === "popular") && ["about", community],
+    !isCombinedCommunity(community) && ["about", community],
     () => getCommunityInfo(token)(community),
     { suspense: true }
   );
@@ -160,15 +161,14 @@ function getCommunityRules(community: string) {
 
 export function prefetchCommunityRules(community: string) {
   return queryCache.prefetchQuery(
-    !(community === "all" || community === "popular") && ["rules", community],
+    !isCombinedCommunity(community) && ["rules", community],
     () => getCommunityRules(community)
   );
 }
 
 export function useCommunityRules(community: string) {
-  return useQuery(
-    !(community === "all" || community === "popular") && ["rules", community],
-    () => getCommunityRules(community)
+  return useQuery(!isCombinedCommunity(community) && ["rules", community], () =>
+    getCommunityRules(community)
   );
 }
 
@@ -216,7 +216,11 @@ const getInfinitePosts = (token?: string) => (
   query: string
 ) => (...args: any) => {
   const cursor: string = args[args.length - 1] || "";
-  let url = `/r/${community}/${sort}.json?q=""&raw_json=1${
+
+  //community === "" is the frontpage
+  let url = `${
+    community !== "" ? "/r/" : ""
+  }${community}/${sort}.json?q=""&raw_json=1${
     cursor ? `&after=${cursor}` : ""
   }&${query}`;
   return fetchAuth(url, token).then((x) => x as InfinitePostsResponse);

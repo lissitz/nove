@@ -15,6 +15,7 @@ import CardError from "./CardError";
 import PostPreview from "./PostPreview";
 import Skeleton from "./Skeleton";
 import Stack from "./Stack";
+import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 
 export default function PostList({
   community,
@@ -78,7 +79,7 @@ function Content({
                 community={community}
                 sort={sort}
                 query={query}
-                showContext={community === "popular" || community === "all"}
+                showContext={isCombinedCommunity(community)}
               />
             ))}
           </Stack>
@@ -99,15 +100,13 @@ function Content({
 
 function Meta({ community }: { community: string }) {
   let { data: info } = useCommunityInfo(community);
-  info = info!;
-  const isSiteFeed = community === "all" || community === "popular";
-  return isSiteFeed ? (
+  return isCombinedCommunity(community) ? (
     <Helmet>
       <title>{`r/${community}`}</title>
     </Helmet>
   ) : (
     <Helmet>
-      <title>{info.data.title}</title>
+      <title>{info?.data.title || ""}</title>
     </Helmet>
   );
 }

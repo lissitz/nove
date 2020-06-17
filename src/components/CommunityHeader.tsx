@@ -9,9 +9,10 @@ import rem from "../utils/rem";
 import { Column, Columns } from "./Columns";
 import Link from "./Link";
 import { useIsDesktop } from "../contexts/MediaQueryContext";
+import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 
 export default function CommunityHeader({ community }: { community: string }) {
-  if (community === "all" || community === "popular")
+  if (isCombinedCommunity(community))
     return (
       <Fragment>
         <div sx={{ height: [0, null, rem(128)] }}></div>

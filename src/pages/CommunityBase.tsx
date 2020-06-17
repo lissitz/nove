@@ -7,13 +7,11 @@ import NavBar from "../components/NavBar";
 import Stack from "../components/Stack";
 import { maxWidth } from "../styles/base";
 import CommunityInfo from "../components/CommunityInfo";
+import { parseCommunity } from "../utils/params";
 
 export default function CommunityBase() {
   let { community } = useParams();
-  if (!community) {
-    community = "popular";
-  }
-  community = community.toLowerCase();
+  community = parseCommunity(community);
   return (
     <React.Fragment>
       <NavBar>

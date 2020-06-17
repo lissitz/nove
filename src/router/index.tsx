@@ -28,15 +28,19 @@ import Community from "../pages/Community";
 import CommunityBase from "../pages/CommunityBase";
 import SubmitPost from "../pages/SubmitPost";
 import User from "../pages/User";
+import { parseCommunity } from "../utils/params";
+import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 
 export const routes = (authStatus: AuthStatus, token: string) => {
   const community = {
     element: <Community />,
     caseSensitive: false,
     preload: (params: Params) => {
-      const community = (params.community || "popular").toLowerCase();
-      prefetchCommunityInfo(token, community);
-      prefetchCommunityRules(community);
+      const community = parseCommunity(params.community);
+      if (community !== "") {
+        prefetchCommunityInfo(token, community);
+        prefetchCommunityRules(community);
+      }
       prefetchInfinitePosts(token, community, defaultPostSort);
     },
   };
@@ -49,7 +53,7 @@ export const routes = (authStatus: AuthStatus, token: string) => {
       prefetchPostContent(
         token,
         postId,
-        community === "popular" || community === "all" ? undefined : community
+        isCombinedCommunity(community) ? undefined : community
       );
       prefetchPostComments(token, postId, community);
       prefetchCommunityInfo(token, community);

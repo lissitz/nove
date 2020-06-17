@@ -24,6 +24,7 @@ import Skeleton from "./Skeleton";
 import Stack from "./Stack";
 import { useLocation } from "react-router-dom";
 import VisuallyHidden from "@reach/visually-hidden";
+import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 
 const show_description = false;
 function Success({ community }: { community: string }) {
@@ -98,7 +99,7 @@ function Success({ community }: { community: string }) {
   );
 }
 export default function CommunityInfo({ community }: { community: string }) {
-  if (community === "all" || community === "popular") return null;
+  if (isCombinedCommunity(community)) return null;
   return (
     <ErrorBoundary FallbackComponent={Error}>
       <Suspense
