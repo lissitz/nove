@@ -40,7 +40,11 @@ export default function PostPreview({
   const hasImage = post.domain === "i.redd.it";
   return (
     <Card
-      sx={{ width: "100%", cursor: "pointer" }}
+      sx={{
+        width: "100%",
+        cursor: "pointer",
+        "-webkit-tap-highlight-color": "rgba(0,0,0,0)",
+      }}
       onClick={(event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
         if (!hasAnInteractiveElementUnderneath(event)) {
           navigate(post.permalink);

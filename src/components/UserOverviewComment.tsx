@@ -16,7 +16,11 @@ export default function UserOverviewComment({
   const preload = usePreload();
   return (
     <Card
-      sx={{ width: "100%", cursor: "pointer" }}
+      sx={{
+        width: "100%",
+        cursor: "pointer",
+        "-webkit-tap-highlight-color": "rgba(0,0,0,0)",
+      }}
       onClick={(
         event: React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>
       ) => {
