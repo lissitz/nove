@@ -130,7 +130,7 @@ function Content({
               <div
                 sx={{
                   backgroundColor:
-                    loaded && info ? info.data.key_color || "text" : "gray.5",
+                    loaded && info ? info.data.key_color || "white" : "gray.5",
                   borderRadius: "50%",
                   height: rem(100),
                   width: rem(100),
