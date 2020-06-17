@@ -38,17 +38,17 @@ export function Wrapper({ community }: { community: string }) {
   return <Content community={community} loaded info={info} />;
 }
 
-function CommunityLogo({ icon_img }: { icon_img: string }) {
+function CommunityLogo({ src }: { src: string }) {
   return (
     <img
       //we already have the title
       alt=""
-      src={icon_img || undefined}
+      src={src || undefined}
       sx={{
         borderRadius: "50%",
         height: rem(100),
         width: rem(100),
-        opacity: icon_img ? 1 : 0,
+        opacity: src ? 1 : 0,
         transition: "opacity 0.2s",
       }}
     />
@@ -65,6 +65,7 @@ function Content({
   info?: { data: CommunityInfoData };
 }) {
   const isDesktop = useIsDesktop();
+  const icon = info?.data.icon_img || info?.data.community_icon;
   return isDesktop ? (
     <div
       key={community}
@@ -135,11 +136,11 @@ function Content({
                   width: rem(100),
                   ml: rem(218),
                   position: "relative",
-                  opacity: info?.data && !info.data.icon_img ? 0 : 1,
+                  opacity: info?.data && !icon ? 0 : 1,
                   transition: "all 0.2s",
                 }}
               >
-                <CommunityLogo icon_img={info?.data.icon_img || ""} />
+                <CommunityLogo src={icon || ""} />
               </div>
             </div>
           </Column>
