@@ -33,7 +33,10 @@ export default function PostSortMenu({
               width: "100%",
             }}
           >
-            <ButtonLink to={`/r/${community}/${x}`} selected={x === sort}>
+            <ButtonLink
+              to={`${community !== "" ? "/r/" : ""}${community}/${x}`}
+              selected={x === sort}
+            >
               {x}
             </ButtonLink>
           </li>

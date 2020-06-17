@@ -83,6 +83,12 @@ export const routes = (authStatus: AuthStatus, token: string) => {
       children: [{ path: "*", ...community }],
       caseSensitive: false,
     },
+    {
+      path: "/:sort",
+      element: <CommunityBase />,
+      children: [{ path: "/", ...community }],
+      caseSensitive: false,
+    },
 
     {
       path: "/r/:community",
