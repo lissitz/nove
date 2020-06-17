@@ -101,6 +101,9 @@ export default function Comment({
             ".comment-vote-panel": {
               opacity: 1,
             },
+            ".reply-button": {
+              opacity: 1,
+            },
           },
         }}
       >
@@ -159,7 +162,14 @@ export default function Comment({
             </span>
           )}
           {isAuthenticated && !comment.data.locked && (
-            <div sx={{ display: "inline" }}>
+            <div
+              className="reply-button"
+              sx={{
+                display: "inline",
+                opacity: 0,
+                transition: "opacity 200ms",
+              }}
+            >
               <LinkButton
                 onClick={() => {
                   setIsReplying(true);
