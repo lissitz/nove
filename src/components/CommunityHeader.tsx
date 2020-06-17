@@ -14,7 +14,7 @@ export default function CommunityHeader({ community }: { community: string }) {
   if (community === "all" || community === "popular")
     return (
       <Fragment>
-        <div sx={{ height: rem(128) }}></div>
+        <div sx={{ height: [0, null, rem(128)] }}></div>
         <VisuallyHidden>
           <h2>{community}</h2>
         </VisuallyHidden>
