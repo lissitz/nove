@@ -97,7 +97,7 @@ export function getPostComments(token?: string) {
   ) {
     let pathname = `/r/${community}/comments/${postId}.json`;
     query = query || "";
-    pathname = `${pathname}?q=${query}&raw_json=1&sort=${sort}`;
+    pathname = `${pathname}?q=${query}&raw_json=1&sort=${sort}&limit=100`;
     return fetchAuth(pathname, token).then(
       (x) =>
         ({ comments: x[1].data.children } as {
