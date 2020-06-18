@@ -81,6 +81,10 @@ export function ScrollProvider({ children }: { children: React.ReactNode }) {
       const entry = state[location.key];
       if (entry) {
         window.scroll({ top: entry.y, left: entry.x });
+      } else {
+        if (location) {
+          window.scroll({ top: 0, left: 0 });
+        }
       }
       return;
     }
