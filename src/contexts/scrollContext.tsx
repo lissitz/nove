@@ -114,6 +114,6 @@ export function ScrollProvider({ children }: { children: React.ReactNode }) {
 export function useDispatchScroll() {
   const context = useContext(ScrollDispatchContext);
   if (!context)
-    throw new Error("Must be used useDispatchScroll inside a ScrollProvider");
+    throw new Error("useDispatchScroll must be used inside a ScrollProvider");
   return context;
 }
