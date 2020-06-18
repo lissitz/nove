@@ -3,7 +3,6 @@ import { useContext, useEffect, useReducer } from "react";
 import { useLocation } from "react-router";
 import useDifferent from "../hooks/useDifferent";
 
-const ScrollContext = React.createContext<ScrollState>({});
 const ScrollDispatchContext = React.createContext<React.Dispatch<
   ScrollEvent
 > | null>(null);
@@ -107,17 +106,11 @@ export function ScrollProvider({ children }: { children: React.ReactNode }) {
   }, [location, prevLocation, prevKey, location.key, state, location.state]);
   return (
     <ScrollDispatchContext.Provider value={dispatch}>
-      <ScrollContext.Provider value={state}>{children}</ScrollContext.Provider>
+      {children}
     </ScrollDispatchContext.Provider>
   );
 }
 
-export function useScrollDict() {
-  const context = useContext(ScrollContext);
-  if (!context)
-    throw new Error("Must be used useScrollDict inside a ScrollProvider");
-  return context;
-}
 export function useDispatchScroll() {
   const context = useContext(ScrollDispatchContext);
   if (!context)
