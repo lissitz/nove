@@ -16,12 +16,13 @@ type ScrollEvent = ScrollState;
 function reducer(state: ScrollState, action: ScrollEvent): ScrollState {
   const value = Object.values(action)[0];
   if (value.x === 0 && value.y === 0) {
-    return state;
+    return { ...state };
   }
   return { ...state, ...action };
 }
 export function ScrollProvider({ children }: { children: React.ReactNode }) {
   const key = "nove_state_scroll";
+  const lastScrollKey = "nove_last_scroll";
   const initialValue = {};
   const [state, dispatch] = useReducer(
     reducer,
@@ -30,7 +31,16 @@ export function ScrollProvider({ children }: { children: React.ReactNode }) {
       try {
         const sessionStorageValue = sessionStorage.getItem(key);
         let state = JSON.parse(sessionStorageValue || "null") || initialValue;
-        return state;
+        try {
+          const lastScrollValue = sessionStorage.getItem(lastScrollKey);
+          let lastScroll = JSON.parse(lastScrollValue || "null");
+          if (lastScroll) {
+            state = { ...state, ...lastScroll };
+          }
+          return state;
+        } catch {
+          return state;
+        }
       } catch {
         return initialValue;
       }
@@ -43,7 +53,8 @@ export function ScrollProvider({ children }: { children: React.ReactNode }) {
   }, [state]);
 
   const location = useLocation();
-  const prevLocation = useDifferent(location) || location;
+  const prevLocation = useDifferent(location);
+  const prevKey = prevLocation?.key;
   useEffect(() => {
     if (window) {
       window.onpopstate = function (event: PopStateEvent) {
@@ -51,8 +62,29 @@ export function ScrollProvider({ children }: { children: React.ReactNode }) {
       };
     }
   }, [location]);
+
+  //save scroll state before leaving the page
   useEffect(() => {
-    if (prevLocation.key !== location.key) {
+    window.onbeforeunload = function () {
+      window.sessionStorage.setItem(
+        lastScrollKey,
+        JSON.stringify({
+          [location.key]: { x: window.scrollX, y: window.scrollY },
+        })
+      );
+    };
+  });
+
+  console.log({ state, prevLocation, key: location.key, prevKey });
+  useEffect(() => {
+    if (!prevLocation) {
+      const entry = state[location.key];
+      if (entry) {
+        window.scroll({ top: entry.y, left: entry.x });
+      }
+      return;
+    }
+    if (prevKey !== location.key) {
       const entry = state[location.key];
       if (entry) {
         window.scroll({ top: entry.y, left: entry.x });
@@ -63,10 +95,12 @@ export function ScrollProvider({ children }: { children: React.ReactNode }) {
         const entry = location.state?.scroll;
         window.scroll({ top: entry.y, left: entry.x });
       } else {
-        window.scroll({ top: 0, left: 0 });
+        if (location) {
+          window.scroll({ top: 0, left: 0 });
+        }
       }
     }
-  }, [prevLocation.key, location.key, state, location.state]);
+  }, [location, prevLocation, prevKey, location.key, state, location.state]);
   return (
     <ScrollDispatchContext.Provider value={dispatch}>
       <ScrollContext.Provider value={state}>{children}</ScrollContext.Provider>

@@ -34,7 +34,7 @@ export default function PostList({
                 <Meta community={community} />
               </Suspense>
               <Stack space={[0, null, 3]}>
-                {Array(10)
+                {Array(50)
                   .fill(null)
                   .map((_, index) => (
                     <Skeleton as={Card} key={index} />
