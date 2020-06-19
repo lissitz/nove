@@ -94,6 +94,9 @@ function MyCommunities({
           overflowY: "auto",
           //firefox
           scrollbarWidth: "thin",
+          scrollbarColor: (theme: any) =>
+            `${theme.colors.textSecondary} rgba(0, 0, 0, 0.1)`,
+
           paddingRight: [null, null, communities.length > 7 ? 2 : 0],
           "&::-webkit-scrollbar": {
             width: 5,
