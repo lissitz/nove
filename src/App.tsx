@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { Fragment } from "react";
+import { Fragment, useRef, useEffect } from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { ReactQueryConfigProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query-devtools";
@@ -8,16 +8,13 @@ import { jsx, ThemeProvider } from "theme-ui";
 import Stack from "./components/Stack";
 import { AuthProvider } from "./contexts/authContext";
 import { MediaQueryProvider } from "./contexts/MediaQueryContext";
-import { ScrollProvider } from "./contexts/scrollContext";
 import { useTranslation } from "./i18n";
 import Router from "./router";
 import BaseStyles from "./styles/base";
 import "./styles/normalize.css";
 import { theme } from "./theme/theme";
+import { useLocation } from "react-router";
 
-if (window?.history?.scrollRestoration) {
-  window.history.scrollRestoration = "manual";
-}
 function App() {
   return (
     <Fragment>
@@ -26,19 +23,15 @@ function App() {
           config={{
             refetchAllOnWindowFocus: false,
             refetchOnMount: false,
+            staleTime: 0,
           }}
         >
           <MediaQueryProvider>
             <HelmetProvider>
-              <BrowserRouter
-                //@ts-ignore
-                timeoutMs={100}
-              >
-                <ScrollProvider>
-                  <AuthProvider>
-                    <Base />
-                  </AuthProvider>
-                </ScrollProvider>
+              <BrowserRouter>
+                <AuthProvider>
+                  <Base />
+                </AuthProvider>
               </BrowserRouter>
             </HelmetProvider>
           </MediaQueryProvider>
@@ -51,6 +44,7 @@ function App() {
 
 function Base() {
   const t = useTranslation();
+  useScrollTopTopOnNewRoute();
   return (
     <Fragment>
       <BaseStyles />
@@ -74,6 +68,17 @@ function Base() {
       </div>
     </Fragment>
   );
+}
+
+function useScrollTopTopOnNewRoute() {
+  const location = useLocation();
+  const keyStore = useRef(new Set());
+  useEffect(() => {
+    if (!keyStore.current.has(location.key)) {
+      window.scrollTo({ top: 0 });
+      keyStore.current.add(location.key);
+    }
+  }, [location]);
 }
 
 export default App;

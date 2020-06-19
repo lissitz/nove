@@ -1,12 +1,6 @@
 /** @jsx jsx */
-import { useCallback } from "react";
-import { NavigateFunction, Params } from "react-router";
-import {
-  matchRoutes,
-  useLocation,
-  useNavigate as RRuseNavigate,
-  useRoutes,
-} from "react-router-dom";
+import { Params } from "react-router";
+import { matchRoutes, useNavigate, useRoutes } from "react-router-dom";
 import { jsx } from "theme-ui";
 import {
   prefetchCommunityInfo,
@@ -22,14 +16,13 @@ import {
   useAccessToken,
   useAuthStatus,
 } from "../contexts/authContext";
-import { useDispatchScroll } from "../contexts/scrollContext";
 import Comments from "../pages/Comments";
 import Community from "../pages/Community";
 import CommunityBase from "../pages/CommunityBase";
 import SubmitPost from "../pages/SubmitPost";
 import User from "../pages/User";
-import { parseCommunity } from "../utils/params";
 import { isCombinedCommunity } from "../utils/isCombinedCommunity";
+import { parseCommunity } from "../utils/params";
 
 export const routes = (authStatus: AuthStatus, token: string) => {
   const community = {
@@ -132,17 +125,4 @@ export function usePreload() {
   };
 }
 
-export function useNavigate(): NavigateFunction {
-  const dispatch = useDispatchScroll();
-  const location = useLocation();
-  const navigate = RRuseNavigate();
-  const n = useCallback(
-    (...args: any) => {
-      dispatch({ [location.key]: { x: window.scrollX, y: window.scrollY } });
-      //@ts-ignore
-      navigate(...args);
-    },
-    [navigate, dispatch, location]
-  );
-  return n;
-}
+export { useNavigate };

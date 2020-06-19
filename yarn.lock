@@ -5885,10 +5885,17 @@ highlight-words-core@1.2.2:
   resolved "https://registry.yarnpkg.com/highlight-words-core/-/highlight-words-core-1.2.2.tgz#1eff6d7d9f0a22f155042a00791237791b1eeaaa"
   integrity sha512-BXUKIkUuh6cmmxzi5OIbUJxrG8OAk2MqoL1DtO3Wo9D2faJg2ph5ntyuQeLqaHJmzER6H5tllCDA9ZnNe9BVGg==
 
-history@5.0.0-beta.9, history@^5.0.0-beta.9:
+history@5.0.0-beta.9:
   version "5.0.0-beta.9"
   resolved "https://registry.yarnpkg.com/history/-/history-5.0.0-beta.9.tgz#fe230706c18c5f7f132001e55215e71b4aaab6d6"
   integrity sha512-iLpu0fzu3iM041KDMNsawyB6YZjPLB+Bn+Pvq2lMnY7xxpxDIYvEz7r4et3Na8FthWzbYeukjl74ZKGWXcLhIA==
+  dependencies:
+    "@babel/runtime" "^7.7.6"
+
+history@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/history/-/history-5.0.0.tgz#0cabbb6c4bbf835addb874f8259f6d25101efd08"
+  integrity sha512-3NyRMKIiFSJmIPdq7FxkNMJkQ7ZEtVblOQ38VtKaA0zZMW1Eo6Q6W8oDKEflr1kNNTItSnk4JMCO1deeSgbLLg==
   dependencies:
     "@babel/runtime" "^7.7.6"
 
@@ -9867,18 +9874,18 @@ react-remove-scroll@^2.3.0:
     use-callback-ref "^1.2.3"
     use-sidecar "^1.0.1"
 
-react-router-dom@^0.0.0-experimental-b1ff171f:
-  version "0.0.0-experimental-b1ff171f"
-  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-0.0.0-experimental-b1ff171f.tgz#5841bcc2f6abc3d3e56da244e48bd0f0b8fd261a"
-  integrity sha512-2ntU6gm7h9U6vxBEeOUjK60/6dutjzexZgBywb2hCLwxGSBue6CgBc0rM/6um6wmK9k949b+QhXTcctiPmtfOg==
+react-router-dom@^6.0.0-alpha.5:
+  version "6.0.0-alpha.5"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.0.0-alpha.5.tgz#3c3e22226ee610eb91042a351741ce3f53596323"
+  integrity sha512-xo3VM55aE563uyZBPoUplfCPOYKJmTP2oA8wamm0k4K07e/6T4x4DDunS5Gu2VIy+m2+5mZp8n0rT6S+tYCb6Q==
   dependencies:
     history "5.0.0-beta.9"
     prop-types "^15.7.2"
 
-react-router@^0.0.0-experimental-b1ff171f:
-  version "0.0.0-experimental-b1ff171f"
-  resolved "https://registry.yarnpkg.com/react-router/-/react-router-0.0.0-experimental-b1ff171f.tgz#8047f7b3afa6bc90ad7cd3aa74e31abd675bbe09"
-  integrity sha512-Mg+XGkQifxJ+UeyuVPklV78Tookfyh0Exm8iwIiCGlbMk66bk/+caj7l05eBvWlPR18j0SAuxboD3UQsNhbUtw==
+react-router@^6.0.0-alpha.5:
+  version "6.0.0-alpha.5"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.0.0-alpha.5.tgz#c98805e50dc0e64787aa8aa4fa6753b435f2496b"
+  integrity sha512-cDj70bTUAgcfx6b5Fx1+wVlBSDVZGo8N+GUDk/yNFDCyGLfAsFlRpS3BhQqx8c49w2cCW+OrXxFhB4cbLZxWJw==
   dependencies:
     history "5.0.0-beta.9"
     prop-types "^15.7.2"

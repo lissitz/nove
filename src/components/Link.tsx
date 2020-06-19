@@ -2,7 +2,6 @@
 import { Link as RRLink, useLocation } from "react-router-dom";
 import { jsx } from "theme-ui";
 import { usePreload } from "../router";
-import { useDispatchScroll } from "../contexts/scrollContext";
 export const linkStyles = {
   textDecoration: "none",
   color: "inherit",
@@ -26,8 +25,6 @@ export default function Link({
 }) {
   const preloadFn = usePreload();
   const Comp = external ? "a" : RRLink;
-  const location = useLocation();
-  const dispatch = useDispatchScroll();
   return (
     <Comp
       //@ts-ignore
@@ -36,15 +33,14 @@ export default function Link({
       className={className}
       sx={linkStyles}
       {...rest}
-      onMouseDown={(event: MouseEvent) => {
+      onMouseDown={(event) => {
         rest.onMouseDown?.(event);
         if (preload) {
           preloadFn(to);
         }
       }}
-      onClick={(event: MouseEvent) => {
+      onClick={(event) => {
         rest.onClick?.(event);
-        dispatch({ [location.key]: { x: window.scrollX, y: window.scrollY } });
       }}
     />
   );
