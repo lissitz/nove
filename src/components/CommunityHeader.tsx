@@ -9,13 +9,16 @@ import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 import rem from "../utils/rem";
 import { Column, Columns } from "./Columns";
 import Link from "./Link";
+import VisuallyHidden from "@reach/visually-hidden";
 
 export default function CommunityHeader({ community }: { community: string }) {
   if (isCombinedCommunity(community))
     return (
       <Fragment>
         <div sx={{ height: [0, null, rem(128)] }}></div>
-        <h1>{community}</h1>
+        <VisuallyHidden>
+          <h1>{community}</h1>
+        </VisuallyHidden>
       </Fragment>
     );
   return (
