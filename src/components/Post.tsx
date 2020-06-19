@@ -53,7 +53,11 @@ export default function Post({
   const mobile = breakpoint === "mobile";
 
   const commentLink = isPreview ? (
-    <Link to={post.permalink} sx={{ fontSize: 1 }} preload>
+    <Link
+      to={post.permalink}
+      sx={{ fontSize: 1, color: [null, "link"] }}
+      preload
+    >
       {t(post.num_comments === 1 ? "{} comment" : "{} comments", [
         formatQuantity(post.num_comments, t),
       ])}
