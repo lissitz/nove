@@ -1,5 +1,5 @@
 {
-  "*.{js,ts,tsx}": "eslint --max-warnings=1 --fix",
+  "*.{js,ts,tsx}": "eslint --max-warnings=0 --fix",
   "*.{css,json,html}": [
     "prettier --write"
   ]
