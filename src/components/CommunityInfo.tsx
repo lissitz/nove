@@ -174,7 +174,6 @@ function JoinButton({
       rollback();
     },
   });
-  console.log(colorMode);
   return user_is_subscriber ? (
     <Button
       sx={{ width: "100%", ...(colorMode === "deep" && outlineStyles) }}

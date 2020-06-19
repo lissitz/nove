@@ -2,6 +2,7 @@
   "extends": ["prettier", "react-app"],
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "warn"
+    "prettier/prettier": "warn",
+    "no-console": "warn"
   }
 }

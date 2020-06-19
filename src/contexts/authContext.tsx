@@ -64,7 +64,6 @@ type AuthEvent =
       expiresIn: number;
     };
 function reducer(state: AuthState, event: AuthEvent): AuthState {
-  console.log(state, event);
   switch (event.status) {
     case "auth_success": {
       return {
