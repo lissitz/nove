@@ -76,9 +76,6 @@ function Content({
               <PostPreview
                 post={post.data}
                 key={post.data.id}
-                community={community}
-                sort={sort}
-                query={query}
                 showContext={isCombinedCommunity(community)}
               />
             ))}

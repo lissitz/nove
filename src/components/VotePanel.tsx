@@ -7,7 +7,7 @@ import { useLoginUrl, useVote } from "../api";
 import { Type } from "../constants";
 import { useAuthStatus } from "../contexts/authContext";
 import { useTranslation } from "../i18n";
-import { ID, PostSortType, Vote } from "../types";
+import { ID, Vote } from "../types";
 import { formatQuantity } from "../utils/format";
 import Button from "./Button";
 import Stack from "./Stack";
@@ -19,15 +19,11 @@ export default function VotePanel({
   score,
   vote: postVote,
   community,
-  sort,
-  query,
 }: {
   postId: ID;
   score?: number;
   vote: Vote;
   community: string;
-  sort?: PostSortType;
-  query: string;
 }) {
   const t = useTranslation();
   const authStatus = useAuthStatus();
@@ -47,8 +43,7 @@ export default function VotePanel({
     onSuccess: (_data, mutationVariables) => {
       mounted.current && setVote(mutationVariables.dir);
       queryCache.refetchQueries([postId]);
-      sort &&
-        queryCache.refetchQueries(["infinitePosts", community, sort, query]);
+      queryCache.refetchQueries(["infinitePosts", community]);
     },
     onError: (_data, mutationVariables, rollback) => {
       //@ts-ignore

@@ -61,9 +61,6 @@ export default function UserOverview({
                         <PostPreview
                           key={x.data.id}
                           post={x.data}
-                          community={x.data.subreddit}
-                          sort={sort}
-                          query=""
                           showContext
                         />
                       ) : (
