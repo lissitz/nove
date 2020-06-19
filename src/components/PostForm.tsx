@@ -1,18 +1,19 @@
 /** @jsx jsx */
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import { useReducer, useEffect, useState } from "react";
-import { useNavigate } from "../router";
+import { useEffect, useReducer, useState } from "react";
 import { Card, Checkbox, jsx, Label } from "theme-ui";
 import { useSubmitPost } from "../api";
+import { postKind } from "../constants";
 import { useTranslation } from "../i18n";
+import { useNavigate } from "../router";
+import { textAreaStyles } from "../theme/theme";
+import { PostKind } from "../types";
 import rem from "../utils/rem";
 import Button from "./Button";
+import { Column, Columns } from "./Columns";
 import { Inline, Inlines } from "./Inline";
 import Stack from "./Stack";
-import { Tabs, TabList, Tab, TabPanel, TabPanels } from "./Tabs";
-import { Column, Columns } from "./Columns";
-import { postKind } from "../constants";
-import { PostKind } from "../types";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "./Tabs";
 
 const initialState = {
   title: "",
@@ -82,8 +83,6 @@ function Form({
       if (response.success) {
         dispatch({ ...initialState });
         navigate(`/r/${community}`);
-      } else {
-        console.error(response.jquery);
       }
     },
   });
@@ -127,7 +126,7 @@ function Form({
             aria-label={t("postForm.textOptional")}
             placeholder={t("postForm.textOptional")}
             value={text}
-            sx={{ ...textAreaStyles, minHeight: rem(64) }}
+            sx={textAreaStyles}
             onChange={(event) => dispatch({ text: event.target.value })}
           />
         ) : kind === "link" ? (
@@ -135,7 +134,7 @@ function Form({
             aria-label={t("postForm.link")}
             placeholder={t("postForm.link")}
             value={text}
-            sx={{ ...textAreaStyles, minHeight: rem(64) }}
+            sx={textAreaStyles}
             onChange={(event) => dispatch({ text: event.target.value })}
           />
         ) : null}
@@ -197,16 +196,3 @@ function Form({
     </Card>
   );
 }
-
-const textAreaStyles = {
-  border: "none",
-  bg: "background",
-  width: "100%",
-  p: 2,
-  fontSize: 1,
-  borderRadius: 4,
-  resize: "vertical",
-
-  //just to remove the vertical-align:baseline of the default display:inline-block that adds space at the bottom
-  display: "block",
-};

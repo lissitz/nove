@@ -3,7 +3,7 @@ import { TextareaAutosize } from "@material-ui/core";
 import { useState } from "react";
 import { jsx } from "theme-ui";
 import { useTranslation } from "../i18n";
-import rem from "../utils/rem";
+import { textAreaStyles } from "../theme/theme";
 import Button from "./Button";
 import Stack from "./Stack";
 
@@ -46,16 +46,3 @@ export default function TextEditor({
     </Stack>
   );
 }
-const textAreaStyles = {
-  border: "none",
-  bg: "gray.1",
-  width: "100%",
-  minHeight: rem(64),
-  p: 2,
-  fontSize: 1,
-  borderRadius: 4,
-  resize: "vertical",
-
-  //just to remove the vertical-align:baseline of the default display:inline-block that adds space at the bottom
-  display: "block",
-};

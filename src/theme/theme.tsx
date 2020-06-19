@@ -1,5 +1,6 @@
 import { colors } from "./colors";
 import { lighten, darken } from "polished";
+import rem from "../utils/rem";
 const baseStyles = {
   "*": {
     color: "inherit",
@@ -177,6 +178,20 @@ export const tabStyles = {
   ":after": {
     borderRadius: 0,
   },
+};
+
+export const textAreaStyles = {
+  border: "none",
+  bg: "background",
+  width: "100%",
+  p: 2,
+  fontSize: 1,
+  borderRadius: 4,
+  resize: "vertical",
+  minHeight: rem(64),
+
+  //just to remove the vertical-align:baseline of the default display:inline-block that adds space at the bottom
+  display: "block",
 };
 
 function pxsToRem(pxs: number[]) {

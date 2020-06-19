@@ -8,9 +8,9 @@ import { Type } from "../constants";
 import { useAuthStatus } from "../contexts/authContext";
 import { useTranslation } from "../i18n";
 import { ID, PostData } from "../types";
-import rem from "../utils/rem";
 import Button from "./Button";
 import Stack from "./Stack";
+import { textAreaStyles } from "../theme/theme";
 
 export default function CommentForm({
   postId,
@@ -82,17 +82,3 @@ export default function CommentForm({
     </Card>
   );
 }
-
-const textAreaStyles = {
-  border: "none",
-  backgroundColor: "background",
-  width: "100%",
-  minHeight: rem(64),
-  p: 2,
-  fontSize: 1,
-  borderRadius: 4,
-  resize: "vertical",
-
-  //just to remove the vertical-align:baseline of the default display:inline-block that adds space at the bottom
-  display: "block",
-};
