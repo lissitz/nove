@@ -1,8 +1,9 @@
 /** @jsx jsx */
 import { Fragment, useState } from "react";
 import { queryCache } from "react-query";
-import { Card, Heading, jsx } from "theme-ui";
+import { Card, jsx } from "theme-ui";
 import { useDelete, useEdit } from "../api";
+import { useBreakpoint } from "../contexts/MediaQueryContext";
 import { useTranslation } from "../i18n";
 import { useNavigate } from "../router";
 import { Fullname, ID, MeData, PostData } from "../types";
@@ -24,7 +25,6 @@ import Stack from "./Stack";
 import TextEditor from "./TextEditor";
 import Video from "./Video";
 import VotePanel from "./VotePanel";
-import { useBreakpoint } from "../contexts/MediaQueryContext";
 
 export default function Post({
   post,
@@ -69,6 +69,7 @@ export default function Post({
       ])}
     </div>
   );
+  const H = isPreview ? "h2" : "h1";
   return (
     <Card sx={{ width: "100%" }} {...rest}>
       <Stack space={2}>
@@ -89,7 +90,7 @@ export default function Post({
                 {!showContext && post.link_flair_text && (
                   <FlairBadge post={post} />
                 )}
-                <Heading as="h3" sx={{ fontSize: 3, display: "inline" }}>
+                <H sx={{ fontSize: 3, display: "inline" }}>
                   {external ? (
                     <Link external to={post.url}>
                       {post.title}
@@ -99,7 +100,7 @@ export default function Post({
                   ) : (
                     post.title
                   )}
-                </Heading>
+                </H>
               </div>
               <Inlines
                 space={2}

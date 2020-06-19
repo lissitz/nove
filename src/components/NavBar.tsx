@@ -60,11 +60,11 @@ export default function NavBar({ children }: { children?: React.ReactNode }) {
                     alignItems: "center",
                   }}
                 >
-                  <h1 sx={{ fontSize: 4 }}>
+                  <div sx={{ fontSize: 4 }}>
                     <Link to="/" sx={{ ":hover": { textDecoration: "none" } }}>
                       Nove
                     </Link>
-                  </h1>
+                  </div>
                 </div>
               ) : (
                 <Drawer>{children}</Drawer>

@@ -15,6 +15,7 @@ import UserBar from "../components/UserBar";
 import rem from "../utils/rem";
 import NavBar from "../components/NavBar";
 import { useIsDesktop } from "../contexts/MediaQueryContext";
+import VisuallyHidden from "@reach/visually-hidden";
 
 export default function User() {
   let { username, where } = useParams();
@@ -22,12 +23,16 @@ export default function User() {
   let [params] = useSearchParams();
   const sort = params.get("sort") || defaultUserOverviewSort;
   const isDesktop = useIsDesktop();
+  const title = [username, where].join(" - ");
   if (!username) return null;
   return (
     <React.Fragment>
       <Helmet>
-        <title>{username}</title>
+        <title>{title}</title>
       </Helmet>
+      <VisuallyHidden>
+        <h1>{title}</h1>
+      </VisuallyHidden>
       <NavBar></NavBar>
       <div sx={{ width: "100%", flex: "1 1 auto" }}>
         <Stack space={[0, null, 4]} sx={{ height: "100%" }}>

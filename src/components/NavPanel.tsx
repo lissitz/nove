@@ -28,6 +28,7 @@ export default function NavPanel({
           <div sx={{ fontWeight: "600" }}>{t("siteFeeds")}</div>
           <Stack
             as="ul"
+            asChild="li"
             space={2}
             sx={{
               width: "100%",
@@ -36,7 +37,7 @@ export default function NavPanel({
             {["popular", "all"]
               .map((x) => ({ name: x }))
               .map((x) => (
-                <li
+                <div
                   key={x.name}
                   sx={{
                     width: "100%",
@@ -45,7 +46,7 @@ export default function NavPanel({
                   <ButtonLink onClick={onClick} to={`/r/${x.name}`}>
                     {x.name}
                   </ButtonLink>
-                </li>
+                </div>
               ))}
           </Stack>
         </Stack>
@@ -87,6 +88,7 @@ function MyCommunities({
       </div>
       <Stack
         as="ul"
+        asChild="li"
         space={2}
         sx={{
           width: `100%`,
@@ -112,14 +114,14 @@ function MyCommunities({
         }}
       >
         {communities.map((x) => (
-          <li
+          <div
             key={x}
             sx={{
               width: "100%",
             }}
           >
             <ButtonLink onClick={onClick} to={`/r/${x}`}>{`r/${x}`}</ButtonLink>
-          </li>
+          </div>
         ))}
       </Stack>
     </Stack>

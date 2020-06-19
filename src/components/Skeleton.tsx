@@ -22,6 +22,7 @@ export default function Skeleton({
 }) {
   return (
     <div
+      aria-hidden
       sx={{
         position: "relative",
         width: "100%",

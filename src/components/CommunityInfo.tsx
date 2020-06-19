@@ -38,7 +38,7 @@ function Success({ community }: { community: string }) {
       <SideCard>
         <Stack space={4}>
           <Stack space={2}>
-            <div sx={{ fontWeight: "600", fontSize: 2 }}>{t("about")}</div>
+            <h2 sx={{ fontWeight: "600", fontSize: 2 }}>{t("about")}</h2>
             <div
               dangerouslySetInnerHTML={{
                 __html: sanitize(info.data.public_description_html || ""),
@@ -86,7 +86,7 @@ function Success({ community }: { community: string }) {
       {show_description && (
         <SideCard>
           <Stack space={3}>
-            <div sx={{ fontWeight: "600", fontSize: 2 }}>{t("sidebar")}</div>
+            <h2 sx={{ fontWeight: "600", fontSize: 2 }}>{t("sidebar")}</h2>
             <div
               dangerouslySetInnerHTML={{
                 __html: sanitize(info?.data.description_html || ""),
@@ -221,7 +221,7 @@ function CommunityRules({ community }: { community: string }) {
       }}
     >
       <Stack space={3}>
-        <div sx={{ fontWeight: "600", fontSize: 2 }}>{t("rules")}</div>
+        <h2 sx={{ fontWeight: "600", fontSize: 2 }}>{t("rules")}</h2>
         <Accordion
           collapsible
           sx={{

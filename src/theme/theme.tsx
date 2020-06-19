@@ -10,19 +10,19 @@ const baseStyles = {
   },
   h1: {
     variant: "text.heading",
-    fontSize: 2,
+    fontSize: 1,
   },
   h2: {
     variant: "text.heading",
-    fontSize: 2,
+    fontSize: 1,
   },
   h3: {
     variant: "text.heading",
-    fontSize: 2,
+    fontSize: 1,
   },
   h4: {
     variant: "text.heading",
-    fontSize: 2,
+    fontSize: 1,
   },
   h5: {
     variant: "text.heading",
@@ -30,7 +30,7 @@ const baseStyles = {
   },
   h6: {
     variant: "text.heading",
-    fontSize: 0,
+    fontSize: 1,
   },
   pre: {
     fontFamily: "monospace",

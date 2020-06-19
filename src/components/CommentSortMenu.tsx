@@ -19,9 +19,9 @@ export default function CommentSortMenu() {
   return isDesktop ? (
     <Stack space={2} sx={{ width: "100%" }}>
       <div sx={{ fontWeight: "600" }}>{t("sortComments")}</div>
-      <Stack as="ul" space={2} sx={{ width: "100%" }}>
+      <Stack as="ul" asChild="li" space={2} sx={{ width: "100%" }}>
         {options.map((x) => (
-          <li
+          <div
             sx={{
               width: "100%",
             }}
@@ -30,7 +30,7 @@ export default function CommentSortMenu() {
             <ButtonLink to={`?sort=${x}`} selected={x === sort}>
               {x}
             </ButtonLink>
-          </li>
+          </div>
         ))}
       </Stack>
     </Stack>

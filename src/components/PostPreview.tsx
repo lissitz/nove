@@ -17,6 +17,7 @@ export default function PostPreview({
   const preload = usePreload();
   return (
     <Post
+      as="article"
       post={post}
       isPreview
       showContext={showContext}

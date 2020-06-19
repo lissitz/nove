@@ -25,9 +25,9 @@ export default function PostSortMenu({
   return isDesktop ? (
     <Stack space={2} sx={{ width: "100%" }}>
       <div sx={{ fontWeight: "600" }}>{t("sortPosts")}</div>
-      <Stack as="ul" space={2} sx={{ width: "100%" }}>
+      <Stack as="ul" asChild="li" space={2} sx={{ width: "100%" }}>
         {currentOptions.map((x) => (
-          <li
+          <div
             key={x}
             sx={{
               width: "100%",
@@ -39,7 +39,7 @@ export default function PostSortMenu({
             >
               {x}
             </ButtonLink>
-          </li>
+          </div>
         ))}
         {sort === "top" && <TopMenu defaultPeriod="today" />}
       </Stack>

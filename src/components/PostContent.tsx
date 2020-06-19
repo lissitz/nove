@@ -23,7 +23,7 @@ export default function PostContent({
       <Helmet>
         <title>{`${post.title} - ${community}`}</title>
       </Helmet>
-      <Post post={post} me={me} />
+      <Post as="article" post={post} me={me} />
     </React.Fragment>
   );
 }

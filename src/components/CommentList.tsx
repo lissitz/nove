@@ -61,7 +61,7 @@ export default function CommentList({
                 pl: 0,
               }}
             >
-              <Stack>
+              <Stack as="ul" asChild="li">
                 {comments.map((comment, index) => (
                   <Comment
                     community={community}

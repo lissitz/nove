@@ -16,6 +16,7 @@ export default function MyCommunitiesSkeleton() {
       </div>
       <Stack
         as="ul"
+        asChild="li"
         space={2}
         sx={{
           width: "100%",

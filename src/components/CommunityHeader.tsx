@@ -1,31 +1,25 @@
 /** @jsx jsx */
-import VisuallyHidden from "@reach/visually-hidden";
 import { Fragment, Suspense } from "react";
 import { jsx } from "theme-ui";
 import { useCommunityInfo } from "../api";
+import { useIsDesktop } from "../contexts/MediaQueryContext";
 import { maxWidth } from "../styles/base";
 import { CommunityInfoData } from "../types";
+import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 import rem from "../utils/rem";
 import { Column, Columns } from "./Columns";
 import Link from "./Link";
-import { useIsDesktop } from "../contexts/MediaQueryContext";
-import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 
 export default function CommunityHeader({ community }: { community: string }) {
   if (isCombinedCommunity(community))
     return (
       <Fragment>
         <div sx={{ height: [0, null, rem(128)] }}></div>
-        <VisuallyHidden>
-          <h2>{community}</h2>
-        </VisuallyHidden>
+        <h1>{community}</h1>
       </Fragment>
     );
   return (
     <Fragment>
-      <VisuallyHidden>
-        <h2>{community}</h2>
-      </VisuallyHidden>
       <Suspense fallback={<Content community={community} loaded={false} />}>
         <Wrapper community={community} />
       </Suspense>
@@ -160,7 +154,7 @@ function Content({
                   position: "relative",
                 }}
               >
-                <h3
+                <h1
                   sx={{
                     fontSize: 5,
                     height: rem(48),
@@ -171,7 +165,7 @@ function Content({
                   }}
                 >
                   {info?.data.title}
-                </h3>
+                </h1>
                 <Link
                   preload
                   to={`/r/${community}`}

@@ -33,7 +33,7 @@ export default function PostList({
               <Suspense fallback={null}>
                 <Meta community={community} />
               </Suspense>
-              <Stack space={[0, null, 3]}>
+              <Stack space={[0, null, 3]} aria-hidden>
                 {Array(50)
                   .fill(null)
                   .map((_, index) => (
@@ -71,7 +71,12 @@ function Content({
       <Meta community={community} />
       <Stack space={[0, null, 3]}>
         {posts.map((group, index) => (
-          <Stack space={[0, null, 3]} sx={{ maxWidth: "100%" }}>
+          <Stack
+            as="ul"
+            asChild="li"
+            space={[0, null, 3]}
+            sx={{ maxWidth: "100%" }}
+          >
             {group.data.children.map((post: { data: PostData }) => (
               <PostPreview
                 post={post.data}
@@ -118,7 +123,7 @@ function ErrorFallback() {
   return (
     <React.Fragment>
       <CardError />
-      <Stack space={[0, null, 3]}>
+      <Stack space={[0, null, 3]} aria-hidden>
         {Array(10).map((_, index) => (
           <Card sx={{ height: rem(150) }} key={index} />
         ))}

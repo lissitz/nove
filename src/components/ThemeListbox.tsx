@@ -75,9 +75,9 @@ export default function ThemeListbox() {
         >
           <Box
             as={Icons[colorMode]}
+            aria-hidden
             sx={{ ...iconStyle, width: rem(20), height: rem(20) }}
           />
-          <VisuallyHidden>{t(`themes.${colorMode}`)}</VisuallyHidden>
         </ListboxButton>
         <ListboxPopover sx={{ width: "auto" }}>
           <ListboxList>
@@ -90,6 +90,7 @@ export default function ThemeListbox() {
                   <Column sx={{ width: rem(30) }}>
                     <Box
                       as={Icons[theme]}
+                      aria-hidden
                       sx={{ ...iconStyle, width: rem(16), height: rem(16) }}
                     />
                   </Column>

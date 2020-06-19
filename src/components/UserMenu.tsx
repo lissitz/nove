@@ -6,6 +6,7 @@ import {
   MenuLink,
   MenuList,
 } from "@reach/menu-button";
+import { Fragment } from "react";
 import { alpha } from "@theme-ui/color";
 import { Link } from "react-router-dom";
 import { jsx } from "theme-ui";
@@ -15,6 +16,7 @@ import rem from "../utils/rem";
 import Button from "./Button";
 import { FiUser } from "react-icons/fi";
 import { useIsDesktop } from "../contexts/MediaQueryContext";
+import VisuallyHidden from "@reach/visually-hidden";
 
 export default function UserMenu({ name }: { name: string }) {
   const t = useTranslation();
@@ -85,9 +87,17 @@ export default function UserMenu({ name }: { name: string }) {
           {isDesktop ? (
             name
           ) : (
-            <FiUser
-              sx={{ width: rem(20), height: rem(20), verticalAlign: "middle" }}
-            />
+            <Fragment>
+              <VisuallyHidden>{name}</VisuallyHidden>
+              <FiUser
+                aria-hidden
+                sx={{
+                  width: rem(20),
+                  height: rem(20),
+                  verticalAlign: "middle",
+                }}
+              />
+            </Fragment>
           )}
         </Button>
         <MenuList
