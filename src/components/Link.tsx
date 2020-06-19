@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { Link as RRLink, useLocation } from "react-router-dom";
+import { Link as RRLink } from "react-router-dom";
 import { jsx } from "theme-ui";
 import { usePreload } from "../router";
 export const linkStyles = {
