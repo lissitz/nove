@@ -334,13 +334,14 @@ export function useVote(
 function getMoreChildren(token?: string) {
   return function (
     link_id: Fullname,
+    id: ID,
     children: ID[],
     sort: CommentSortType,
     limit_children: boolean
   ) {
-    let pathname = `/api/morechildren.json?api_type=json&children=${children.join(
+    let pathname = `/api/morechildren.json?api_type=json&link_id=${link_id}&id=${id}&sort=${sort}&limit_children=${limit_children}&raw_json=1&children=${children.join(
       ","
-    )}&link_id=${link_id}&sort=${sort}&limit_children=${limit_children}&raw_json=1`;
+    )}`;
     return fetchAuth(pathname, token) as Promise<{
       json: {
         errors: string[];
@@ -354,12 +355,14 @@ function getMoreChildren(token?: string) {
 
 export function useMoreChildren({
   should_fetch,
+  id,
   postId,
   children,
   sort,
-  limit_children = true,
+  limit_children = false,
 }: {
   should_fetch: boolean;
+  id: ID;
   postId: ID;
   children: ID[];
   sort: CommentSortType;
@@ -367,10 +370,11 @@ export function useMoreChildren({
 }) {
   const token = useAccessToken();
   return useQuery(
-    should_fetch && ["morechildren", postId, children.join(","), !!token],
+    should_fetch && ["morechildren", postId, id, children.join(","), !!token],
     () =>
       getMoreChildren(token)(
         `${Type.Link}_${postId}`,
+        id,
         children,
         sort,
         limit_children

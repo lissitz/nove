@@ -378,6 +378,7 @@ function More({
   const [expanded, setExpanded] = useState(false);
   const { data: more, status } = useMoreChildren({
     should_fetch: expanded,
+    id: data.id,
     postId,
     children: data.children,
     sort,
