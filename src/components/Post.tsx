@@ -24,6 +24,7 @@ import Stack from "./Stack";
 import TextEditor from "./TextEditor";
 import Video from "./Video";
 import VotePanel from "./VotePanel";
+import { useBreakpoint } from "../contexts/MediaQueryContext";
 
 export default function Post({
   post,
@@ -48,22 +49,42 @@ export default function Post({
     },
   });
   const navigate = useNavigate();
+  const breakpoint = useBreakpoint();
+  const mobile = breakpoint === "mobile";
+
+  const commentLink = isPreview ? (
+    <Link to={post.permalink} sx={{ fontSize: 1 }} preload>
+      {t(post.num_comments === 1 ? "{} comment" : "{} comments", [
+        formatQuantity(post.num_comments, t),
+      ])}
+    </Link>
+  ) : (
+    <div sx={{ justifyContent: "space-between", color: "text" }}>
+      {t(post.num_comments === 1 ? "xComment" : "xComments", [
+        formatQuantity(post.num_comments, t),
+      ])}
+    </div>
+  );
   return (
     <Card sx={{ width: "100%" }} {...rest}>
       <Stack space={2}>
         <Columns space={3} sx={{ width: "100%" }}>
-          <Column sx={{ flex: "0 0 auto", width: rem(64) }}>
-            <VotePanel
-              postId={post.id}
-              score={post.score}
-              vote={likesToVote(post.likes)}
-              community={post.subreddit}
-            />
-          </Column>
+          {!mobile && (
+            <Column sx={{ flex: "0 0 auto", width: rem(64) }}>
+              <VotePanel
+                postId={post.id}
+                score={post.score}
+                vote={likesToVote(post.likes)}
+                community={post.subreddit}
+              />
+            </Column>
+          )}
           <Column>
             <Stack space={1} sx={{ wordBreak: "break-word" }}>
               <div>
-                {post.link_flair_text && <FlairBadge post={post} />}
+                {!showContext && post.link_flair_text && (
+                  <FlairBadge post={post} />
+                )}
                 <Heading as="h3" sx={{ fontSize: 3, display: "inline" }}>
                   {external ? (
                     <Link external to={post.url}>
@@ -169,19 +190,7 @@ export default function Post({
                   />
                 </div>
               )}
-              {isPreview ? (
-                <Link to={post.permalink} sx={{ fontSize: 1 }} preload>
-                  {t(post.num_comments === 1 ? "{} comment" : "{} comments", [
-                    formatQuantity(post.num_comments, t),
-                  ])}
-                </Link>
-              ) : (
-                <div sx={{ justifyContent: "space-between", color: "text" }}>
-                  {t(post.num_comments === 1 ? "xComment" : "xComments", [
-                    formatQuantity(post.num_comments, t),
-                  ])}
-                </div>
-              )}
+              {!mobile && commentLink}
             </Stack>
           </Column>
           {external &&
@@ -194,18 +203,26 @@ export default function Post({
                 sx={{
                   flex: "0 0 auto",
                   ml: "auto",
-                  width: rem(150),
-                  height: rem(100),
+                  width: [rem(100), rem(150)],
                   overflow: "hidden",
                 }}
               >
-                <Link to={post.url} external>
+                <Link
+                  to={post.url}
+                  external
+                  sx={{
+                    borderRadius: 4,
+                    display: "block",
+                    lineHeight: 0,
+                    overflow: "hidden",
+                  }}
+                >
                   <img
                     alt=""
                     sx={{
                       bg: "gray.2",
                       height: post.thumbnail_height || "100%",
-                      width: post.thumbnail_width || "100%",
+                      width: [post.thumbnail_width || "100%"],
                       margin: "0 auto",
                     }}
                     src={post.thumbnail}
@@ -216,12 +233,37 @@ export default function Post({
         </Columns>
         {hasImage && (
           <img
-            sx={{ maxWidth: "100%", margin: "0 auto", maxHeight: "80vh" }}
+            sx={{
+              maxWidth: "100%",
+              margin: "0 auto",
+              maxHeight: "80vh",
+              borderRadius: 4,
+            }}
             alt=""
             src={post.url}
           />
         )}
         <Video post={post} />
+        {mobile && (
+          <div
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+              alignItems: "center",
+            }}
+          >
+            <VotePanel
+              postId={post.id}
+              score={post.score}
+              vote={likesToVote(post.likes)}
+              community={post.subreddit}
+            />
+            <div sx={{ display: "flex", alignItems: "center", height: "100%" }}>
+              {commentLink}
+            </div>
+          </div>
+        )}
       </Stack>
     </Card>
   );

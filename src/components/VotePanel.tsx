@@ -13,6 +13,8 @@ import Button from "./Button";
 import Stack from "./Stack";
 import Tooltip from "./Tooltip";
 import VisuallyHidden from "@reach/visually-hidden";
+import { Columns, Column } from "./Columns";
+import { useBreakpoint } from "../contexts/MediaQueryContext";
 
 export default function VotePanel({
   postId,
@@ -64,33 +66,65 @@ export default function VotePanel({
           },
     [authStatus, mutate, postId, loginUrl]
   );
-  return (
-    <Stack space={1} align="center">
-      <CondTooltip cond={authStatus !== "success"} label={t("loginToVote")}>
-        <div>
-          <VoteButton
-            onClick={sendVote(vote === 1 ? 0 : 1)}
-            selected={vote === 1}
-          >
-            <VisuallyHidden>{t("upvote")}</VisuallyHidden>
-            <FiChevronUp aria-hidden />
-          </VoteButton>
-        </div>
-      </CondTooltip>
-      <div sx={{ textAlign: "center" }}>
-        {score && formatQuantity(score, t)}
+  const breakpoint = useBreakpoint();
+  const mobile = breakpoint === "mobile";
+  const upvote = (
+    <CondTooltip cond={authStatus !== "success"} label={t("loginToVote")}>
+      <div>
+        <VoteButton
+          onClick={sendVote(vote === 1 ? 0 : 1)}
+          selected={vote === 1}
+        >
+          <VisuallyHidden>{t("upvote")}</VisuallyHidden>
+          <FiChevronUp aria-hidden />
+        </VoteButton>
       </div>
-      <CondTooltip cond={authStatus !== "success"} label={t("loginToVote")}>
-        <div>
-          <VoteButton
-            onClick={sendVote(vote === -1 ? 0 : -1)}
-            selected={vote === -1}
-          >
-            <VisuallyHidden>{t("downvote")}</VisuallyHidden>
-            <FiChevronDown aria-hidden />
-          </VoteButton>
+    </CondTooltip>
+  );
+  const scorePanel = (
+    <div
+      sx={{
+        textAlign: "center",
+        wordBreak: "initial",
+      }}
+    >
+      {score && formatQuantity(score, t)}
+    </div>
+  );
+  const downvote = (
+    <CondTooltip cond={authStatus !== "success"} label={t("loginToVote")}>
+      <div>
+        <VoteButton
+          onClick={sendVote(vote === -1 ? 0 : -1)}
+          selected={vote === -1}
+        >
+          <VisuallyHidden>{t("downvote")}</VisuallyHidden>
+          <FiChevronDown aria-hidden />
+        </VoteButton>
+      </div>
+    </CondTooltip>
+  );
+  return mobile ? (
+    <Columns space={2}>
+      <Column>{upvote}</Column>
+      <Column>
+        <div
+          sx={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          {scorePanel}
         </div>
-      </CondTooltip>
+      </Column>
+      <Column>{downvote}</Column>
+    </Columns>
+  ) : (
+    <Stack space={1} align="center">
+      {upvote}
+      {scorePanel}
+      {downvote}
     </Stack>
   );
 }
