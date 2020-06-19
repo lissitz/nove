@@ -69,7 +69,7 @@ const baseStyles = {
 };
 
 export const theme = {
-  breakpoints: ["52em", "64em"],
+  breakpoints: ["48em", "64em"],
   space: pxsToRem([0, 4, 8, 16, 32, 64, 128, 256, 512]),
   fonts: {
     body:
