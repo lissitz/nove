@@ -66,13 +66,8 @@ export function usePostContent(postId: string, community?: string) {
 
 function postContentInitialData(postId: string, community: string) {
   const postListQueries = queryCache.getQueries(["infinitePosts", community]);
-  const siteFeedQueries = [
-    queryCache.getQueries(["infinitePosts", "popular"]),
-    queryCache.getQueries(["infinitePosts", "all"]),
-  ];
-  for (const queries of siteFeedQueries) {
-    if (queries) postListQueries.push(...queries);
-  }
+  const allQueries = queryCache.getQueries(["infinitePosts"]);
+  postListQueries.push(...allQueries);
   for (const query of postListQueries) {
     const data = (query as any).state.data as InfinitePostsResponse[];
     if (data) {
