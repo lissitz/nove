@@ -30,8 +30,12 @@ export default function CommentVotePanel({
     };
   }, []);
   const [mutate] = useVote({
-    onSuccess: (_data, mutationVariables) => {
+    onMutate: (mutationVariables) => {
       //we mutate state instead of refetching as refetching would change the score of all posts and appear strange to the user
+      mounted.current && setScore({ dir: mutationVariables.dir });
+      mounted.current && setVote(mutationVariables.dir);
+    },
+    onSuccess: (_data, mutationVariables) => {
       mounted.current && setScore({ dir: mutationVariables.dir });
       mounted.current && setVote(mutationVariables.dir);
     },
