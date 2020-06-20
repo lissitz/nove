@@ -267,7 +267,7 @@ function loginUrl(desktop: boolean) {
   const random_string = Math.random().toString();
   const redirect_uri = process.env.REACT_APP_REDDIT_REDIRECT_URI;
   const scope =
-    "identity, edit, flair, history, modconfig, modflair, modlog, modposts, modwiki, mysubreddits, privatemessages, read, report, save, submit, subscribe, vote, wikiedit, wikiread";
+    "identity, edit, flair, history, mysubreddits, read, save, submit, subscribe, vote";
   const url = `https://www.reddit.com/api/v1/${authorize}?client_id=${client_id}&response_type=code&state=${random_string}&redirect_uri=${redirect_uri}&duration=permanent&scope=${scope}`;
   return url;
 }
