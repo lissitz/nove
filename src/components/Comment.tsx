@@ -154,6 +154,19 @@ export default function Comment({
               : t("scoreHidden")}
           </span>
           <span>{formatTimestamp(Number(comment.data.created_utc), t)}</span>
+          {showContext && (
+            <React.Fragment>
+              <Link
+                to={`/r/${comment.data.subreddit}`}
+              >{`/r/${comment.data.subreddit}`}</Link>
+              <Link to={contextUrl(comment.data)}>
+                {comment.data.link_title}
+              </Link>
+            </React.Fragment>
+          )}
+          {comment.data.stickied && (
+            <span sx={{ color: getUserColor("moderator") }}>{t("sticky")}</span>
+          )}
           {comment.data.edited !== false && (
             <span sx={{ textDecoration: "italic" }}>
               {t("comment.edited") +
@@ -200,19 +213,6 @@ export default function Comment({
                 </LinkButton>
               </div>
             </React.Fragment>
-          )}
-          {showContext && (
-            <React.Fragment>
-              <Link
-                to={`/r/${comment.data.subreddit}`}
-              >{`/r/${comment.data.subreddit}`}</Link>
-              <Link to={contextUrl(comment.data)}>
-                {comment.data.link_title}
-              </Link>
-            </React.Fragment>
-          )}
-          {comment.data.stickied && (
-            <span sx={{ color: getUserColor("moderator") }}>{t("sticky")}</span>
           )}
           <div
             className="comment-vote-panel"
