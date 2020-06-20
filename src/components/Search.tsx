@@ -8,7 +8,7 @@ import {
 } from "@reach/combobox";
 import { alpha } from "@theme-ui/color";
 //@ts-ignore
-import { Suspense, useState } from "react";
+import { Suspense, useState, useRef } from "react";
 import { queryCache } from "react-query";
 import { Card, jsx } from "theme-ui";
 import { prefetchSearch, useSearch } from "../api";
@@ -23,6 +23,7 @@ export default function Search() {
   const [inputValue, setInputValue] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const ref = useRef<HTMLElement>();
   return (
     <Combobox
       sx={{ width: "100%", position: [undefined, "relative", null] }}
@@ -35,6 +36,7 @@ export default function Search() {
           ?.find((x: any) => x.data.display_name === value)?.data.url;
         if (url) {
           navigate(url);
+          ref.current?.blur?.();
         }
       }}
     >
@@ -50,6 +52,7 @@ export default function Search() {
           py: 1,
           px: 2,
         }}
+        ref={ref}
         onChange={(event: any) => {
           const value = event.target.value;
           setInputValue(value);
@@ -102,8 +105,8 @@ function ComboboxContent({
             key={`${data.id}${searchTerm}`}
             value={data.display_name}
             sx={{
-              px: 2,
-              py: 1,
+              px: [3, null, 2],
+              py: [2, null, 1],
               transition: "background-color 0.15s",
               cursor: "pointer",
               "&&[data-highlighted]": {

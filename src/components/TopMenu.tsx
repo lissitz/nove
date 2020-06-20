@@ -3,8 +3,10 @@ import VisuallyHidden from "@reach/visually-hidden";
 import { FiChevronDown } from "react-icons/fi";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { jsx } from "theme-ui";
+import { useIsDesktop } from "../contexts/MediaQueryContext";
 import { useTranslation } from "../i18n";
 import { useNavigate } from "../router";
+import { tabStyles } from "../theme/theme";
 import rem from "../utils/rem";
 import {
   ListboxButton,
@@ -14,8 +16,6 @@ import {
   ListboxOption,
   ListboxPopover,
 } from "./Listbox";
-import { useIsDesktop } from "../contexts/MediaQueryContext";
-import { tabStyles } from "../theme/theme";
 
 if (process.env.NODE_ENV === "development") {
   const t = (x: any) => {};
@@ -78,12 +78,18 @@ export default function TopMenu({ defaultPeriod }: { defaultPeriod: string }) {
           >
             {t(`periods.${initialPeriod}`)}
           </span>
-          <FiChevronDown aria-hidden sx={{ verticalAlign: "middle" }} />
+          <FiChevronDown
+            aria-hidden
+            sx={{ verticalAlign: "middle", ml: [2, null, 0] }}
+          />
         </ListboxButton>
         <ListboxPopover>
           <ListboxList>
             {periods.map((period) => (
-              <ListboxOption value={period}>
+              <ListboxOption
+                value={period}
+                sx={{ px: [3, null, 2], py: [2, null, 1] }}
+              >
                 <ListboxLink to={to(period)} external>
                   {t(`periods.${period}`)}
                 </ListboxLink>
