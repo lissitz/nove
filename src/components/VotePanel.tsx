@@ -1,24 +1,41 @@
 /** @jsx jsx */
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import VisuallyHidden from "@reach/visually-hidden";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { queryCache } from "react-query";
 import { jsx } from "theme-ui";
 import { useLoginUrl, useVote } from "../api";
 import { Type } from "../constants";
 import { useAuthStatus } from "../contexts/authContext";
+import { useBreakpoint } from "../contexts/MediaQueryContext";
 import { useTranslation } from "../i18n";
 import { ID, Vote } from "../types";
 import { formatQuantity } from "../utils/format";
 import Button from "./Button";
+import { Column, Columns } from "./Columns";
 import Stack from "./Stack";
 import Tooltip from "./Tooltip";
-import VisuallyHidden from "@reach/visually-hidden";
-import { Columns, Column } from "./Columns";
-import { useBreakpoint } from "../contexts/MediaQueryContext";
+
+type VoteState = { vote: Vote; score: number | undefined };
+type VoteAction = { dir: Vote };
+
+function reducer({ score, vote }: VoteState, { dir }: VoteAction): VoteState {
+  return {
+    score: score != null ? score + (dir - vote) : undefined,
+    vote: dir,
+  };
+}
 
 export default function VotePanel({
   postId,
-  score,
+  score: initialScore,
   vote: postVote,
   community,
 }: {
@@ -30,6 +47,11 @@ export default function VotePanel({
   const t = useTranslation();
   const authStatus = useAuthStatus();
   const [vote, setVote] = useState(postVote);
+  const [{ score }, setScore] = useReducer(reducer, {
+    score: initialScore,
+    vote,
+  });
+
   const mounted = useRef(true);
   const loginUrl = useLoginUrl();
   useEffect(() => {
@@ -39,17 +61,14 @@ export default function VotePanel({
   }, []);
   const [mutate] = useVote({
     onMutate: (mutationVariables) => {
+      mounted.current && setScore({ dir: mutationVariables.dir });
       mounted.current && setVote(mutationVariables.dir);
-      return () => setVote(mutationVariables.dir);
     },
     onSuccess: (_data, mutationVariables) => {
+      mounted.current && setScore({ dir: mutationVariables.dir });
       mounted.current && setVote(mutationVariables.dir);
       queryCache.refetchQueries([postId]);
       queryCache.refetchQueries(["infinitePosts", community]);
-    },
-    onError: (_data, mutationVariables, rollback) => {
-      //@ts-ignore
-      mounted.current && rollback();
     },
   });
   const sendVote = useCallback(
