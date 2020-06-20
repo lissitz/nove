@@ -29,6 +29,12 @@ export default function Search() {
       sx={{ width: "100%", position: [undefined, "relative", null] }}
       aria-label={t("search.label")}
       onSelect={(value) => {
+        // hack to override the focus on the input after select with click on mobile,
+        // so the virtual keyboard after selecting an option
+        // https://github.com/reach/reach-ui/blob/main/packages/combobox/src/index.tsx#L939
+        setTimeout(() => {
+          ref.current?.blur?.();
+        }, 100);
         setInputValue("");
         setSearchTerm("");
         let url = (queryCache as any)
@@ -36,7 +42,6 @@ export default function Search() {
           ?.find((x: any) => x.data.display_name === value)?.data.url;
         if (url) {
           navigate(url);
-          ref.current?.blur?.();
         }
       }}
     >
