@@ -33,7 +33,9 @@ const baseStyles = {
     fontSize: 1,
   },
   pre: {
+    maxWidth: "100%",
     fontFamily: "monospace",
+    whiteSpace: "pre",
     overflowX: "auto",
     code: {
       color: "inherit",

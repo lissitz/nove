@@ -84,7 +84,10 @@ export default function Post({
               />
             </Column>
           )}
-          <Column>
+          <Column
+            //fix pre code overflow
+            sx={{ maxWidth: [null, `calc(100% - ${rem(64)})`] }}
+          >
             <Stack space={1} sx={{ wordBreak: "break-word" }}>
               <div>
                 {!showContext && post.link_flair_text && (
@@ -182,10 +185,14 @@ export default function Post({
                           flex: "1 1 auto",
                           maxHeight: rem(256),
                           overflow: "hidden",
+                          maxWidth: "100%",
                           maskImage:
                             "linear-gradient(180deg, black 70%, transparent)",
                         }
-                      : undefined
+                      : {
+                          maxWidth: "100%",
+                          overflow: "hidden",
+                        }
                   }
                 >
                   <div
