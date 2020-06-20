@@ -9,6 +9,7 @@ import rem from "../utils/rem";
 import ButtonLink from "./ButtonLink";
 import NavPanelSkeleton from "./NavPanelSkeleton";
 import Stack from "./Stack";
+import { scrollbar } from "../theme/theme";
 
 export default function NavPanel({
   sortMenu,
@@ -95,6 +96,7 @@ function MyCommunities({
           maxHeight: [null, null, rem(252)], // 7 communities
           paddingRight: [null, null, communities.length > 7 ? 2 : 0],
           overflowY: "auto",
+          ...scrollbar,
         }}
       >
         {communities.map((x) => (

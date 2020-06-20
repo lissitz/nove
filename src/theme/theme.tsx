@@ -196,6 +196,26 @@ export const textAreaStyles = {
   display: "block",
 };
 
+export const scrollbar = {
+  //firefox
+  scrollbarWidth: "thin",
+  scrollbarColor: (theme: any) =>
+    `${theme.colors.textSecondary} rgba(0, 0, 0, 0.1)`,
+
+  "&::-webkit-scrollbar": {
+    width: 5,
+    height: 5,
+  },
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "textSecondary",
+    borderRadius: 4,
+  },
+  "&::-webkit-scrollbar-track": {
+    borderRadius: 4,
+    bg: "rgba(0, 0, 0, 0.1)",
+  },
+};
+
 function pxsToRem(pxs: number[]) {
   return pxs.map((px) => `${px * 0.0625}rem`);
 }

@@ -58,26 +58,6 @@ function Base() {
         sx={{
           display: "flex",
           bg: "background",
-
-          "*": {
-            //firefox
-            scrollbarWidth: "thin",
-            scrollbarColor: (theme: any) =>
-              `${theme.colors.textSecondary} rgba(0, 0, 0, 0.1)`,
-
-            "&::-webkit-scrollbar": {
-              width: 5,
-              height: 5,
-            },
-            "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "textSecondary",
-              borderRadius: 4,
-            },
-            "&::-webkit-scrollbar-track": {
-              borderRadius: 4,
-              bg: "rgba(0, 0, 0, 0.1)",
-            },
-          },
         }}
       >
         <Stack
