@@ -14,9 +14,10 @@ import { useLogOut } from "../contexts/authContext";
 import { useTranslation } from "../i18n";
 import rem from "../utils/rem";
 import Button from "./Button";
-import { FiUser } from "react-icons/fi";
+import { FiUser, FiLogOut, FiSettings } from "react-icons/fi";
 import { useIsDesktop } from "../contexts/MediaQueryContext";
 import VisuallyHidden from "@reach/visually-hidden";
+import { Columns, Column } from "./Columns";
 
 export default function UserMenu({ name }: { name: string }) {
   const t = useTranslation();
@@ -25,14 +26,15 @@ export default function UserMenu({ name }: { name: string }) {
   return (
     <div
       sx={{
-        width: [rem(48), rem(128)],
+        minWidth: [rem(48), rem(192)],
         height: "100%",
         ml: "auto",
         position: [undefined, "relative"],
         textAlign: "start",
         "[data-reach-menu-popover]": {
           right: [2, 0],
-          width: ["auto", "100%"],
+          minWidth: "100%",
+          width: "auto",
         },
       }}
       css={`
@@ -106,6 +108,7 @@ export default function UserMenu({ name }: { name: string }) {
             backgroundColor: "surface",
             borderRadius: 4,
             boxShadow: "0 0 8px rgba(0,0,0,0.125)",
+            "*": { breakWord: "initial" },
           }}
           portal={false}
         >
@@ -115,7 +118,34 @@ export default function UserMenu({ name }: { name: string }) {
             </div>
           )}
           <MenuLink as={Link} sx={menuItemStyles} to={`/u/${name}`}>
-            {t("myProfile")}
+            <Columns space={3}>
+              <Column sx={{ width: "auto" }}>
+                <FiUser
+                  aria-hidden
+                  sx={{
+                    width: rem(20),
+                    height: rem(20),
+                    verticalAlign: "middle",
+                  }}
+                />
+              </Column>
+              <Column>{t("myProfile")}</Column>
+            </Columns>
+          </MenuLink>
+          <MenuLink as={Link} sx={menuItemStyles} to={`/settings`}>
+            <Columns space={3}>
+              <Column sx={{ width: "auto" }}>
+                <FiSettings
+                  aria-hidden
+                  sx={{
+                    width: rem(20),
+                    height: rem(20),
+                    verticalAlign: "middle",
+                  }}
+                />
+              </Column>
+              <Column>{t("appSettings")}</Column>
+            </Columns>
           </MenuLink>
           <MenuItem
             sx={menuItemStyles}
@@ -123,7 +153,19 @@ export default function UserMenu({ name }: { name: string }) {
               logOut();
             }}
           >
-            {t("logOut")}
+            <Columns space={3}>
+              <Column sx={{ width: "auto" }}>
+                <FiLogOut
+                  aria-hidden
+                  sx={{
+                    width: rem(20),
+                    height: rem(20),
+                    verticalAlign: "middle",
+                  }}
+                />
+              </Column>
+              <Column>{t("logOut")}</Column>
+            </Columns>
           </MenuItem>
         </MenuList>
       </Menu>

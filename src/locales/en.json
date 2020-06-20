@@ -57,6 +57,8 @@
   },
   "sortPosts": "Sort posts",
   "top": "top",
+  "hot": "hot",
+  "new": "new",
   "<aMinute": "less than a minute ago",
   "aMinute": "less than a minute ago",
   "xMinutes": "{} minutes ago",
@@ -80,6 +82,7 @@
   "joined": "Joined",
   "leave": "Leave",
   "logOut": "Log Out",
+  "appSettings": "App Settings",
   "memberSince": "Member since",
   "internetPoints": "Internet Points",
   "subscribers": "subscribers",
@@ -108,7 +111,7 @@
   "{} comment": "{} comment",
   "{} comments": "{} comments",
   "hour": "hour",
-  "todat": "today",
+  "today": "today",
   "week": "week",
   "month": "month",
   "year": "year",
@@ -124,5 +127,8 @@
   "textEditor": {
     "submit": "Submit",
     "cancel": "Cancel"
+  },
+  "settings": {
+    "UILanguage": "UI language preference"
   }
 }

@@ -1,0 +1,133 @@
+{
+  "periods": {
+    "hour": "ahora",
+    "today": "hoy",
+    "week": "esta semana",
+    "month": "este mes",
+    "year": "este año",
+    "all": "siempre"
+  },
+  "meta": {
+    "description": "Un cliente para Reddit"
+  },
+  "error": {
+    "serverConnection": "No se puedo conectar con el servidor"
+  },
+  "xPoint": "{} punto",
+  "xPoints": "{} puntos",
+  "scoreHidden": "puntuación oculta",
+  "comment": {
+    "collapse": "Ocultar árbol",
+    "expand": "Expandir árbol",
+    "loading": "cargando...",
+    "error": {
+      "more": "error cargando más respuestas"
+    },
+    "OP": "OP",
+    "originalPoster": "Autor de la publicación",
+    "mod": "mod",
+    "moderatorOfX": "moderador de {}",
+    "edited": "editado",
+    "admin": "admin"
+  },
+  "edit": "editar",
+  "delete": "borrar",
+  "sticky": "fijado",
+  "{} more reply": "{} respuesta más",
+  "{} more replies": "{} respuestas más",
+  "about": "Acerca de",
+  "rules": "Reglas",
+  "login": "Acceder",
+  "siteFeeds": "Feeds del sitio",
+  "communities": "Comunidades",
+  "myCommunities": "Mis comunidades",
+  "postedBy": "publicado por",
+  "xComment": "{} comentario",
+  "xComments": "{} comentarios",
+  "postList": {
+    "loadingMore": "Cargando más...",
+    "loadMore": "Cargar más",
+    "nothing": "Nada más que cargar"
+  },
+  "search": {
+    "label": "buscar",
+    "placeholder": "Buscar...",
+    "noResults": "Ningún resultado encontrado"
+  },
+  "sortPosts": "Ordenar publicaciones",
+  "top": "mejor",
+  "hot": "activo",
+  "new": "reciente",
+  "<aMinute": "hace menos de un minuto",
+  "aMinute": "hace menos de un minuto",
+  "xMinutes": "hace {} minutos",
+  "anHour": "hace una hora",
+  "xHours": "hace {} horas",
+  "aDay": "hace un día",
+  "xDays": "hace {} días",
+  "aMonth": "hace un mes",
+  "xMonths": "hace {} meses",
+  "aYear": "hace un año",
+  "xYears": "hace {} años",
+  "xm": "{}m",
+  "xk": "{}M",
+  "commentForm": {
+    "add": "Añadir",
+    "addAComment": "Añadir un comentario",
+    "loginToComment": "Accede al sitio para comentar",
+    "edit": "Editar"
+  },
+  "join": "Suscribirse",
+  "joined": "Suscrito",
+  "leave": "Dejar de ser miembro",
+  "logOut": "Cerrar sesión",
+  "appSettings": "Ajustes",
+  "memberSince": "Miembro desde",
+  "internetPoints": "Puntos de Internet",
+  "subscribers": "suscriptores",
+  "created": "Creado",
+  "myProfile": "Mi perfil",
+  "userBar": {
+    "filter": "Filtrar"
+  },
+  "sortUser": "Ordenar",
+  "postForm": {
+    "cancel": "Cancelar",
+    "title": "Título",
+    "textOptional": "Texto (opcional)",
+    "oc": "OC",
+    "spoiler": "spoiler",
+    "nsfw": "+18",
+    "post": "Publicación",
+    "link": "Enlace"
+  },
+  "sortComments": "Ordenar comentarios",
+  "createPost": "Crear una publicación",
+  "drawer": {
+    "close": "cerrar",
+    "open": "abrir"
+  },
+  "{} comment": "{} comentario",
+  "{} comments": "{} comentarios",
+  "hour": "hora",
+  "today": "hoy",
+  "week": "semana",
+  "month": "mes",
+  "year": "año",
+  "all": "todos",
+  "loginToVote": "Accede para votar",
+  "themes": {
+    "default": "Claro",
+    "deep": "Oscuro"
+  },
+  "themeListbox": {
+    "choose": "Elige un tema"
+  },
+  "textEditor": {
+    "submit": "Publicar",
+    "cancel": "Cancelar"
+  },
+  "settings": {
+    "UILanguage": "Idioma de la interfaz"
+  }
+}

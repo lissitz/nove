@@ -23,6 +23,7 @@ import SubmitPost from "../pages/SubmitPost";
 import User from "../pages/User";
 import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 import { parseCommunity } from "../utils/params";
+import Settings from "../pages/Settings";
 
 export const routes = (authStatus: AuthStatus, token: string) => {
   const community = {
@@ -69,6 +70,11 @@ export const routes = (authStatus: AuthStatus, token: string) => {
       prefetchUserInfo(token, params.username);
     },
   };
+
+  const settings = {
+    element: <Settings />,
+    caseSensitive: false,
+  };
   return [
     {
       path: "*",
@@ -98,9 +104,9 @@ export const routes = (authStatus: AuthStatus, token: string) => {
         ...(authStatus === "success" ? [{ path: "submit", ...submit }] : []),
       ],
     },
-
     { path: "u/:username", ...user },
     { path: "u/:username/:where", ...user },
+    { path: "settings", ...settings },
   ];
 };
 export default function Router() {

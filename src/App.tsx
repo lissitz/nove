@@ -8,7 +8,7 @@ import { jsx, ThemeProvider } from "theme-ui";
 import Stack from "./components/Stack";
 import { AuthProvider } from "./contexts/authContext";
 import { MediaQueryProvider } from "./contexts/MediaQueryContext";
-import { useTranslation } from "./i18n";
+import { useTranslation, LanguageProvider } from "./i18n";
 import Router from "./router";
 import BaseStyles from "./styles/base";
 import "./styles/normalize.css";
@@ -26,15 +26,17 @@ function App() {
             staleTime: 0,
           }}
         >
-          <MediaQueryProvider>
-            <HelmetProvider>
-              <BrowserRouter>
-                <AuthProvider>
-                  <Base />
-                </AuthProvider>
-              </BrowserRouter>
-            </HelmetProvider>
-          </MediaQueryProvider>
+          <LanguageProvider>
+            <MediaQueryProvider>
+              <HelmetProvider>
+                <BrowserRouter>
+                  <AuthProvider>
+                    <Base />
+                  </AuthProvider>
+                </BrowserRouter>
+              </HelmetProvider>
+            </MediaQueryProvider>
+          </LanguageProvider>
         </ReactQueryConfigProvider>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={true} />

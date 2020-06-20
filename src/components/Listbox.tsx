@@ -52,8 +52,8 @@ function ListboxOption(props: React.ComponentProps<typeof RListboxOption>) {
   return (
     <RListboxOption
       sx={{
-        px: 2,
-        py: 1,
+        px: 3,
+        py: 2,
         cursor: "pointer",
         "&&:hover": {
           backgroundColor: alpha("text", 0.05),

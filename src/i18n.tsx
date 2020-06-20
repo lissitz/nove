@@ -1,24 +1,36 @@
 import React, { useState, useContext, createContext, useCallback } from "react";
-import locale from "./locales/en.json";
+import en from "./locales/en.json";
+import es from "./locales/es.json";
 
-const languages = {
+const locales = {
+  en,
+  es,
+};
+
+export const languages = {
   en: { name: "English" },
   es: { name: "Español" },
 } as const;
-type Languages = keyof typeof languages;
 
-const translate = (language: Languages, x: string) => {
-  let dict = locale as any;
+export type Language = keyof typeof languages;
+
+const translate = (language: Language, x: string): string => {
+  let dict = locales[language] as any;
+  let key = x;
   while (true) {
-    const pointIndex = x.indexOf(".");
+    const pointIndex = key.indexOf(".");
     if (pointIndex === -1) break;
-    dict = dict[x.slice(0, pointIndex)];
-    x = x.slice(pointIndex + 1);
-    if (!dict) return x;
+    dict = dict[key.slice(0, pointIndex)];
+    key = key.slice(pointIndex + 1);
+    if (!dict)
+      return language === defaultLanguage ? key : translate(defaultLanguage, x);
   }
-  return dict[x] || x;
+  return (
+    dict[key] ||
+    (language === defaultLanguage ? key : translate(defaultLanguage, x))
+  );
 };
-const translator = (language: Languages) => (
+const translator = (language: Language) => (
   key: string,
   replace?: string[]
 ) => {
@@ -29,27 +41,42 @@ const translator = (language: Languages) => (
   return translation;
 };
 
-const defaultLanguage = Object.keys(languages)[0] as Languages;
+const defaultLanguage = Object.keys(languages)[0] as Language;
 const LanguageContext = createContext({
   language: defaultLanguage,
   t: translator(defaultLanguage),
 });
 
+function noop() {}
+const SetLanguageContext = createContext<
+  React.Dispatch<React.SetStateAction<Language>> | Function
+>(noop);
+
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language] = useState(defaultLanguage);
+  const [language, setLanguage] = useState(defaultLanguage);
   const t = useCallback(translator(language), [language]);
   return (
-    <LanguageContext.Provider value={{ language, t }}>
-      {children}
-    </LanguageContext.Provider>
+    <SetLanguageContext.Provider value={setLanguage}>
+      <LanguageContext.Provider value={{ language, t }}>
+        {children}
+      </LanguageContext.Provider>
+    </SetLanguageContext.Provider>
   );
 }
 
 export function useTranslation() {
   const t = useContext(LanguageContext)?.t;
-  if (!t)
-    throw new Error("useTranslation must have a LanguageProvider as a parent");
   return t;
+}
+
+export function useSetLanguage() {
+  const value = useContext(SetLanguageContext);
+  return value;
+}
+
+export function useLanguage() {
+  const language = useContext(LanguageContext)?.language;
+  return language;
 }
 
 export function tr(x: string) {
