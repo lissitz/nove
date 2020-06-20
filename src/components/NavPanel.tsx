@@ -93,24 +93,8 @@ function MyCommunities({
         sx={{
           width: `100%`,
           maxHeight: [null, null, rem(252)], // 7 communities
-          overflowY: "auto",
-          //firefox
-          scrollbarWidth: "thin",
-          scrollbarColor: (theme: any) =>
-            `${theme.colors.textSecondary} rgba(0, 0, 0, 0.1)`,
-
           paddingRight: [null, null, communities.length > 7 ? 2 : 0],
-          "&::-webkit-scrollbar": {
-            width: 5,
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "textSecondary",
-            borderRadius: 4,
-          },
-          "&::-webkit-scrollbar-track": {
-            borderRadius: 4,
-            bg: "rgba(0, 0, 0, 0.1)",
-          },
+          overflowY: "auto",
         }}
       >
         {communities.map((x) => (
