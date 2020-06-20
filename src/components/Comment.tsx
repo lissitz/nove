@@ -29,9 +29,6 @@ import Stack from "./Stack";
 import TextEditor from "./TextEditor";
 import CommentVotePanel from "./CommentVotePanel";
 
-type VoteState = { vote: Vote; score: number | undefined };
-type VoteAction = { dir: Vote };
-
 export default function Comment({
   comment,
   community,
@@ -44,6 +41,49 @@ export default function Comment({
   postId: string;
   sort: CommentSortType;
   showContext?: boolean;
+}) {
+  return comment.kind === "more" ? (
+    <More
+      postId={postId}
+      data={comment.data}
+      sort={sort}
+      key={comment.data.id}
+      community={community}
+    />
+  ) : (
+    <TrueComment
+      comment={comment.data}
+      postId={postId}
+      sort={sort}
+      key={comment.data.id}
+      community={community}
+      showContext={showContext}
+    />
+  );
+}
+
+type VoteState = { vote: Vote; score: number | undefined };
+type VoteAction = { dir: Vote };
+
+function reducer({ score, vote }: VoteState, { dir }: VoteAction): VoteState {
+  return {
+    score: score != null ? score + (dir - vote) : undefined,
+    vote: dir,
+  };
+}
+
+function TrueComment({
+  comment,
+  postId,
+  community,
+  sort,
+  showContext,
+}: {
+  comment: CommentData;
+  postId: string;
+  community: string;
+  sort: CommentSortType;
+  showContext: boolean;
 }) {
   const t = useTranslation();
   const isAuthenticated = useIsAuthenticated();
@@ -62,28 +102,12 @@ export default function Comment({
   const [isEditing, setIsEditing] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const [colorMode] = useColorMode();
-  const [{ score }, setScore] = useReducer(
-    ({ score, vote }: VoteState, { dir }: VoteAction): VoteState => {
-      return comment.kind === Type.Comment
-        ? { score: score != null ? score + (dir - vote) : undefined, vote: dir }
-        : { score: undefined, vote: 0 };
-    },
-    comment.kind === Type.Comment
-      ? {
-          score: comment.data.score,
-          vote: likesToVote(comment.data.likes),
-        }
-      : { score: undefined, vote: 0 }
-  );
-  return comment.kind === "more" ? (
-    <More
-      postId={postId}
-      data={comment.data}
-      sort={sort}
-      key={comment.data.id}
-      community={community}
-    />
-  ) : (
+
+  const [{ score }, setScore] = useReducer(reducer, {
+    score: comment.score,
+    vote: likesToVote(comment.likes),
+  });
+  return (
     <div
       sx={{
         pl: 3,
@@ -118,27 +142,27 @@ export default function Comment({
         >
           <div sx={{ display: "inline" }}>
             <Link
-              to={`/u/${comment.data.author}`}
+              to={`/u/${comment.author}`}
               sx={{
-                color: getUserColor(comment.data.distinguished) || "gray.8",
-                fontWeight: comment.data.is_submitter ? "bold" : undefined,
+                color: getUserColor(comment.distinguished) || "gray.8",
+                fontWeight: comment.is_submitter ? "bold" : undefined,
               }}
             >
-              {comment.data.author}
+              {comment.author}
             </Link>
           </div>
-          {comment.data.distinguished === "admin" && (
+          {comment.distinguished === "admin" && (
             <span>{t("comment.admin")}</span>
           )}
-          {comment.data.distinguished === "moderator" && (
+          {comment.distinguished === "moderator" && (
             <abbr
-              title={t("comment.moderatorOfX", [comment.data.subreddit])}
+              title={t("comment.moderatorOfX", [comment.subreddit])}
               sx={{ "&&": { textDecoration: "none", cursor: "default" } }}
             >
               {t("comment.mod")}
             </abbr>
           )}
-          {comment.data.is_submitter && (
+          {comment.is_submitter && (
             <abbr
               title={t("comment.originalPoster")}
               sx={{ "&&": { textDecoration: "none", cursor: "default" } }}
@@ -153,28 +177,26 @@ export default function Comment({
                 : t("xPoints", [formatQuantity(score, t)])
               : t("scoreHidden")}
           </span>
-          <span>{formatTimestamp(Number(comment.data.created_utc), t)}</span>
+          <span>{formatTimestamp(Number(comment.created_utc), t)}</span>
           {showContext && (
             <React.Fragment>
               <Link
-                to={`/r/${comment.data.subreddit}`}
-              >{`/r/${comment.data.subreddit}`}</Link>
-              <Link to={contextUrl(comment.data)}>
-                {comment.data.link_title}
-              </Link>
+                to={`/r/${comment.subreddit}`}
+              >{`/r/${comment.subreddit}`}</Link>
+              <Link to={contextUrl(comment)}>{comment.link_title}</Link>
             </React.Fragment>
           )}
-          {comment.data.stickied && (
+          {comment.stickied && (
             <span sx={{ color: getUserColor("moderator") }}>{t("sticky")}</span>
           )}
-          {comment.data.edited !== false && (
+          {comment.edited !== false && (
             <span sx={{ textDecoration: "italic" }}>
               {t("comment.edited") +
                 " " +
-                formatTimestamp(Number(comment.data.edited), t)}
+                formatTimestamp(Number(comment.edited), t)}
             </span>
           )}
-          {isAuthenticated && !comment.data.locked && (
+          {isAuthenticated && !comment.locked && (
             <div
               className="reply-button"
               sx={{
@@ -192,7 +214,7 @@ export default function Comment({
               </LinkButton>
             </div>
           )}
-          {isAuthenticated && comment.data.author === me?.name && (
+          {isAuthenticated && comment.author === me?.name && (
             <React.Fragment>
               <div sx={{ display: "inline" }}>
                 <LinkButton
@@ -206,7 +228,7 @@ export default function Comment({
               <div sx={{ display: "inline" }}>
                 <LinkButton
                   onClick={() => {
-                    del(comment.data.name);
+                    del(comment.name);
                   }}
                 >
                   {t("delete")}
@@ -219,17 +241,17 @@ export default function Comment({
             sx={{ display: "inline", opacity: 0, transition: "opacity 200ms" }}
           >
             <CommentVotePanel
-              name={comment.data.name}
+              name={comment.name}
               setScore={setScore}
-              vote={likesToVote(comment.data.likes)}
+              vote={likesToVote(comment.likes)}
             />
           </div>
         </div>
         {isEditing ? (
           <CommentEditor
             community={community}
-            text={comment.data.body}
-            id={comment.data.name}
+            text={comment.body}
+            id={comment.name}
             postId={postId}
             sort={sort}
             setIsEditing={setIsEditing}
@@ -243,13 +265,13 @@ export default function Comment({
               width: "100%",
             }}
             dangerouslySetInnerHTML={{
-              __html: sanitize(comment.data.body_html),
+              __html: sanitize(comment.body_html),
             }}
           />
         )}
       </Stack>
       <div sx={{ position: "relative", mt: 3, mb: 3 }}>
-        {(comment.data.replies || isReplying) && (
+        {(comment.replies || isReplying) && (
           <React.Fragment>
             <button
               sx={{
@@ -328,15 +350,15 @@ export default function Comment({
             >
               {isReplying && (
                 <Reply
-                  parentId={comment.data.name}
+                  parentId={comment.name}
                   setIsReplying={setIsReplying}
                   commentsQueryKey={["comments", postId, community, sort, ""]}
                   comment={comment}
                   contentQueryKey={["content", postId]}
                 />
               )}
-              {comment.data.replies &&
-                comment.data.replies.data.children.map((x) =>
+              {comment.replies &&
+                comment.replies.data.children.map((x) =>
                   x.kind === Type.Comment ? (
                     <Comment
                       comment={x}
