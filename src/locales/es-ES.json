@@ -128,6 +128,7 @@
   "settings": {
     "UILanguage": "Idioma de la interfaz"
   },
+  "flair": "etiqueta",
   "commentSort": {
     "new": "nuevo",
     "best": "mejor",

@@ -88,7 +88,12 @@ export default function Post({
             <Stack space={1} sx={{ wordBreak: "break-word" }}>
               <div>
                 {!showContext && post.link_flair_text && (
-                  <FlairBadge post={post} />
+                  <section
+                    aria-label={t("flair")}
+                    sx={{ display: "inline-block" }}
+                  >
+                    <FlairBadge post={post} />
+                  </section>
                 )}
                 <H sx={{ fontSize: 3, display: "inline" }}>
                   {external ? (

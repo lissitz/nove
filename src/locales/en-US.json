@@ -129,6 +129,7 @@
   "settings": {
     "UILanguage": "UI language preference"
   },
+  "flair": "flair",
   "commentSort": {
     "new": "new",
     "best": "best",
