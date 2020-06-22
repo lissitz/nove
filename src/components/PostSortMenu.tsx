@@ -37,7 +37,7 @@ export default function PostSortMenu({
               to={`${community !== "" ? "/r/" : ""}${community}/${x}`}
               selected={x === sort}
             >
-              {x}
+              {t(`postSort.${x}`)}
             </ButtonLink>
           </div>
         ))}
@@ -53,7 +53,7 @@ export default function PostSortMenu({
             selected={x === sort}
             sx={tabStyles}
           >
-            {x}
+            {t(`postSort.${x}`)}
           </ButtonLink>
         </Column>
       ))}

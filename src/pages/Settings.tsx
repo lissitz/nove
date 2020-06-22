@@ -15,6 +15,7 @@ import rem from "../utils/rem";
 export default function Settings() {
   const t = useTranslation();
   const title = t("appSettings");
+  const languageLabelId = "language-label";
   return (
     <React.Fragment>
       <Helmet>
@@ -52,11 +53,11 @@ export default function Settings() {
                           alignItems: "center",
                         }}
                       >
-                        <Column sx={{ width: "auto" }}>
+                        <Column sx={{ width: "auto" }} id={languageLabelId}>
                           {t("settings.UILanguage")}
                         </Column>
                         <Column sx={{ width: "auto" }}>
-                          <LanguageListbox />
+                          <LanguageListbox labelId={languageLabelId} />
                         </Column>
                       </Columns>
                     </Stack>

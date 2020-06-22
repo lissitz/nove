@@ -28,7 +28,7 @@ export default function UserOverviewSortMenu({ sort }: { sort: string }) {
             }}
           >
             <ButtonLink to={`?sort=${x}`} selected={x === sort}>
-              {x}
+              {t(`userOverviewSort.${x}`)}
             </ButtonLink>
           </li>
         ))}
@@ -40,7 +40,7 @@ export default function UserOverviewSortMenu({ sort }: { sort: string }) {
       {currentOptions.map((x) => (
         <Column as="li" key={x} sx={{ flex: "1 1 auto" }}>
           <ButtonLink to={`?sort=${x}`} selected={x === sort} sx={tabStyles}>
-            {x}
+            {t(`userOverviewSort.${x}`)}
           </ButtonLink>
         </Column>
       ))}

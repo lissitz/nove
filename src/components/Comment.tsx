@@ -210,7 +210,7 @@ function TrueComment({
                   setIsReplying(true);
                 }}
               >
-                {t("reply")}
+                {t("comment.reply")}
               </LinkButton>
             </div>
           )}

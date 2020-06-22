@@ -50,7 +50,7 @@ export default function UserBar({
                       to={`/u/${username}/${option}`}
                       selected={where === option}
                     >
-                      {option}
+                      {t(`userBar.${option}`)}
                     </ButtonLink>
                   </Inline>
                 ))}
@@ -71,13 +71,13 @@ export default function UserBar({
           ? privateUserBarOptions
           : publicUserBarOptions
         ).map((option) => (
-          <Column as="li" sx={{ minWidth: "25%" }}>
+          <Column as="li" sx={{ width: "auto", whiteSpace: "nowrap" }}>
             <ButtonLink
               to={`/u/${username}/${option}`}
               selected={where === option}
               sx={tabStyles}
             >
-              {option}
+              {t(`userBar.${option}`)}
             </ButtonLink>
           </Column>
         ))}

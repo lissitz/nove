@@ -11,20 +11,19 @@ import { ComponentProps, Suspense, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { FiChevronDown } from "react-icons/fi";
 import { queryCache } from "react-query";
+import { useLocation } from "react-router-dom";
 import { Card, jsx, useColorMode } from "theme-ui";
 import { useCommunityInfo, useCommunityRules, useSubscribe } from "../api";
 import { useIsAuthenticated } from "../contexts/authContext";
 import { useTranslation } from "../i18n";
 import type { CommunityInfoData } from "../types";
 import { formatQuantity, sanitize } from "../utils/format";
+import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 import rem from "../utils/rem";
 import Button, { callToActionStyles, outlineStyles } from "./Button";
 import ButtonLink from "./ButtonLink";
 import Skeleton from "./Skeleton";
 import Stack from "./Stack";
-import { useLocation } from "react-router-dom";
-import VisuallyHidden from "@reach/visually-hidden";
-import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 
 const show_description = false;
 function Success({ community }: { community: string }) {
@@ -238,7 +237,6 @@ function CommunityRules({ community }: { community: string }) {
               >
                 <div sx={{ display: "flex" }}>
                   <div>{rule.short_name}</div>
-                  <VisuallyHidden>{" " + t("expandRule")}</VisuallyHidden>
                   <div sx={{ marginLeft: "auto" }} aria-hidden>
                     <FiChevronDown
                       aria-hidden

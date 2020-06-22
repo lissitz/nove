@@ -41,14 +41,11 @@ export default function PostForm({
     >
       <Stack space={2} sx={{ width: "100%" }}>
         <Columns as={TabList} space={2} sx={{ width: "100%" }}>
-          {
-            //[t("Post"), t("Link"), t("Image"), t("Video"), t("GIF")].map((text, i) => (
-            [t("Post"), t("Link")].map((text, i) => (
-              <Column>
-                <Tab index={i}>{text}</Tab>
-              </Column>
-            ))
-          }
+          {[t("postForm.post"), t("postForm.link")].map((text, i) => (
+            <Column>
+              <Tab index={i}>{text}</Tab>
+            </Column>
+          ))}
         </Columns>
         <TabPanels sx={{ width: "100%" }}>
           {Array(5)

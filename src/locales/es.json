@@ -28,8 +28,11 @@
     "mod": "mod",
     "moderatorOfX": "moderador de {}",
     "edited": "editado",
-    "admin": "admin"
+    "admin": "admin",
+    "reply": "reply"
   },
+  "upvote": "upvote",
+  "downvote": "downvote",
   "edit": "editar",
   "delete": "borrar",
   "sticky": "fijado",
@@ -46,20 +49,16 @@
   "xComments": "{} comentarios",
   "postList": {
     "loadingMore": "Cargando más...",
-    "loadMore": "Cargar más",
-    "nothing": "Nada más que cargar"
+    "loadMore": "Cargar más"
   },
   "search": {
     "label": "buscar",
-    "placeholder": "Buscar...",
-    "noResults": "Ningún resultado encontrado"
+    "placeholder": "Buscar..."
   },
   "sortPosts": "Ordenar publicaciones",
   "top": "mejor",
-  "hot": "activo",
-  "new": "reciente",
   "<aMinute": "hace menos de un minuto",
-  "aMinute": "hace menos de un minuto",
+  "aMinute": "hace un minuto",
   "xMinutes": "hace {} minutos",
   "anHour": "hace una hora",
   "xHours": "hace {} horas",
@@ -69,13 +68,12 @@
   "xMonths": "hace {} meses",
   "aYear": "hace un año",
   "xYears": "hace {} años",
-  "xm": "{}m",
-  "xk": "{}M",
+  "xm": "{}M",
+  "xk": "{}mil",
   "commentForm": {
     "add": "Añadir",
     "addAComment": "Añadir un comentario",
-    "loginToComment": "Accede al sitio para comentar",
-    "edit": "Editar"
+    "loginToComment": "Accede al sitio para comentar"
   },
   "join": "Suscribirse",
   "joined": "Suscrito",
@@ -88,7 +86,15 @@
   "created": "Creado",
   "myProfile": "Mi perfil",
   "userBar": {
-    "filter": "Filtrar"
+    "filter": "Filtrar",
+    "overview": "resumen",
+    "submitted": "enviados",
+    "comments": "comentarios",
+    "upvoted": "votos positivos",
+    "downvoted": "votos negativos",
+    "hidden": "ocultado",
+    "saved": "guardado",
+    "gilded": "dorado"
   },
   "sortUser": "Ordenar",
   "postForm": {
@@ -107,14 +113,6 @@
     "close": "cerrar",
     "open": "abrir"
   },
-  "{} comment": "{} comentario",
-  "{} comments": "{} comentarios",
-  "hour": "hora",
-  "today": "hoy",
-  "week": "semana",
-  "month": "mes",
-  "year": "año",
-  "all": "todos",
   "loginToVote": "Accede para votar",
   "themes": {
     "default": "Claro",
@@ -129,5 +127,24 @@
   },
   "settings": {
     "UILanguage": "Idioma de la interfaz"
-  }
+  },
+  "commentSort": {
+    "new": "nuevo",
+    "best": "mejor",
+    "top": "más votado",
+    "controversial": "controvertido",
+    "old": "antiguo",
+    "qa": "respondido"
+  },
+  "postSort": {
+    "hot": "activa",
+    "new": "nueva",
+    "top": "más votada"
+  },
+  "userOverviewSort": {
+    "hot": "activo",
+    "new": "nuevo",
+    "top": "más votado"
+  },
+  "sidebar": "Más información"
 }

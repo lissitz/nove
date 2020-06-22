@@ -15,6 +15,7 @@ export const commentSortOptions = [
   "old",
   "qa",
 ] as const;
+
 export const defaultCommentSort = "best";
 
 export const postSortOptions = ["hot", "new", "top"] as const;
@@ -82,8 +83,3 @@ export const postKind = ["self", "link", "image", "video", "videogif"] as const;
 export const allowEmbeds = true;
 
 export const themes = ["default", "deep"] as const;
-if (process.env.NODE_ENV === "development") {
-  const t = (x: any) => {};
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const _ = [t("themes.default"), t("themes.deep")];
-}

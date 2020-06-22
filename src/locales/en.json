@@ -28,8 +28,11 @@
     "mod": "mod",
     "moderatorOfX": "moderator of {}",
     "edited": "edited",
-    "admin": "admin"
+    "admin": "admin",
+    "reply": "reply"
   },
+  "upvote": "upvote",
+  "downvote": "downvote",
   "edit": "edit",
   "delete": "delete",
   "sticky": "sticky",
@@ -47,20 +50,16 @@
   "xComments": "{} comments",
   "postList": {
     "loadingMore": "Loading more...",
-    "loadMore": "Load more",
-    "nothing": "Nothing more to load"
+    "loadMore": "Load more"
   },
   "search": {
     "label": "search",
-    "placeholder": "Search...",
-    "noResults": "No results found"
+    "placeholder": "Search..."
   },
   "sortPosts": "Sort posts",
   "top": "top",
-  "hot": "hot",
-  "new": "new",
   "<aMinute": "less than a minute ago",
-  "aMinute": "less than a minute ago",
+  "aMinute": "a minute ago",
   "xMinutes": "{} minutes ago",
   "anHour": "an hour ago",
   "xHours": "{} hours ago",
@@ -75,8 +74,7 @@
   "commentForm": {
     "add": "Add",
     "addAComment": "Add a comment",
-    "loginToComment": "Login to comment",
-    "edit": "edit"
+    "loginToComment": "Login to comment"
   },
   "join": "Join",
   "joined": "Joined",
@@ -89,7 +87,15 @@
   "created": "Created",
   "myProfile": "My Profile",
   "userBar": {
-    "filter": "Filter"
+    "filter": "Filter",
+    "overview": "overview",
+    "submitted": "submitted",
+    "comments": "comments",
+    "upvoted": "upvoted",
+    "downvoted": "downvoted",
+    "hidden": "hidden",
+    "saved": "saved",
+    "gilded": "gilded"
   },
   "sortUser": "Sort",
   "postForm": {
@@ -108,14 +114,6 @@
     "close": "close",
     "open": "open"
   },
-  "{} comment": "{} comment",
-  "{} comments": "{} comments",
-  "hour": "hour",
-  "today": "today",
-  "week": "week",
-  "month": "month",
-  "year": "year",
-  "all": "all",
   "loginToVote": "Login to vote",
   "themes": {
     "default": "Light",
@@ -130,5 +128,23 @@
   },
   "settings": {
     "UILanguage": "UI language preference"
+  },
+  "commentSort": {
+    "new": "new",
+    "best": "best",
+    "top": "top",
+    "controversial": "controversial",
+    "old": "old",
+    "qa": "qa"
+  },
+  "postSort": {
+    "hot": "hot",
+    "new": "new",
+    "top": "top"
+  },
+  "userOverviewSort": {
+    "hot": "hot",
+    "new": "new",
+    "top": "top"
   }
 }

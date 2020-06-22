@@ -28,7 +28,7 @@ export default function CommentSortMenu() {
             key={x}
           >
             <ButtonLink to={`?sort=${x}`} selected={x === sort}>
-              {x}
+              {t(`commentSort.${x}`)}
             </ButtonLink>
           </div>
         ))}

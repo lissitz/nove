@@ -58,7 +58,7 @@ export default function Post({
       sx={{ fontSize: 1, color: [null, "link"] }}
       preload
     >
-      {t(post.num_comments === 1 ? "{} comment" : "{} comments", [
+      {t(post.num_comments === 1 ? "xComment" : "xComments", [
         formatQuantity(post.num_comments, t),
       ])}
     </Link>

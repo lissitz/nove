@@ -17,18 +17,6 @@ import {
   ListboxPopover,
 } from "./Listbox";
 
-if (process.env.NODE_ENV === "development") {
-  const t = (x: any) => {};
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const keys = [
-    t("hour"),
-    t("today"),
-    t("week"),
-    t("month"),
-    t("year"),
-    t("all"),
-  ];
-}
 const periods = ["hour", "today", "week", "month", "year", "all"] as const;
 const labelId = "top-menu";
 type Period = typeof periods[number];

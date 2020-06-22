@@ -1,15 +1,8 @@
 /** @jsx jsx */
-import VisuallyHidden from "@reach/visually-hidden";
 import * as React from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { jsx } from "theme-ui";
-import {
-  Language,
-  languages,
-  useLanguage,
-  useSetLanguage,
-  useTranslation,
-} from "../i18n";
+import { Language, languages, useLanguage, useSetLanguage } from "../i18n";
 import rem from "../utils/rem";
 import { Column, Columns } from "./Columns";
 import {
@@ -20,17 +13,12 @@ import {
   ListboxPopover,
 } from "./Listbox";
 
-const labelId = "language-listbox";
-export default function LanguageListbox() {
-  const t = useTranslation();
+export default function LanguageListbox({ labelId }: { labelId: string }) {
   const setLanguage = useSetLanguage();
   const language = useLanguage();
 
   return (
     <React.Fragment>
-      <VisuallyHidden id={labelId}>
-        {t("languageListbox.select")}
-      </VisuallyHidden>
       <ListboxInput
         sx={{ width: "100%", height: "100%" }}
         aria-labelledby={labelId}
