@@ -1,4 +1,10 @@
-import React, { useState, useContext, createContext, useCallback } from "react";
+import React, {
+  useState,
+  useContext,
+  createContext,
+  useCallback,
+  useEffect,
+} from "react";
 import en from "./locales/en.json";
 import es from "./locales/es.json";
 
@@ -53,7 +59,21 @@ const SetLanguageContext = createContext<
 >(noop);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useState(defaultLanguage);
+  const key = "nove-language";
+  const [language, setLanguage] = useState(() => {
+    try {
+      const value = localStorage.getItem(key);
+      let state = JSON.parse(value || "null") || defaultLanguage;
+      return state;
+    } catch {
+      return defaultLanguage;
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem(key, JSON.stringify(language));
+    } catch {}
+  }, [language]);
   const t = useCallback(translator(language), [language]);
   return (
     <SetLanguageContext.Provider value={setLanguage}>
