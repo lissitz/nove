@@ -20,7 +20,13 @@ import {
 const periods = ["hour", "today", "week", "month", "year", "all"] as const;
 const labelId = "top-menu";
 type Period = typeof periods[number];
-export default function TopMenu({ defaultPeriod }: { defaultPeriod: string }) {
+export default function TopMenu({
+  title,
+  defaultPeriod,
+}: {
+  title: string;
+  defaultPeriod: string;
+}) {
   const t = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,7 +42,7 @@ export default function TopMenu({ defaultPeriod }: { defaultPeriod: string }) {
   return (
     <div sx={{ width: "100%" }}>
       <VisuallyHidden id={labelId}>
-        {`${t("top")} - ${t(`periods.${initialPeriod}`)}}`}
+        {`${title} - ${t(`periods.${initialPeriod}`)}}`}
       </VisuallyHidden>
       <ListboxInput
         sx={{ width: "100%" }}
@@ -47,7 +53,7 @@ export default function TopMenu({ defaultPeriod }: { defaultPeriod: string }) {
         }}
       >
         <ListboxButton sx={!isDesktop ? tabStyles : {}}>
-          <span>{t("top")}</span>
+          <span>{title}</span>
           <span
             sx={{
               color: "text",

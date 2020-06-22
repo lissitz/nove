@@ -32,7 +32,9 @@ export default function UserOverviewSortMenu({ sort }: { sort: string }) {
             </ButtonLink>
           </li>
         ))}
-        {sort === "top" && <TopMenu defaultPeriod="all" />}
+        {sort === "top" && (
+          <TopMenu title={t("userOverview.top")} defaultPeriod="all" />
+        )}
       </Stack>
     </Stack>
   ) : (
@@ -46,7 +48,7 @@ export default function UserOverviewSortMenu({ sort }: { sort: string }) {
       ))}
       {sort === "top" && (
         <Column as="li">
-          <TopMenu defaultPeriod="all" />
+          <TopMenu title={t("userOverview.top")} defaultPeriod="all" />
         </Column>
       )}
     </Columns>

@@ -41,7 +41,9 @@ export default function PostSortMenu({
             </ButtonLink>
           </div>
         ))}
-        {sort === "top" && <TopMenu defaultPeriod="today" />}
+        {sort === "top" && (
+          <TopMenu title={t("postSort.top")} defaultPeriod="today" />
+        )}
       </Stack>
     </Stack>
   ) : (
@@ -59,7 +61,7 @@ export default function PostSortMenu({
       ))}
       {sort === "top" && (
         <Column as="li">
-          <TopMenu defaultPeriod="today" />
+          <TopMenu title={t("postSort.top")} defaultPeriod="today" />
         </Column>
       )}
     </Columns>
