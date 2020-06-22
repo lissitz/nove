@@ -71,7 +71,10 @@ export default function UserBar({
           ? privateUserBarOptions
           : publicUserBarOptions
         ).map((option) => (
-          <Column as="li" sx={{ width: "auto", whiteSpace: "nowrap" }}>
+          <Column
+            as="li"
+            sx={{ width: "auto", whiteSpace: "nowrap", flex: "1 0 auto" }}
+          >
             <ButtonLink
               to={`/u/${username}/${option}`}
               selected={where === option}
