@@ -56,7 +56,7 @@
     "placeholder": "Buscar..."
   },
   "sortPosts": "Ordenar publicaciones",
-  "top": "mejor",
+  "top": "más votado",
   "<aMinute": "hace menos de un minuto",
   "aMinute": "hace un minuto",
   "xMinutes": "hace {} minutos",

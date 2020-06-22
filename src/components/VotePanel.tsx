@@ -15,9 +15,8 @@ import { useLoginUrl, useVote } from "../api";
 import { Type } from "../constants";
 import { useAuthStatus } from "../contexts/authContext";
 import { useBreakpoint } from "../contexts/MediaQueryContext";
-import { useTranslation } from "../i18n";
+import { useTranslation, useFormat } from "../i18n";
 import { ID, Vote } from "../types";
-import { formatQuantity } from "../utils/format";
 import Button from "./Button";
 import { Column, Columns } from "./Columns";
 import Stack from "./Stack";
@@ -45,6 +44,7 @@ export default function VotePanel({
   community: string;
 }) {
   const t = useTranslation();
+  const format = useFormat();
   const authStatus = useAuthStatus();
   const [vote, setVote] = useState(postVote);
   const [{ score }, setScore] = useReducer(reducer, {
@@ -107,7 +107,7 @@ export default function VotePanel({
         wordBreak: "initial",
       }}
     >
-      {score && formatQuantity(score, t)}
+      {score && format.quantity(score, t)}
     </div>
   );
   const downvote = (

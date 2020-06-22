@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import { motion } from "framer-motion";
 import * as React from "react";
-import { useState, useReducer } from "react";
-import { queryCache, AnyQueryKey } from "react-query";
+import { useReducer, useState } from "react";
+import { AnyQueryKey, queryCache } from "react-query";
 import { jsx, useColorMode } from "theme-ui";
 import {
   useDelete,
@@ -13,21 +13,16 @@ import {
 } from "../api";
 import { Type } from "../constants";
 import { useIsAuthenticated } from "../contexts/authContext";
-import { useTranslation } from "../i18n";
+import { useFormat, useTranslation } from "../i18n";
 import { CommentChild, Fullname, ID, PostData, Vote } from "../types";
 import type { CommentData, CommentSortType, MoreChildrenData } from "../types";
-import {
-  formatQuantity,
-  formatTimestamp,
-  sanitize,
-  likesToVote,
-} from "../utils/format";
+import { likesToVote, sanitize } from "../utils/format";
 import { getUserColor } from "../utils/getUserColor";
+import CommentVotePanel from "./CommentVotePanel";
 import Link from "./Link";
 import LinkButton from "./LinkButton";
 import Stack from "./Stack";
 import TextEditor from "./TextEditor";
-import CommentVotePanel from "./CommentVotePanel";
 
 export default function Comment({
   comment,
@@ -86,6 +81,7 @@ function TrueComment({
   showContext: boolean;
 }) {
   const t = useTranslation();
+  const format = useFormat();
   const isAuthenticated = useIsAuthenticated();
   const { data: me } = useMe();
   const [del] = useDelete({
@@ -174,10 +170,10 @@ function TrueComment({
             {score != null
               ? score === 1
                 ? t("xPoint", [score.toString()])
-                : t("xPoints", [formatQuantity(score, t)])
+                : t("xPoints", [format.quantity(score, t)])
               : t("scoreHidden")}
           </span>
-          <span>{formatTimestamp(Number(comment.created_utc), t)}</span>
+          <span>{format.timestamp(Number(comment.created_utc), t)}</span>
           {showContext && (
             <React.Fragment>
               <Link
@@ -193,7 +189,7 @@ function TrueComment({
             <span sx={{ textDecoration: "italic" }}>
               {t("comment.edited") +
                 " " +
-                formatTimestamp(Number(comment.edited), t)}
+                format.timestamp(Number(comment.edited), t)}
             </span>
           )}
           {isAuthenticated && !comment.locked && (
@@ -397,6 +393,7 @@ function More({
   sort: CommentSortType;
 }) {
   const t = useTranslation();
+  const format = useFormat();
   const [expanded, setExpanded] = useState(false);
   const { data: more, status } = useMoreChildren({
     should_fetch: expanded,
@@ -441,7 +438,7 @@ function More({
     >
       {data.count === 1
         ? t("{} more reply", [data.count.toString()])
-        : t("{} more replies", [formatQuantity(data.count, t)])}
+        : t("{} more replies", [format.quantity(data.count, t)])}
     </LinkButton>
   );
 }

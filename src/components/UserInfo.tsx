@@ -3,8 +3,7 @@
 import { ComponentProps } from "react";
 import { Card, jsx } from "theme-ui";
 import { useUserInfo } from "../api";
-import { useTranslation } from "../i18n";
-import { formatQuantity } from "../utils/format";
+import { useTranslation, useFormat } from "../i18n";
 import rem from "../utils/rem";
 import Skeleton from "./Skeleton";
 import Stack from "./Stack";
@@ -12,6 +11,7 @@ import Stack from "./Stack";
 export default function UserInfo({ username }: { username: string }) {
   const { data: user, status: infoStatus } = useUserInfo(username);
   const t = useTranslation();
+  const format = useFormat();
   return (
     <Stack as="aside" space={4} sx={{ fontSize: 1 }}>
       {infoStatus === "loading" ? (
@@ -24,7 +24,7 @@ export default function UserInfo({ username }: { username: string }) {
               <Stack space={2}>
                 <div>
                   <span sx={{ fontWeight: "600" }}>
-                    {formatQuantity(user.comment_karma, t)}
+                    {format.quantity(user.comment_karma, t)}
                   </span>
                   {" " + t("internetPoints")}
                 </div>

@@ -15,9 +15,9 @@ import { useLocation } from "react-router-dom";
 import { Card, jsx, useColorMode } from "theme-ui";
 import { useCommunityInfo, useCommunityRules, useSubscribe } from "../api";
 import { useIsAuthenticated } from "../contexts/authContext";
-import { useTranslation } from "../i18n";
+import { useTranslation, useFormat } from "../i18n";
 import type { CommunityInfoData } from "../types";
-import { formatQuantity, sanitize } from "../utils/format";
+import { sanitize } from "../utils/format";
 import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 import rem from "../utils/rem";
 import Button, { callToActionStyles, outlineStyles } from "./Button";
@@ -32,6 +32,7 @@ function Success({ community }: { community: string }) {
   const t = useTranslation();
   const isAuthenticated = useIsAuthenticated();
   const location = useLocation();
+  const format = useFormat();
   return (
     <Wrapper>
       <SideCard>
@@ -45,7 +46,7 @@ function Success({ community }: { community: string }) {
             />
             <div>
               <span sx={{ fontWeight: "600" }}>
-                {formatQuantity(info.data.subscribers, t)}
+                {format.quantity(info.data.subscribers, t)}
               </span>
               {" " + t("subscribers")}
             </div>

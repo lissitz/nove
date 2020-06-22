@@ -4,15 +4,10 @@ import { queryCache } from "react-query";
 import { Card, jsx } from "theme-ui";
 import { useDelete, useEdit } from "../api";
 import { useBreakpoint } from "../contexts/MediaQueryContext";
-import { useTranslation } from "../i18n";
+import { useTranslation, useFormat } from "../i18n";
 import { useNavigate } from "../router";
 import { Fullname, ID, MeData, PostData } from "../types";
-import {
-  formatQuantity,
-  formatTimestamp,
-  likesToVote,
-  sanitize,
-} from "../utils/format";
+import { likesToVote, sanitize } from "../utils/format";
 import { getUserColor } from "../utils/getUserColor";
 import { hasVideo } from "../utils/hasVideo";
 import rem from "../utils/rem";
@@ -40,6 +35,7 @@ export default function Post({
   [key: string]: any;
 }) {
   const t = useTranslation();
+  const format = useFormat();
   const external = !post.is_self;
   const hasImage = post.domain === "i.redd.it";
   const [isEditing, setIsEditing] = useState(false);
@@ -48,6 +44,7 @@ export default function Post({
       navigate(`/r/${post.subreddit}`);
     },
   });
+
   const navigate = useNavigate();
   const breakpoint = useBreakpoint();
   const mobile = breakpoint === "mobile";
@@ -59,13 +56,13 @@ export default function Post({
       preload
     >
       {t(post.num_comments === 1 ? "xComment" : "xComments", [
-        formatQuantity(post.num_comments, t),
+        format.quantity(post.num_comments, t),
       ])}
     </Link>
   ) : (
     <div sx={{ justifyContent: "space-between", color: "text" }}>
       {t(post.num_comments === 1 ? "xComment" : "xComments", [
-        formatQuantity(post.num_comments, t),
+        format.quantity(post.num_comments, t),
       ])}
     </div>
   );
@@ -120,7 +117,7 @@ export default function Post({
                   >
                     {" " + post.author}
                   </Link>
-                  {" " + formatTimestamp(Number(post.created_utc), t)}
+                  {" " + format.timestamp(Number(post.created_utc), t)}
                 </Inline>
                 {post.distinguished === "admin" && (
                   <Inline>

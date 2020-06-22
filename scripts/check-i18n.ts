@@ -12,7 +12,7 @@ const keys = extractFromFiles(["src/**/*.tsx", "src/**/*.ts"], {
   parser: "typescript",
 });
 
-const languages = ["en", "es"];
+const languages = ["en-US", "es-ES"];
 for (const language of languages) {
   const locale = flatten(
     JSON.parse(fs.readFileSync(`src/locales/${language}.json`))

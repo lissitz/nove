@@ -1,21 +1,22 @@
 import React, {
-  useState,
-  useContext,
   createContext,
   useCallback,
+  useContext,
   useEffect,
+  useMemo,
+  useState,
 } from "react";
-import en from "./locales/en.json";
-import es from "./locales/es.json";
+import en from "./locales/en-US.json";
+import es from "./locales/es-ES.json";
 
 const locales = {
-  en,
-  es,
+  "en-US": en,
+  "es-ES": es,
 };
 
 export const languages = {
-  en: { name: "English" },
-  es: { name: "Español" },
+  "en-US": { name: "English" },
+  "es-ES": { name: "Español" },
 } as const;
 
 export type Language = keyof typeof languages;
@@ -101,4 +102,56 @@ export function useLanguage() {
 
 export function tr(x: string) {
   return x;
+}
+
+export function useFormat() {
+  const language = useLanguage();
+  return useMemo(() => {
+    return {
+      timestamp: formatTimestamp(language),
+      quantity: formatQuantity(language),
+    };
+  }, [language]);
+}
+
+function formatTimestamp(language: Language) {
+  return (timestamp: number, t: (s: string, replace?: string[]) => string) => {
+    let delta = Date.now() / 1000 - timestamp;
+    delta = Math.floor(delta / 60);
+    if (delta === 0) return t("<aMinute");
+    if (delta === 1) return t("aMinute");
+    if (delta < 60) return t("xMinutes", [delta.toLocaleString(language)]);
+    delta = Math.floor(delta / 60);
+    if (delta === 1) return t("anHour");
+    if (delta < 24) return t("xHours", [delta.toLocaleString(language)]);
+    delta = Math.floor(delta / 24);
+    if (delta === 1) return t("aDay");
+    if (delta < 30) return t("xDays", [delta.toLocaleString(language)]);
+    delta = Math.floor(delta / 30);
+    if (delta === 1) return t("aMonth");
+    if (delta < 12) return t("xMonths", [delta.toLocaleString(language)]);
+    delta = Math.floor(delta / 12);
+    if (delta === 1) return t("aYear");
+    else return t("xYears", [delta.toLocaleString(language)]);
+  };
+}
+
+function formatQuantity(language: Language) {
+  return (quantity: number, t: (s: string, replace?: string[]) => string) => {
+    if (quantity > 999999) {
+      return t("xm", [
+        (quantity / 1000000).toLocaleString(language, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }),
+      ]);
+    } else if (quantity > 999) {
+      return t("xk", [
+        (quantity / 1000).toLocaleString(language, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }),
+      ]);
+    } else return quantity.toLocaleString(language);
+  };
 }
