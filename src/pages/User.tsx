@@ -41,7 +41,7 @@ export default function User() {
               width: ["100%", null, maxWidth],
               margin: [0, null, "0 auto"],
               height: ["auto", null, rem(128)],
-              mt: [2, null, 0],
+              mt: [3, null, 0],
             }}
           >
             <UserBar username={username} where={where} />

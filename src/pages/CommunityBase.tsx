@@ -18,7 +18,7 @@ export default function CommunityBase() {
         <CommunityInfo community={community} />
       </NavBar>
       <div sx={{ width: "100%", flex: "1 1 auto" }}>
-        <Stack space={[4, null, 4]} sx={{ height: "100%" }}>
+        <Stack space={[3, null, 4]} sx={{ height: "100%" }}>
           <CommunityHeader community={community} />
           <div sx={{ maxWidth: "100%", width: maxWidth, margin: "0 auto" }}>
             <Outlet />
