@@ -104,6 +104,7 @@ function Content({
           <Columns
             space={3}
             sx={{
+              width: ["auto", null, "100%"],
               height: "100%",
             }}
           >
