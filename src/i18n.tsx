@@ -118,7 +118,7 @@ function formatTimestamp(language: Language) {
   return (timestamp: number, t: (s: string, replace?: string[]) => string) => {
     let delta = Date.now() / 1000 - timestamp;
     delta = Math.floor(delta / 60);
-    if (delta === 0) return t("<aMinute");
+    if (delta <= 0) return t("<aMinute");
     if (delta === 1) return t("aMinute");
     if (delta < 60) return t("xMinutes", [delta.toLocaleString(language)]);
     delta = Math.floor(delta / 60);
