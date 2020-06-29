@@ -147,5 +147,7 @@
     "new": "nuevo",
     "top": "más votado"
   },
-  "sidebar": "Más información"
+  "sidebar": "Más información",
+  "play": "Reproducir",
+  "iframeVideoTitle": "Video: {}"
 }

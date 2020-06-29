@@ -147,5 +147,7 @@
     "hot": "hot",
     "new": "new",
     "top": "top"
-  }
+  },
+  "play": "Play",
+  "iframeVideoTitle": "Video: {}"
 }
