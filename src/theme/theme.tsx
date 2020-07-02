@@ -167,6 +167,12 @@ export const theme = {
       backgroundColor: "surface",
     },
   },
+  forms: {
+    checkbox: {
+      "input:checked ~ &": { color: "text" },
+      "input:focus ~ &": { backgroundColor: "transparent" },
+    },
+  },
 };
 
 export const tabStyles = {
