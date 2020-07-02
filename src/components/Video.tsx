@@ -84,7 +84,7 @@ function RedditVideo({ post }: { post: PostData }) {
                 maxHeight: "100%",
               }}
               //@ts-ignore
-              src={post.preview.images[0].source.url}
+              src={post.preview?.images?.[0]?.source?.url}
             />
           </div>
           <button
