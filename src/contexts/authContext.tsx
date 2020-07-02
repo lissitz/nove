@@ -96,32 +96,8 @@ function reducer(state: AuthState, event: AuthEvent): AuthState {
 }
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [params] = useSearchParams();
-  const key = "nove_state";
   const initialValue = { status: "pending" } as const;
-  const [authState, dispatch] = useReducer(
-    reducer,
-    initialValue,
-    (): AuthState => {
-      try {
-        const sessionStorageValue = sessionStorage.getItem(key);
-        let state = JSON.parse(sessionStorageValue || "null") || initialValue;
-        if (state.status === "unitialized") {
-          state = { status: "pending" };
-        }
-        return state;
-      } catch {
-        return initialValue;
-      }
-    }
-  );
-  useEffect(() => {
-    try {
-      sessionStorage.setItem(
-        key,
-        JSON.stringify({ ...authState, refreshToken: "" })
-      );
-    } catch {}
-  }, [authState]);
+  const [authState, dispatch] = useReducer(reducer, initialValue);
 
   const navigate = useNavigate();
 
