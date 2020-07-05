@@ -5,12 +5,12 @@ import { queryCache } from "react-query";
 import { Card, jsx } from "theme-ui";
 import { useLoginUrl, useSubmitComment } from "../api";
 import { Type } from "../constants";
-import { useAuthStatus } from "../contexts/authContext";
+import { useIsAuthenticated } from "../contexts/authContext";
 import { useTranslation } from "../i18n";
+import { textAreaStyles } from "../theme/theme";
 import { ID, PostData } from "../types";
 import Button from "./Button";
 import Stack from "./Stack";
-import { textAreaStyles } from "../theme/theme";
 
 export default function CommentForm({
   postId,
@@ -21,7 +21,7 @@ export default function CommentForm({
   commentsQueryKey: any;
   contentQueryKey: any;
 }) {
-  const authStatus = useAuthStatus();
+  const isAuthenticated = useIsAuthenticated();
   const loginUrl = useLoginUrl();
   const [mutate] = useSubmitComment({
     onSuccess: (response) => {
@@ -43,7 +43,6 @@ export default function CommentForm({
   });
   const t = useTranslation();
   const [value, setValue] = useState("");
-  const isAuthenticated = authStatus === "success";
   return isAuthenticated ? (
     <Card sx={{ width: "100%", displat: "flex" }}>
       <Stack space={2}>

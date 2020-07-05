@@ -11,21 +11,17 @@ import {
 } from "../api";
 import { prefetchUserInfo, prefetchUserPage } from "../api/user";
 import { defaultPostSort, defaultUserWhere } from "../constants";
-import {
-  AuthStatus,
-  useAccessToken,
-  useAuthStatus,
-} from "../contexts/authContext";
+import { useAccessToken, useIsAuthenticated } from "../contexts/authContext";
 import Comments from "../pages/Comments";
 import Community from "../pages/Community";
 import CommunityBase from "../pages/CommunityBase";
+import Settings from "../pages/Settings";
 import SubmitPost from "../pages/SubmitPost";
 import User from "../pages/User";
 import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 import { parseCommunity } from "../utils/params";
-import Settings from "../pages/Settings";
 
-export const routes = (authStatus: AuthStatus, token: string) => {
+export const routes = (isAuthenticated: boolean, token: string) => {
   const community = {
     element: <Community />,
     caseSensitive: false,
@@ -101,7 +97,7 @@ export const routes = (authStatus: AuthStatus, token: string) => {
         { path: ":sort", ...community },
         { path: "comments/:postId", ...comments },
         { path: "comments/:postId/:title", ...comments },
-        ...(authStatus === "success" ? [{ path: "submit", ...submit }] : []),
+        ...(isAuthenticated ? [{ path: "submit", ...submit }] : []),
       ],
     },
     { path: "u/:username", ...user },
@@ -112,15 +108,15 @@ export const routes = (authStatus: AuthStatus, token: string) => {
 export default function Router() {
   //useManageScrollOnRouteChange();
   const token = useAccessToken();
-  const authStatus = useAuthStatus();
-  return useRoutes(routes(authStatus, token || ""));
+  const isAuthenticated = useIsAuthenticated();
+  return useRoutes(routes(isAuthenticated, token || ""));
 }
 
 export function usePreload() {
   const token = useAccessToken();
-  const authStatus = useAuthStatus();
+  const isAuthenticated = useIsAuthenticated();
   return function (to: string) {
-    const matches = matchRoutes(routes(authStatus, token || ""), to);
+    const matches = matchRoutes(routes(isAuthenticated, token || ""), to);
     if (matches) {
       matches.forEach(
         ({ route, params }: any, index: any) =>

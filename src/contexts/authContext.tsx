@@ -1,15 +1,9 @@
 import * as React from "react";
 import { useCallback, useContext, useEffect, useReducer, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
-import { useNavigate } from "../router";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { fetchJson } from "../utils/fetch";
-
-const AuthContext = React.createContext<AuthState>({
-  status: "pending",
-});
-const AuthDispatchContext = React.createContext<React.Dispatch<
-  AuthEvent
-> | null>(null);
+import { useSetToken, getToken, useRevokeToken, useDeleteToken } from "../api";
+import { nove_auth_session_key } from "../constants";
 
 type AuthResponse = {
   access_token: string;
@@ -18,105 +12,192 @@ type AuthResponse = {
   scope: string;
   refresh_token: string;
 };
+
 type AuthRefreshResponse = {
   access_token: string;
   expires_in: number;
 };
-export type AuthStatus = "pending" | "error" | "success" | "unitialized";
 
-type AuthState = {
-  status: AuthStatus;
-  expirationDate?: number;
-  accessToken?: string;
-  refreshToken?: string;
-  expiresIn?: number;
-};
 type AuthEvent =
   | {
-      status: "signout";
+      type: "login_declined";
     }
   | {
-      status: "expired";
+      type: "access_token_expired";
     }
   | {
-      status: "pending";
+      type: "tokens_retrieval_error";
     }
   | {
-      status: "error";
-    }
-  | {
-      status: "unitialized";
-    }
-  | {
-      status: "declined";
-    }
-  | {
-      status: "auth_success";
+      type: "tokens_acquired";
       accessToken: string;
       refreshToken: string;
-      expirationDate: number;
       expiresIn: number;
+      expirationDate: number;
     }
   | {
-      status: "refresh_success";
+      type: "access_token_refreshed";
       accessToken: string;
-      expirationDate: number;
       expiresIn: number;
+      expirationDate: number;
+    }
+  | {
+      type: "access_token_retrieval_error";
+    }
+  | {
+      type: "refresh_token_retrieved";
+      refreshToken: string;
+    }
+  | {
+      type: "refresh_token_retrieval_error";
+    }
+  | {
+      type: "logout";
     };
-function reducer(state: AuthState, event: AuthEvent): AuthState {
-  switch (event.status) {
-    case "auth_success": {
-      return {
-        status: "success",
-        expirationDate: event.expirationDate,
-        accessToken: event.accessToken,
-        refreshToken: event.refreshToken,
-        expiresIn: event.expiresIn,
-      };
+
+type AuthState =
+  | { status: "pending_tokens_retrieval"; code: string }
+  | {
+      status: "pending_access_token_retrieval";
+      refreshToken: string;
+      silent: boolean;
     }
-    case "refresh_success": {
-      return {
-        status: "success",
-        expirationDate: event.expirationDate,
-        accessToken: event.accessToken,
-        expiresIn: event.expiresIn,
-      };
+  | {
+      status: "pending_refresh_token_retrieval";
+      //if silent is true don't display pending indicators
+      silent: boolean;
     }
-    case "pending": {
-      return event;
-    }
-    case "expired":
-    case "declined":
-    case "signout":
-    case "unitialized": {
-      return { status: "unitialized" };
-    }
-  }
-  return event;
-}
+  | { status: "unauthenticated" }
+  | {
+      status: "authenticated";
+      accessToken: string;
+      refreshToken: string;
+      expiresIn: number;
+      expirationDate: number;
+    };
+
+const AuthContext = React.createContext<AuthState>({
+  status: "unauthenticated",
+});
+
+const AuthDispatchContext = React.createContext<React.Dispatch<
+  AuthEvent
+> | null>(null);
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [params] = useSearchParams();
-  const initialValue = { status: "pending" } as const;
-  const [authState, dispatch] = useReducer(reducer, initialValue);
+  const [state, dispatch] = useReducer(reducer, params, initialState);
+  useAuthEffects(state, dispatch);
+  return (
+    <AuthDispatchContext.Provider value={dispatch}>
+      <AuthContext.Provider value={state}>{children}</AuthContext.Provider>
+    </AuthDispatchContext.Provider>
+  );
+}
 
+function reducer(state: AuthState, event: AuthEvent): AuthState {
+  switch (state.status) {
+    case "pending_tokens_retrieval":
+      switch (event.type) {
+        case "tokens_acquired":
+          return {
+            status: "authenticated",
+            accessToken: event.accessToken,
+            refreshToken: event.refreshToken,
+            expiresIn: event.expiresIn,
+            expirationDate: event.expirationDate,
+          };
+        case "tokens_retrieval_error":
+          return { status: "unauthenticated" };
+        default:
+          return state;
+      }
+    case "pending_refresh_token_retrieval": {
+      switch (event.type) {
+        case "refresh_token_retrieval_error":
+          return { status: "unauthenticated" };
+        case "refresh_token_retrieved":
+          return {
+            status: "pending_access_token_retrieval",
+            refreshToken: event.refreshToken,
+            silent: state.silent,
+          };
+        default:
+          return state;
+      }
+    }
+    case "pending_access_token_retrieval": {
+      switch (event.type) {
+        case "access_token_retrieval_error":
+          return { status: "unauthenticated" };
+        case "access_token_refreshed":
+          return {
+            status: "authenticated",
+            refreshToken: state.refreshToken,
+            accessToken: event.accessToken,
+            expiresIn: event.expiresIn,
+            expirationDate: event.expirationDate,
+          };
+        default:
+          return state;
+      }
+    }
+    case "authenticated": {
+      switch (event.type) {
+        case "logout":
+          return { status: "unauthenticated" };
+        case "access_token_expired":
+          return {
+            status: "pending_access_token_retrieval",
+            refreshToken: state.refreshToken,
+            silent: true,
+          };
+        default:
+          return state;
+      }
+    }
+    case "unauthenticated": {
+      return state;
+    }
+  }
+}
+
+function initialState(params: URLSearchParams): AuthState {
+  const code = params.get("code");
+  const error = params.get("error");
+  const state = params.get("state");
+  if (error) {
+    return { status: "unauthenticated" };
+  }
+  if (code && state) {
+    //TODO: check state matches
+    return { status: "pending_tokens_retrieval", code };
+  }
+  if (!code && !state) {
+    let is_auth;
+    try {
+      const value = window.localStorage.getItem(nove_auth_session_key);
+      is_auth = value ? value === "true" : undefined;
+    } catch (error) {}
+    if (is_auth) {
+      return { status: "pending_refresh_token_retrieval", silent: false };
+    } else {
+      // Still try to refresh silently to acocunt for session storage
+      // being blocked but cookies being allowed
+    }
+    return { status: "pending_refresh_token_retrieval", silent: true };
+  }
+  return { status: "unauthenticated" };
+}
+
+function useAuthEffects(state: AuthState, dispatch: (x: AuthEvent) => void) {
+  const [setToken] = useSetToken();
   const navigate = useNavigate();
 
-  //avoids double request to access_token which results in error.
-  const isFetching = useRef(false);
-  const epsilon = 120000;
+  const code =
+    state.status === "pending_tokens_retrieval" ? state.code : undefined;
   useEffect(() => {
-    if (
-      authState?.expirationDate &&
-      authState.expirationDate < Date.now() + epsilon
-    ) {
-      dispatch({ status: "expired" });
-    }
-    const code = params.get("code");
-    const error = params.get("error");
-    const state = params.get("state");
-    const redirect_uri = process.env.REACT_APP_REDDIT_REDIRECT_URI;
-    if (!error && state && !isFetching.current) {
-      isFetching.current = true;
+    if (state.status === "pending_tokens_retrieval") {
       fetchJson("https://www.reddit.com/api/v1/access_token", {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -124,7 +205,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             "Basic " + btoa(`${process.env.REACT_APP_REDDIT_CLIENT_ID}:`),
         },
         method: "POST",
-        body: `grant_type=authorization_code&code=${code}&redirect_uri=${redirect_uri}`,
+        body: `grant_type=authorization_code&code=${code}&redirect_uri=${process.env.REACT_APP_REDDIT_REDIRECT_URI}`,
       })
         .then((x: any) => {
           if (x.error) {
@@ -133,82 +214,99 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         })
         .then((x: AuthResponse) => {
           dispatch({
-            status: "auth_success",
+            type: "tokens_acquired",
             accessToken: x.access_token,
             refreshToken: x.refresh_token,
             expiresIn: x.expires_in,
             expirationDate: Date.now() + x.expires_in * 1000,
           });
-          isFetching.current = true;
+          setToken(x.refresh_token);
         })
         .catch((err) => {
-          dispatch({ status: "error" });
-          isFetching.current = false;
+          dispatch({ type: "tokens_retrieval_error" });
         });
       navigate("/");
     }
-    if (
-      authState.status === "pending" &&
-      !code &&
-      !error &&
-      !state &&
-      !isFetching.current
-    ) {
-      dispatch({ status: "unitialized" });
-    }
-    if (error) {
-      dispatch({ status: "declined" });
-    }
-  }, [params, authState, navigate]);
+  }, [setToken, navigate, state.status, dispatch, code]);
 
-  const refreshToken = authState.refreshToken;
-  useInterval(
-    () => {
-      if (refreshToken) {
-        fetchJson("https://www.reddit.com/api/v1/access_token", {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            Authorization:
-              "Basic " + btoa(`${process.env.REACT_APP_REDDIT_CLIENT_ID}:`),
-          },
-          method: "POST",
-          body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
+  useEffect(() => {
+    if (state.status === "pending_refresh_token_retrieval") {
+      getToken()
+        .then((x: { token: string }) => {
+          dispatch({ type: "refresh_token_retrieved", refreshToken: x.token });
         })
-          .then((x: any) => {
-            if (x.error) {
-              throw new Error(x.error);
-            } else return x;
-          })
-          .then((x: AuthRefreshResponse) => {
-            dispatch({
-              status: "refresh_success",
-              accessToken: x.access_token,
-              expiresIn: x.expires_in,
-              expirationDate: Date.now() + x.expires_in * 1000,
-            });
-          })
-          .catch((_) => {
-            dispatch({ status: "expired" });
+        .catch((x) => {
+          dispatch({ type: "refresh_token_retrieval_error" });
+        });
+    }
+  }, [state.status, dispatch]);
+
+  const refresh = useCallback(
+    (refreshToken: string) => {
+      fetchJson("https://www.reddit.com/api/v1/access_token", {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization:
+            "Basic " + btoa(`${process.env.REACT_APP_REDDIT_CLIENT_ID}:`),
+        },
+        method: "POST",
+        body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
+      })
+        .then((x: any) => {
+          if (x.error) {
+            throw new Error(x.error);
+          } else return x;
+        })
+        .then((x: AuthRefreshResponse) => {
+          dispatch({
+            type: "access_token_refreshed",
+            accessToken: x.access_token,
+            expiresIn: x.expires_in,
+            expirationDate: Date.now() + x.expires_in * 1000,
           });
-      } else {
-        dispatch({ status: "expired" });
-      }
+        })
+        .catch((_) => {
+          dispatch({ type: "access_token_retrieval_error" });
+        });
     },
-    authState.expiresIn ? authState.expiresIn * 1000 - epsilon : null
+    [dispatch]
   );
 
-  return (
-    <AuthDispatchContext.Provider value={dispatch}>
-      <AuthContext.Provider value={authState}>{children}</AuthContext.Provider>
-    </AuthDispatchContext.Provider>
+  const refreshToken =
+    state.status === "pending_access_token_retrieval"
+      ? state.refreshToken
+      : undefined;
+  useEffect(() => {
+    if (state.status === "pending_access_token_retrieval") {
+      if (refreshToken) {
+        refresh(refreshToken);
+      }
+    }
+  }, [refresh, state.status, refreshToken]);
+
+  const epsilon = 120000;
+  useInterval(
+    refresh,
+    state.status === "authenticated" ? state.expiresIn * 1000 - epsilon : null
   );
 }
 
 export function useAccessToken() {
-  return useContext(AuthContext).accessToken;
+  const context = useContext(AuthContext);
+  if (context.status === "authenticated") return context.accessToken;
 }
+
 export function useIsAuthenticated() {
-  return useContext(AuthContext).status === "success";
+  return useContext(AuthContext).status === "authenticated";
+}
+
+export function useIsPending() {
+  const state = useContext(AuthContext);
+  return (
+    state.status === "pending_tokens_retrieval" ||
+    (state.status === "pending_refresh_token_retrieval" && !state.silent) ||
+    (state.status === "pending_access_token_retrieval" && !state.silent)
+  );
 }
 
 export function useAuthStatus() {
@@ -220,14 +318,39 @@ export function useAuth() {
 }
 
 export function useLogOut() {
+  const [revokeToken] = useRevokeToken();
+  const [deleteToken] = useDeleteToken();
+  const state = useAuth();
   const dispatch = useContext(AuthDispatchContext);
-  const logOut = useCallback(
-    () => dispatch && dispatch({ status: "signout" }),
-    [dispatch]
-  );
+  const accessToken =
+    state.status === "authenticated" ? state.accessToken : undefined;
+  const refreshToken =
+    state.status === "authenticated" ? state.refreshToken : undefined;
+  const isAuthenticated = state.status === "authenticated";
+  const logOut = useCallback(() => {
+    if (isAuthenticated) {
+      dispatch && dispatch({ type: "logout" });
+      accessToken &&
+        revokeToken({ token: accessToken, token_type_hint: "access_token" });
+      if (refreshToken) {
+        revokeToken({
+          token: refreshToken,
+          token_type_hint: "refresh_token",
+        });
+        deleteToken();
+      }
+    }
+  }, [
+    isAuthenticated,
+    dispatch,
+    accessToken,
+    revokeToken,
+    refreshToken,
+    deleteToken,
+  ]);
   if (!dispatch)
     throw new Error(
-      "useSignOut must be used inside a AuthDispatchContext Provider"
+      "useLogOut must be used inside a AuthDispatchContext Provider"
     );
   return logOut;
 }

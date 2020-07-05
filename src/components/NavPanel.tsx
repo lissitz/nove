@@ -3,13 +3,13 @@ import * as React from "react";
 import { jsx } from "theme-ui";
 import { useMyCommunities } from "../api";
 import { defaultCommunities } from "../constants";
-import { useAuth } from "../contexts/authContext";
+import { useIsAuthenticated, useIsPending } from "../contexts/authContext";
 import { useTranslation } from "../i18n";
+import { scrollbar } from "../theme/theme";
 import rem from "../utils/rem";
 import ButtonLink from "./ButtonLink";
 import NavPanelSkeleton from "./NavPanelSkeleton";
 import Stack from "./Stack";
-import { scrollbar } from "../theme/theme";
 
 export default function NavPanel({
   sortMenu,
@@ -19,9 +19,9 @@ export default function NavPanel({
   onClick?: (event: MouseEvent) => void;
 }) {
   const t = useTranslation();
-  const x = useMyCommunities();
-  const { data: communities, status } = x;
-  const { status: authStatus } = useAuth();
+  const { data: communities, status } = useMyCommunities();
+  const isAuthenticated = useIsAuthenticated();
+  const isPending = useIsPending();
   return (
     <nav sx={{ width: "100%", height: "100%", position: "relative" }}>
       <Stack space={3} sx={{ width: "100%", height: "100%" }}>
@@ -51,10 +51,9 @@ export default function NavPanel({
               ))}
           </Stack>
         </Stack>
-        {authStatus === "pending" || status === "loading" ? (
+        {isPending || status === "loading" ? (
           <NavPanelSkeleton />
-        ) : status === "error" ? null : authStatus === "unitialized" ||
-          authStatus === "error" ? (
+        ) : status === "error" ? null : !isAuthenticated ? (
           <MyCommunities communities={defaultCommunities} onClick={onClick} />
         ) : (
           communities &&

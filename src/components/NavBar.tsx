@@ -1,27 +1,29 @@
 /** @jsx jsx */
 import { jsx } from "theme-ui";
 import { useLoginUrl, useMe } from "../api";
-import { useAuthStatus } from "../contexts/authContext";
+import { headerHeight } from "../constants";
+import { useIsAuthenticated, useIsPending } from "../contexts/authContext";
+import { useIsDesktop } from "../contexts/MediaQueryContext";
 import { useTranslation } from "../i18n";
 import { maxWidth } from "../styles/base";
-import { Column, Columns } from "./Columns";
-import ButtonLink from "./ButtonLink";
-import { callToActionStyles } from "./Button";
-import Link from "./Link";
 import rem from "../utils/rem";
-import Search from "./Search";
-import { headerHeight } from "../constants";
-import UserMenu from "./UserMenu";
+import { callToActionStyles } from "./Button";
+import ButtonLink from "./ButtonLink";
+import { Column, Columns } from "./Columns";
 import Drawer from "./Drawer";
+import Link from "./Link";
+import Search from "./Search";
 import ThemeListbox from "./ThemeListbox";
-import { useIsDesktop } from "../contexts/MediaQueryContext";
+import UserMenu from "./UserMenu";
 
 export default function NavBar({ children }: { children?: React.ReactNode }) {
   const t = useTranslation();
-  const authStatus = useAuthStatus();
+  const isAuthenticated = useIsAuthenticated();
+  const isPending = useIsPending();
   const { data: me, status } = useMe();
   const loginUrl = useLoginUrl();
   const isDesktop = useIsDesktop();
+
   return (
     <header
       sx={{
@@ -107,12 +109,11 @@ export default function NavBar({ children }: { children?: React.ReactNode }) {
                       height: "100%",
                     }}
                   >
-                    {authStatus === "success" ? (
+                    {isAuthenticated ? (
                       status === "success" && me ? (
                         <UserMenu name={me.name} />
                       ) : null
-                    ) : authStatus === "pending" ||
-                      status === "loading" ? null : (
+                    ) : isPending ? null : (
                       <ButtonLink
                         external
                         to={loginUrl}

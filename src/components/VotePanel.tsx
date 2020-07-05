@@ -13,14 +13,14 @@ import { queryCache } from "react-query";
 import { jsx } from "theme-ui";
 import { useLoginUrl, useVote } from "../api";
 import { Type } from "../constants";
-import { useAuthStatus } from "../contexts/authContext";
 import { useBreakpoint } from "../contexts/MediaQueryContext";
-import { useTranslation, useFormat } from "../i18n";
+import { useFormat, useTranslation } from "../i18n";
 import { ID, Vote } from "../types";
 import Button from "./Button";
 import { Column, Columns } from "./Columns";
 import Stack from "./Stack";
 import Tooltip from "./Tooltip";
+import { useIsAuthenticated } from "../contexts/authContext";
 
 type VoteState = { vote: Vote; score: number | undefined };
 type VoteAction = { dir: Vote };
@@ -45,7 +45,7 @@ export default function VotePanel({
 }) {
   const t = useTranslation();
   const format = useFormat();
-  const authStatus = useAuthStatus();
+  const isAuthenticated = useIsAuthenticated();
   const [vote, setVote] = useState(postVote);
   const [{ score }, setScore] = useReducer(reducer, {
     score: initialScore,
@@ -73,7 +73,7 @@ export default function VotePanel({
   });
   const sendVote = useCallback(
     (dir: 1 | 0 | -1) =>
-      authStatus === "success"
+      isAuthenticated
         ? () => {
             mutate({
               dir,
@@ -83,12 +83,12 @@ export default function VotePanel({
         : () => {
             window.location.href = loginUrl;
           },
-    [authStatus, mutate, postId, loginUrl]
+    [isAuthenticated, mutate, postId, loginUrl]
   );
   const breakpoint = useBreakpoint();
   const mobile = breakpoint === "mobile";
   const upvote = (
-    <CondTooltip cond={authStatus !== "success"} label={t("loginToVote")}>
+    <CondTooltip cond={!isAuthenticated} label={t("loginToVote")}>
       <div>
         <VoteButton
           onClick={sendVote(vote === 1 ? 0 : 1)}
@@ -111,7 +111,7 @@ export default function VotePanel({
     </div>
   );
   const downvote = (
-    <CondTooltip cond={authStatus !== "success"} label={t("loginToVote")}>
+    <CondTooltip cond={!isAuthenticated} label={t("loginToVote")}>
       <div>
         <VoteButton
           onClick={sendVote(vote === -1 ? 0 : -1)}

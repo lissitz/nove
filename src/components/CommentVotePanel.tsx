@@ -4,7 +4,7 @@ import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { jsx } from "theme-ui";
 import { useLoginUrl, useVote } from "../api";
-import { useAuthStatus } from "../contexts/authContext";
+import { useIsAuthenticated } from "../contexts/authContext";
 import { useTranslation } from "../i18n";
 import { Fullname, Vote } from "../types";
 import Button from "./Button";
@@ -20,7 +20,7 @@ export default function CommentVotePanel({
   vote: Vote;
 }) {
   const t = useTranslation();
-  const authStatus = useAuthStatus();
+  const isAuthenticated = useIsAuthenticated();
   const [vote, setVote] = useState(initialVote);
   const mounted = useRef(true);
   const loginUrl = useLoginUrl();
@@ -42,7 +42,7 @@ export default function CommentVotePanel({
   });
   const sendVote = useCallback(
     (dir: 1 | 0 | -1) =>
-      authStatus === "success"
+      isAuthenticated
         ? () => {
             mutate({
               dir,
@@ -52,11 +52,11 @@ export default function CommentVotePanel({
         : () => {
             window.location.href = loginUrl;
           },
-    [authStatus, mutate, name, loginUrl]
+    [isAuthenticated, mutate, name, loginUrl]
   );
   return (
     <Fragment>
-      <CondTooltip cond={authStatus !== "success"} label={t("loginToVote")}>
+      <CondTooltip cond={!isAuthenticated} label={t("loginToVote")}>
         <div sx={{ display: "inline" }}>
           <VoteButton
             onClick={sendVote(vote === 1 ? 0 : 1)}
@@ -67,7 +67,7 @@ export default function CommentVotePanel({
           </VoteButton>
         </div>
       </CondTooltip>
-      <CondTooltip cond={authStatus !== "success"} label={t("loginToVote")}>
+      <CondTooltip cond={!isAuthenticated} label={t("loginToVote")}>
         <div sx={{ display: "inline" }}>
           <VoteButton
             onClick={sendVote(vote === -1 ? 0 : -1)}

@@ -5,7 +5,7 @@ import {
   useQuery,
 } from "react-query";
 import type { MutationOptions } from "react-query";
-import { defaultCommentSort, Type } from "../constants";
+import { defaultCommentSort, Type, nove_auth_session_key } from "../constants";
 import { useAccessToken } from "../contexts/authContext";
 import { useIsDesktop } from "../contexts/MediaQueryContext";
 import type {
@@ -536,4 +536,61 @@ export function useSubmitPost(
 ) {
   const token = useAccessToken();
   return useMutation(submitPost(token), options);
+}
+
+function setToken(token: string) {
+  try {
+    window.localStorage.setItem(nove_auth_session_key, "true");
+  } catch (error) {}
+  return fetchJson(`/api/setToken`, {
+    method: "post",
+    body: new URLSearchParams({
+      token,
+    }),
+  });
+}
+
+export function useSetToken() {
+  return useMutation(setToken);
+}
+
+function deleteToken() {
+  return fetchJson(`/api/deleteToken`, {
+    method: "post",
+  });
+}
+
+export function useDeleteToken() {
+  return useMutation(deleteToken);
+}
+
+export const getToken = () => fetchJson(`/api/getToken`);
+
+function revokeToken({
+  token,
+  token_type_hint,
+}: {
+  token: string;
+  token_type_hint: "access_token" | "refresh_token";
+}) {
+  if (token_type_hint === "refresh_token") {
+    try {
+      window.localStorage.setItem(nove_auth_session_key, "false");
+    } catch (error) {}
+  }
+  return fetchJson("https://www.reddit.com/api/v1/revoke_token", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization:
+        "Basic " + btoa(`${process.env.REACT_APP_REDDIT_CLIENT_ID}:`),
+    },
+    body: new URLSearchParams({
+      token,
+      token_type_hint,
+    }),
+  });
+}
+export function useRevokeToken() {
+  return useMutation(revokeToken);
 }

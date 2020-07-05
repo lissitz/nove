@@ -83,3 +83,5 @@ export const postKind = ["self", "link", "image", "video", "videogif"] as const;
 export const allowEmbeds = true;
 
 export const themes = ["default", "deep"] as const;
+
+export const nove_auth_session_key = "nove_auth";
