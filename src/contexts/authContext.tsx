@@ -286,7 +286,11 @@ function useAuthEffects(state: AuthState, dispatch: (x: AuthEvent) => void) {
 
   const epsilon = 120000;
   useInterval(
-    refresh,
+    () => {
+      if (refreshToken) {
+        refresh(refreshToken);
+      }
+    },
     state.status === "authenticated" ? state.expiresIn * 1000 - epsilon : null
   );
 }
