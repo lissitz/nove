@@ -41,7 +41,7 @@ export default function PostForm({
     >
       <Stack space={2} sx={{ width: "100%" }}>
         <Columns as={TabList} space={2} sx={{ width: "100%" }}>
-          {[t("postForm.post"), t("postForm.link")].map((text, i) => (
+          {[t("postForm.type.post"), t("postForm.type.link")].map((text, i) => (
             <Column>
               <Tab index={i}>{text}</Tab>
             </Column>
@@ -128,8 +128,8 @@ function Form({
           />
         ) : kind === "link" ? (
           <TextareaAutosize
-            aria-label={t("postForm.link")}
-            placeholder={t("postForm.link")}
+            aria-label={t("postForm.type.link")}
+            placeholder={t("postForm.type.link")}
             value={text}
             sx={textAreaStyles}
             onChange={(event) => dispatch({ text: event.target.value })}

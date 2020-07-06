@@ -105,8 +105,13 @@
     "oc": "OC",
     "spoiler": "spoiler",
     "nsfw": "NSFW",
-    "post": "Post",
-    "link": "Link"
+    "type": {
+      "post": "Post",
+      "link": "Link"
+    },
+    "post": {
+      "post": "Post"
+    }
   },
   "sortComments": "Sort Comments",
   "createPost": "Create post",

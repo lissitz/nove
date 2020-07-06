@@ -29,10 +29,10 @@
     "moderatorOfX": "moderador de {}",
     "edited": "editado",
     "admin": "admin",
-    "reply": "reply"
+    "reply": "contestar"
   },
-  "upvote": "upvote",
-  "downvote": "downvote",
+  "upvote": "votar positivo",
+  "downvote": "votar negativo",
   "edit": "editar",
   "delete": "borrar",
   "sticky": "fijado",
@@ -77,7 +77,7 @@
   },
   "join": "Suscribirse",
   "joined": "Suscrito",
-  "leave": "Dejar de ser miembro",
+  "leave": "Desuscribirse",
   "logOut": "Cerrar sesión",
   "appSettings": "Ajustes",
   "memberSince": "Miembro desde",
@@ -98,14 +98,17 @@
   },
   "sortUser": "Ordenar",
   "postForm": {
+    "type": {
+      "post": "Publicación",
+      "link": "Enlace"
+    },
     "cancel": "Cancelar",
     "title": "Título",
     "textOptional": "Texto (opcional)",
     "oc": "OC",
     "spoiler": "spoiler",
     "nsfw": "+18",
-    "post": "Publicación",
-    "link": "Enlace"
+    "post": "Publicar"
   },
   "sortComments": "Ordenar comentarios",
   "createPost": "Crear una publicación",
