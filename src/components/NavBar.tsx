@@ -111,8 +111,12 @@ export default function NavBar({ children }: { children?: React.ReactNode }) {
                     {isAuthenticated ? (
                       status === "success" && me ? (
                         <UserMenu name={me.name} />
-                      ) : null
-                    ) : isPending ? null : (
+                      ) : (
+                        <UserMenu name="" pending />
+                      )
+                    ) : isPending ? (
+                      <UserMenu name="" pending />
+                    ) : (
                       <Button
                         external
                         onClick={() => {

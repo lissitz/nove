@@ -6,20 +6,26 @@ import {
   MenuLink,
   MenuList,
 } from "@reach/menu-button";
-import { Fragment } from "react";
+import VisuallyHidden from "@reach/visually-hidden";
 import { alpha } from "@theme-ui/color";
+import { Fragment } from "react";
+import { FiLogOut, FiSettings, FiUser } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { jsx } from "theme-ui";
 import { useLogOut } from "../contexts/authContext";
+import { useIsDesktop } from "../contexts/MediaQueryContext";
 import { useTranslation } from "../i18n";
 import rem from "../utils/rem";
 import Button from "./Button";
-import { FiUser, FiLogOut, FiSettings } from "react-icons/fi";
-import { useIsDesktop } from "../contexts/MediaQueryContext";
-import VisuallyHidden from "@reach/visually-hidden";
-import { Columns, Column } from "./Columns";
+import { Column, Columns } from "./Columns";
 
-export default function UserMenu({ name }: { name: string }) {
+export default function UserMenu({
+  name,
+  pending = false,
+}: {
+  name: string;
+  pending?: boolean;
+}) {
   const t = useTranslation();
   const logOut = useLogOut();
   const isDesktop = useIsDesktop();
@@ -32,9 +38,8 @@ export default function UserMenu({ name }: { name: string }) {
         position: [undefined, "relative"],
         textAlign: "start",
         "[data-reach-menu-popover]": {
-          right: [2, 0],
-          minWidth: "100%",
-          width: "auto",
+          right: 0,
+          left: 0,
         },
       }}
       css={`
@@ -79,6 +84,7 @@ export default function UserMenu({ name }: { name: string }) {
       >
         <Button
           as={MenuButton}
+          disabled={pending}
           sx={{
             textAlign: "center",
             width: "100%",
