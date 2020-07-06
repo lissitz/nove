@@ -7,8 +7,7 @@ import { useIsDesktop } from "../contexts/MediaQueryContext";
 import { useTranslation } from "../i18n";
 import { maxWidth } from "../styles/base";
 import rem from "../utils/rem";
-import { callToActionStyles } from "./Button";
-import ButtonLink from "./ButtonLink";
+import Button, { callToActionStyles } from "./Button";
 import { Column, Columns } from "./Columns";
 import Drawer from "./Drawer";
 import Link from "./Link";
@@ -114,9 +113,11 @@ export default function NavBar({ children }: { children?: React.ReactNode }) {
                         <UserMenu name={me.name} />
                       ) : null
                     ) : isPending ? null : (
-                      <ButtonLink
+                      <Button
                         external
-                        to={loginUrl}
+                        onClick={() => {
+                          window.location.href = loginUrl();
+                        }}
                         sx={{
                           marginLeft: "auto",
                           wordBreak: "normal",
@@ -125,7 +126,7 @@ export default function NavBar({ children }: { children?: React.ReactNode }) {
                         }}
                       >
                         {t("login")}
-                      </ButtonLink>
+                      </Button>
                     )}
                   </div>
                 </Column>

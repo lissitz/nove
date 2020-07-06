@@ -3,7 +3,10 @@ import { useCallback, useContext, useEffect, useReducer, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { fetchJson } from "../utils/fetch";
 import { useSetToken, getToken, useRevokeToken, useDeleteToken } from "../api";
-import { nove_auth_session_key } from "../constants";
+import {
+  nove_auth_session_key,
+  nove_auth_state_session_key,
+} from "../constants";
 
 type AuthResponse = {
   access_token: string;
@@ -170,8 +173,19 @@ function initialState(params: URLSearchParams): AuthState {
     return { status: "unauthenticated" };
   }
   if (code && state) {
-    //TODO: check state matches
-    return { status: "pending_tokens_retrieval", code };
+    try {
+      const stored_state = window.localStorage.getItem(
+        nove_auth_state_session_key
+      );
+      if (stored_state === state) {
+        return { status: "pending_tokens_retrieval", code };
+      } else {
+        return { status: "unauthenticated" };
+      }
+    } catch (error) {
+      // if local storage is disabled we still let the user login
+      return { status: "pending_tokens_retrieval", code };
+    }
   }
   if (!code && !state) {
     let is_auth;

@@ -50,7 +50,7 @@ export default function CommentVotePanel({
             });
           }
         : () => {
-            window.location.href = loginUrl;
+            window.location.href = loginUrl();
           },
     [isAuthenticated, mutate, name, loginUrl]
   );

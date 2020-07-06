@@ -81,7 +81,7 @@ export default function VotePanel({
             });
           }
         : () => {
-            window.location.href = loginUrl;
+            window.location.href = loginUrl();
           },
     [isAuthenticated, mutate, postId, loginUrl]
   );

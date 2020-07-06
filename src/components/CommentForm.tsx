@@ -65,15 +65,18 @@ export default function CommentForm({
     </Card>
   ) : (
     <Card
-      as="a"
+      as="button"
       sx={{
         width: "100%",
         displat: "flex",
         cursor: "pointer",
         textDecoration: "none",
         color: "text",
+        textAlign: "left",
       }}
-      href={loginUrl}
+      onClick={() => {
+        window.location.href = loginUrl();
+      }}
     >
       <Stack space={2}>
         <div sx={{ ...textAreaStyles, cursor: "pointer" }}>

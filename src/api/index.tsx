@@ -5,7 +5,12 @@ import {
   useQuery,
 } from "react-query";
 import type { MutationOptions } from "react-query";
-import { defaultCommentSort, Type, nove_auth_session_key } from "../constants";
+import {
+  defaultCommentSort,
+  Type,
+  nove_auth_session_key,
+  nove_auth_state_session_key,
+} from "../constants";
 import { useAccessToken } from "../contexts/authContext";
 import { useIsDesktop } from "../contexts/MediaQueryContext";
 import type {
@@ -259,12 +264,15 @@ export function useInfinitePosts(
 
 export function useLoginUrl() {
   const desktop = useIsDesktop();
-  return loginUrl(desktop);
+  return () => loginUrl(desktop);
 }
 function loginUrl(desktop: boolean) {
   const authorize = desktop ? "authorize" : "authorize.compact";
   const client_id = process.env.REACT_APP_REDDIT_CLIENT_ID;
   const random_string = Math.random().toString();
+  try {
+    window.localStorage.setItem(nove_auth_state_session_key, random_string);
+  } catch (error) {}
   const redirect_uri = process.env.REACT_APP_REDDIT_REDIRECT_URI;
   const scope =
     "identity, edit, flair, history, mysubreddits, read, save, submit, subscribe, vote";

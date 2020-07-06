@@ -85,3 +85,4 @@ export const allowEmbeds = true;
 export const themes = ["default", "deep"] as const;
 
 export const nove_auth_session_key = "nove_auth";
+export const nove_auth_state_session_key = "nove_auth_state";
