@@ -4,7 +4,7 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import { ReactQueryConfigProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query-devtools";
 import { BrowserRouter } from "react-router-dom";
-import { jsx, ThemeProvider } from "theme-ui";
+import { jsx, ThemeProvider, useThemeUI } from "theme-ui";
 import Stack from "./components/Stack";
 import { AuthProvider } from "./contexts/authContext";
 import { MediaQueryProvider } from "./contexts/MediaQueryContext";
@@ -45,15 +45,11 @@ function App() {
 }
 
 function Base() {
-  const t = useTranslation();
   useScrollTopTopOnNewRoute();
   return (
     <Fragment>
       <BaseStyles />
-      <Helmet titleTemplate="%s | Nove" defaultTitle="Nove">
-        <html lang="en" />
-        <meta name="description" content={t("meta.description")} />
-      </Helmet>
+      <BaseHelmet />
       <div
         sx={{
           display: "flex",
@@ -69,6 +65,18 @@ function Base() {
         </Stack>
       </div>
     </Fragment>
+  );
+}
+
+function BaseHelmet() {
+  const { theme } = useThemeUI();
+  const t = useTranslation();
+  return (
+    <Helmet titleTemplate="%s | Nove" defaultTitle="Nove">
+      <html lang="en" />
+      <meta name="description" content={t("meta.description")} />
+      <meta name="theme-color" content={theme.colors.surface} />
+    </Helmet>
   );
 }
 
