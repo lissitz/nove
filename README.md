@@ -9,9 +9,9 @@ A client for Reddit.
 - Navigate communities
 - Read posts and comments
 - User pages
-- Sort post, comments, user pages
+- Sort posts, comments and user pages
 - Frontpage and site feeds
-- search subreddits by name
+- Search subreddits by name
 - Light and dark theme
 
 Additional features after login:
