@@ -39,7 +39,7 @@ export default function UserOverview({
   return (
     <div sx={{ width: "100%" }} id="userOverview">
       {status === "loading" ? (
-        <Stack space={3}>
+        <Stack space={[0, null, 3]} aria-hidden>
           {Array(25)
             .fill(undefined)
             .map((_, index) => (
