@@ -93,7 +93,7 @@ export const theme = {
   },
   colors: {
     text: "#222",
-    textSecondary: colors.gray[6],
+    textSecondary: "#535A5F",
     textButton: "#222",
     background: "#fafafa",
     primary: colors.gray[3],
