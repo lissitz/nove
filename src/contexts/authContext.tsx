@@ -307,6 +307,27 @@ function useAuthEffects(state: AuthState, dispatch: (x: AuthEvent) => void) {
     },
     state.status === "authenticated" ? state.expiresIn * 1000 - epsilon : null
   );
+
+  //check if token has expired after window focus
+  const expirationDate =
+    state.status === "authenticated" ? state.expirationDate : undefined;
+  useEffect(() => {
+    const handleFocus = () => {
+      if (
+        state.status === "authenticated" &&
+        expirationDate &&
+        expirationDate < Date.now() &&
+        refreshToken
+      )
+        refresh(refreshToken);
+    };
+    window.addEventListener("visibilitychange", handleFocus, false);
+    window.addEventListener("focus", handleFocus, false);
+    return () => {
+      window.removeEventListener("visibilitychange", handleFocus, false);
+      window.removeEventListener("focus", handleFocus, false);
+    };
+  }, [state.status, expirationDate, refreshToken, refresh]);
 }
 
 export function useAccessToken() {
