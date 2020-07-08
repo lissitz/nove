@@ -103,6 +103,7 @@ export const theme = {
     muted: colors.gray[1],
     surface: "white",
     quote: colors.gray[0],
+    scrollbarThumb: colors.gray[5],
     ...colors,
     modes: {
       deep: {
@@ -120,6 +121,7 @@ export const theme = {
         muted: "hsla(230, 20%, 0%, 20%)",
         gray: "hsl(210, 50%, 60%)",
         surface: lighten(0.1, "hsl(230, 25%, 18%)"),
+        scrollbarThumb: lighten(0.2, "hsl(230, 25%, 18%)"),
       },
     },
   },
@@ -215,7 +217,7 @@ export const scrollbar = {
     height: 5,
   },
   "&::-webkit-scrollbar-thumb": {
-    backgroundColor: "textSecondary",
+    backgroundColor: "scrollbarThumb",
     borderRadius: 4,
   },
   "&::-webkit-scrollbar-track": {
