@@ -52,7 +52,10 @@ export default function Post({
   const commentLink = isPreview ? (
     <Link
       to={post.permalink}
-      sx={{ fontSize: 1, color: [null, "link"] }}
+      sx={{
+        fontSize: 1,
+        color: [null, "link"],
+      }}
       preload
     >
       {t(post.num_comments === 1 ? "xComment" : "xComments", [
@@ -97,11 +100,32 @@ export default function Post({
                 )}
                 <H sx={{ fontSize: 3, display: "inline" }}>
                   {external ? (
-                    <Link external to={post.url}>
+                    <Link
+                      external
+                      to={post.url}
+                      sx={{
+                        "&&": {
+                          ":hover": {
+                            textDecoration: ["none", null, "underline"],
+                          },
+                        },
+                      }}
+                    >
                       {post.title}
                     </Link>
                   ) : isPreview ? (
-                    <Link to={post.permalink}>{post.title}</Link>
+                    <Link
+                      to={post.permalink}
+                      sx={{
+                        "&&": {
+                          ":hover": {
+                            textDecoration: ["none", null, "underline"],
+                          },
+                        },
+                      }}
+                    >
+                      {post.title}
+                    </Link>
                   ) : (
                     post.title
                   )}
