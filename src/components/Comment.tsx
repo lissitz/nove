@@ -117,11 +117,12 @@ function TrueComment({
         space={1}
         sx={{
           wordBreak: "break-word",
+          ".reveal": {
+            opacity: 0,
+            transition: "opacity 200ms",
+          },
           "&:hover": {
-            ".comment-vote-panel": {
-              opacity: 1,
-            },
-            ".reply-button": {
+            ".reveal": {
               opacity: 1,
             },
           },
@@ -134,9 +135,12 @@ function TrueComment({
             "> * + *": {
               ml: 2,
             },
+            "> *": {
+              display: "inline",
+            },
           }}
         >
-          <div sx={{ display: "inline" }}>
+          <div>
             <Link
               to={`/u/${comment.author}`}
               sx={{
@@ -193,14 +197,7 @@ function TrueComment({
             </span>
           )}
           {isAuthenticated && !comment.locked && (
-            <div
-              className="reply-button"
-              sx={{
-                display: "inline",
-                opacity: 0,
-                transition: "opacity 200ms",
-              }}
-            >
+            <div className="reveal">
               <LinkButton
                 onClick={() => {
                   setIsReplying(true);
@@ -212,7 +209,7 @@ function TrueComment({
           )}
           {isAuthenticated && comment.author === me?.name && (
             <React.Fragment>
-              <div sx={{ display: "inline" }}>
+              <div className="reveal">
                 <LinkButton
                   onClick={() => {
                     setIsEditing(true);
@@ -221,7 +218,7 @@ function TrueComment({
                   {t("edit")}
                 </LinkButton>
               </div>
-              <div sx={{ display: "inline" }}>
+              <div className="reveal">
                 <LinkButton
                   onClick={() => {
                     del(comment.name);
@@ -232,10 +229,7 @@ function TrueComment({
               </div>
             </React.Fragment>
           )}
-          <div
-            className="comment-vote-panel"
-            sx={{ display: "inline", opacity: 0, transition: "opacity 200ms" }}
-          >
+          <div className="reveal">
             <CommentVotePanel
               name={comment.name}
               setScore={setScore}
