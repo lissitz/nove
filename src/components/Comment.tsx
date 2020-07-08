@@ -140,7 +140,7 @@ function TrueComment({
             <Link
               to={`/u/${comment.author}`}
               sx={{
-                color: getUserColor(comment.distinguished) || "gray.8",
+                color: getUserColor(comment.distinguished) || "textTertiary",
                 fontWeight: comment.is_submitter ? "bold" : undefined,
               }}
             >

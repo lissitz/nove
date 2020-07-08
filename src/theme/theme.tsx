@@ -94,6 +94,7 @@ export const theme = {
   colors: {
     text: "#222",
     textSecondary: "#535A5F",
+    textTertiary: colors.gray[9],
     textButton: "#222",
     background: "#fafafa",
     primary: colors.gray[3],
@@ -107,6 +108,7 @@ export const theme = {
       deep: {
         text: "hsl(210, 50%, 96%)",
         textSecondary: darken(0.1, "hsl(210, 50%, 96%)"),
+        textTertiary: darken(0.05, "hsl(210, 50%, 96%)"),
         textButton: "hsl(210, 50%, 96%)",
         background: "hsl(230, 25%, 18%)",
         primary: lighten(0.1, "hsl(230, 25%, 18%)"),
