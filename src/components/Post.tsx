@@ -4,7 +4,7 @@ import { queryCache } from "react-query";
 import { Card, jsx } from "theme-ui";
 import { useDelete, useEdit } from "../api";
 import { useBreakpoint } from "../contexts/MediaQueryContext";
-import { useTranslation, useFormat } from "../i18n";
+import { useFormat, useTranslation } from "../i18n";
 import { useNavigate } from "../router";
 import { Fullname, ID, MeData, PostData } from "../types";
 import { likesToVote, sanitize } from "../utils/format";
@@ -20,6 +20,8 @@ import Stack from "./Stack";
 import TextEditor from "./TextEditor";
 import Video from "./Video";
 import VotePanel from "./VotePanel";
+import AspectRatio from "./AspectRatio";
+import { headerHeight } from "../constants";
 
 export default function Post({
   post,
@@ -70,6 +72,9 @@ export default function Post({
     </div>
   );
   const H = isPreview ? "h2" : "h1";
+  const imageRatio =
+    (post.preview?.images?.[0].source?.height ?? 0) /
+    (post.preview?.images?.[0].source?.width ?? 1);
   return (
     <Card sx={{ width: "100%" }} {...rest}>
       <Stack space={2}>
@@ -142,7 +147,9 @@ export default function Post({
                   {t("postedBy")}{" "}
                   <Link
                     to={`/u/${post.author}`}
-                    sx={{ color: getUserColor(post.distinguished) }}
+                    sx={{
+                      color: getUserColor(post.distinguished),
+                    }}
                   >
                     {" " + post.author}
                   </Link>
@@ -255,31 +262,58 @@ export default function Post({
                     overflow: "hidden",
                   }}
                 >
-                  <img
-                    alt=""
-                    sx={{
-                      bg: "gray.2",
-                      height: post.thumbnail_height || "100%",
-                      width: [post.thumbnail_width || "100%"],
-                      margin: "0 auto",
-                    }}
-                    src={post.thumbnail}
-                  />
+                  <AspectRatio
+                    ratio={
+                      (post.thumbnail_height || 0) / (post.thumbnail_width || 1)
+                    }
+                  >
+                    <img
+                      loading="lazy"
+                      alt=""
+                      sx={{
+                        bg: "background",
+                        margin: "0 auto",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      src={post.thumbnail}
+                    />
+                  </AspectRatio>
                 </Link>
               </Column>
             )}
         </Columns>
         {hasImage && (
-          <img
+          <AspectRatio
             sx={{
-              maxWidth: "100%",
+              width: "100%",
+              height: "100%",
+              // we want images to fit the viewport height
+              // max-height =  100vh - headerHeight - margin
+              // max-width =  max-height / imageRatio
+              maxWidth: `calc((100vh - ${
+                headerHeight + 64
+              }px) / ${imageRatio})`,
               margin: "0 auto",
-              maxHeight: "80vh",
-              borderRadius: 4,
             }}
-            alt=""
-            src={post.url}
-          />
+            ratio={imageRatio}
+          >
+            <img
+              loading="lazy"
+              sx={{
+                width: "100%",
+                height: "100%",
+                margin: "0 auto",
+                borderRadius: 4,
+                bg: "background",
+              }}
+              alt=""
+              src={post.url}
+              srcSet={post.preview?.images?.[0].resolutions
+                .map((x) => `${x.url} ${x.width}w`)
+                .join(",")}
+            />
+          </AspectRatio>
         )}
         <Video post={post} />
         {mobile && (

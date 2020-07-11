@@ -16,6 +16,7 @@ export type Fullname = string;
 export type ID = string;
 export type RawHTML = string;
 export type Markdown = string;
+export type URL = string;
 
 export type ThingType = Comment | Account | Link | Message | Subreddit | Award;
 export type PostData = {
@@ -47,6 +48,12 @@ export type PostData = {
   secure_media: any;
   archived: boolean;
   name: Fullname;
+  preview?: {
+    images: {
+      source: { width: number; height: number };
+      resolutions: { width: number; height: number; url: URL }[];
+    }[];
+  };
 };
 
 export type ResponseItem<T, U> = { kind: T; data: U };

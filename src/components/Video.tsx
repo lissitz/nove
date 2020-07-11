@@ -77,6 +77,7 @@ function RedditVideo({ post }: { post: PostData }) {
             }}
           >
             <img
+              loading="lazy"
               alt=""
               sx={{
                 margin: "0 auto",
