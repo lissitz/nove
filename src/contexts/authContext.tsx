@@ -208,8 +208,7 @@ function useAuthEffects(state: AuthState, dispatch: (x: AuthEvent) => void) {
   const [setToken] = useSetToken();
   const navigate = useNavigate();
 
-  const code =
-    state.status === "pending_tokens_retrieval" ? state.code : undefined;
+  const code = "code" in state && state.code;
   useEffect(() => {
     if (state.status === "pending_tokens_retrieval") {
       fetchJson("https://www.reddit.com/api/v1/access_token", {
@@ -286,10 +285,7 @@ function useAuthEffects(state: AuthState, dispatch: (x: AuthEvent) => void) {
     [dispatch]
   );
 
-  const refreshToken =
-    state.status === "pending_access_token_retrieval"
-      ? state.refreshToken
-      : undefined;
+  const refreshToken = "refreshToken" in state && state.refreshToken;
   useEffect(() => {
     if (state.status === "pending_access_token_retrieval") {
       if (refreshToken) {
@@ -309,8 +305,7 @@ function useAuthEffects(state: AuthState, dispatch: (x: AuthEvent) => void) {
   );
 
   //check if token has expired after window focus
-  const expirationDate =
-    state.status === "authenticated" ? state.expirationDate : undefined;
+  const expirationDate = "expirationDate" in state && state.expirationDate;
   useEffect(() => {
     const handleFocus = () => {
       if (
