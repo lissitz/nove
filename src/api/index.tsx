@@ -233,7 +233,7 @@ const getInfinitePosts = (token?: string) => (
     community !== "" ? "/r/" : ""
   }${community}/${sort}.json?q=""&raw_json=1${
     cursor ? `&after=${cursor}` : ""
-  }&${query}`;
+  }${query ? "&" + query : ""}`;
   return fetchAuth(url, token).then((x) => x as InfinitePostsResponse);
 };
 export function prefetchInfinitePosts(
@@ -243,9 +243,12 @@ export function prefetchInfinitePosts(
   query: string = ""
 ) {
   return queryCache.prefetchQuery(
+    //@ts-ignore
     ["infinitePosts", community, sort, query, !!token],
-    () =>
-      getInfinitePosts(token)(community, sort, query)("", "").then((x) => [x])
+    () => getInfinitePosts(token)(community, sort, query)("", ""),
+    {
+      infinite: true,
+    }
   );
 }
 

@@ -42,7 +42,6 @@ function Content({
     data: posts,
     fetchMore,
     status,
-    //@ts-ignore
     canFetchMore,
     isFetchingMore,
   } = useInfinitePosts(community, sort, query);
