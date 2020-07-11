@@ -99,7 +99,7 @@ function Content({ community }: { community: string }) {
     <Wrapper>
       <Skeleton as={SideCard} height={rem(150)} />
       <CommunityRules community={community} />
-      <Skeleton as={SideCard} height={rem(150)} />
+      {show_description && <Skeleton as={SideCard} height={rem(150)} />}
     </Wrapper>
   ) : (
     <Error />
