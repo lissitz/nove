@@ -103,6 +103,10 @@ export type MoreChildrenData = {
   parent_id: Fullname;
 };
 
+export type PostCommentsData = {
+  comments: CommentChild[];
+};
+
 export type CommentSortType = typeof commentSortOptions[number];
 
 export type CommunityInfoData = {

@@ -17,6 +17,7 @@ import { useNavigate } from "../router";
 import rem from "../utils/rem";
 import Link from "./Link";
 import Skeleton from "./Skeleton";
+import { CommunityInfoData } from "../types";
 
 export default function Search() {
   const t = useTranslation();
@@ -37,9 +38,13 @@ export default function Search() {
         }, 100);
         setInputValue("");
         setSearchTerm("");
-        let url = (queryCache as any)
-          .getQueryData(["search", searchTerm])
-          ?.find((x: any) => x.data.display_name === value)?.data.url;
+        let url = queryCache
+          .getQueryData<
+            {
+              data: CommunityInfoData;
+            }[]
+          >(["search", searchTerm])
+          ?.find((x) => x.data.display_name === value)?.data.url;
         if (url) {
           navigate(url);
         }

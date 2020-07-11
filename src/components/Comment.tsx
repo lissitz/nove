@@ -12,9 +12,16 @@ import {
   useSubmitComment,
 } from "../api";
 import { Type } from "../constants";
-import { useIsAuthenticated } from "../contexts/authContext";
+import { useIsAuthenticated, useAccessToken } from "../contexts/authContext";
 import { useFormat, useTranslation } from "../i18n";
-import { CommentChild, Fullname, ID, PostData, Vote } from "../types";
+import {
+  CommentChild,
+  Fullname,
+  ID,
+  PostData,
+  Vote,
+  PostCommentsData,
+} from "../types";
 import type { CommentData, CommentSortType, MoreChildrenData } from "../types";
 import { likesToVote, sanitize } from "../utils/format";
 import { getUserColor } from "../utils/getUserColor";
@@ -86,8 +93,8 @@ function TrueComment({
   const { data: me } = useMe();
   const [del] = useDelete({
     onSuccess: () => {
-      queryCache.refetchQueries(["comments", postId]);
-      queryCache.setQueryData(["content", postId], (data: PostData) => {
+      queryCache.invalidateQueries(["comments", postId]);
+      queryCache.setQueryData<PostData>(["content", postId], (data) => {
         return data?.num_comments != null
           ? { ...data, num_comments: data.num_comments - 1 }
           : data;
@@ -103,6 +110,7 @@ function TrueComment({
     score: comment.score,
     vote: likesToVote(comment.likes),
   });
+  const token = useAccessToken();
   return (
     <div
       sx={{
@@ -342,7 +350,14 @@ function TrueComment({
                 <Reply
                   parentId={comment.name}
                   setIsReplying={setIsReplying}
-                  commentsQueryKey={["comments", postId, community, sort, ""]}
+                  commentsQueryKey={[
+                    "comments",
+                    postId,
+                    community,
+                    sort,
+                    "",
+                    !!token,
+                  ]}
                   comment={comment}
                   contentQueryKey={["content", postId]}
                 />
@@ -460,16 +475,16 @@ function CommentEditor({
 }) {
   const [edit] = useEdit({
     onSuccess: (response, { id, text }) => {
-      queryCache.setQueryData(
+      queryCache.setQueryData<PostCommentsData>(
         ["comments", postId, community, sort, ""],
-        (data: any) => {
-          const index = data?.comments?.findIndex(
-            (x: any) => x.data.name === id
-          );
+        (data) => {
+          const index = data?.comments.findIndex((x) => x.data.name === id);
           if (index != null && response) {
-            const comments = data?.comments?.slice();
-            comments[index] = { kind: Type.Comment, data: response };
-            return { comments };
+            const comments = data?.comments.slice();
+            if (comments) {
+              comments[index] = { kind: Type.Comment, data: response };
+              return { comments };
+            }
           }
           return data;
         }
@@ -500,28 +515,31 @@ function Reply({
 }: {
   commentsQueryKey: string | AnyQueryKey;
   contentQueryKey: string | AnyQueryKey;
-  comment: any;
+  comment: CommentData;
   parentId: Fullname;
   setIsReplying: (x: boolean) => void;
 }) {
   const [mutate] = useSubmitComment({
     onSuccess: (response) => {
-      queryCache.setQueryData(commentsQueryKey, (data: any) => {
+      queryCache.setQueryData<PostCommentsData>(commentsQueryKey, (data) => {
         // hack: we are mutating the cache to avoid searching the whole comment tree for the replies array to update
         // and recreating it. Probably not what react-query expects.
         const reply = response?.json?.data?.things?.[0];
-        if (comment.data.replies) {
-          comment.data.replies.data.children = [reply, ...comment.data.replies];
+        if (comment.replies) {
+          comment.replies.data.children = [
+            reply,
+            ...comment.replies.data.children,
+          ];
         } else {
-          comment.data.replies = {
+          comment.replies = {
             data: {
               children: [reply],
             },
           };
         }
-        return { ...data };
+        return data ? { comments: data.comments } : undefined;
       });
-      queryCache.setQueryData(contentQueryKey, (data: PostData) => {
+      queryCache.setQueryData<PostData>(contentQueryKey, (data) => {
         return data?.num_comments != null
           ? { ...data, num_comments: data.num_comments + 1 }
           : data;

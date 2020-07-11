@@ -21,9 +21,11 @@ function App() {
       <ThemeProvider theme={theme}>
         <ReactQueryConfigProvider
           config={{
-            refetchAllOnWindowFocus: false,
-            refetchOnMount: false,
-            staleTime: 0,
+            queries: {
+              refetchOnWindowFocus: false,
+              refetchOnMount: false,
+              staleTime: 0,
+            },
           }}
         >
           <LanguageProvider>

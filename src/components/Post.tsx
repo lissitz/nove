@@ -354,7 +354,7 @@ function PostEditor({
 }) {
   const [edit] = useEdit({
     onSuccess: (response: PostData, { id, text }) => {
-      queryCache.setQueryData(["content", postId], (data: PostData) => {
+      queryCache.setQueryData<PostData>(["content", postId], (data) => {
         return response;
       });
     },

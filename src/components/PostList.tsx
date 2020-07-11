@@ -70,22 +70,23 @@ function Content({
     <Fragment>
       <Meta community={community} />
       <Stack space={[0, null, 3]}>
-        {posts.map((group, index) => (
-          <Stack
-            as="ul"
-            asChild="li"
-            space={[0, null, 3]}
-            sx={{ maxWidth: "100%" }}
-          >
-            {group.data.children.map((post: { data: PostData }) => (
-              <PostPreview
-                post={post.data}
-                key={post.data.id}
-                showContext={isCombinedCommunity(community)}
-              />
-            ))}
-          </Stack>
-        ))}
+        {posts &&
+          posts.map((group, index) => (
+            <Stack
+              as="ul"
+              asChild="li"
+              space={[0, null, 3]}
+              sx={{ maxWidth: "100%" }}
+            >
+              {group.data.children.map((post: { data: PostData }) => (
+                <PostPreview
+                  post={post.data}
+                  key={post.data.id}
+                  showContext={isCombinedCommunity(community)}
+                />
+              ))}
+            </Stack>
+          ))}
       </Stack>
       {(canFetchMore || isFetchingMore) && (
         <Button

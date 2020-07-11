@@ -8,7 +8,7 @@ import { Type } from "../constants";
 import { useIsAuthenticated } from "../contexts/authContext";
 import { useTranslation } from "../i18n";
 import { textAreaStyles } from "../theme/theme";
-import { ID, PostData } from "../types";
+import { ID, PostData, PostCommentsData } from "../types";
 import Button from "./Button";
 import Stack from "./Stack";
 
@@ -25,15 +25,15 @@ export default function CommentForm({
   const loginUrl = useLoginUrl();
   const [mutate] = useSubmitComment({
     onSuccess: (response) => {
-      queryCache.setQueryData(commentsQueryKey, (data: any) => {
+      queryCache.setQueryData<PostCommentsData>(commentsQueryKey, (data) => {
         const comment = response?.json?.data?.things?.[0];
-        const comments = data.comments.slice();
+        const comments = data?.comments.slice();
         if (comment && comments) {
           return { comments: [comment, ...comments] };
         }
         return data;
       });
-      queryCache.setQueryData(contentQueryKey, (data: PostData) => {
+      queryCache.setQueryData<PostData>(contentQueryKey, (data) => {
         return data?.num_comments != null
           ? { ...data, num_comments: data.num_comments + 1 }
           : data;

@@ -135,30 +135,32 @@ function JoinButton({
   const [colorMode] = useColorMode();
   const [subscribe] = useSubscribe({
     onMutate: ({ action }) => {
-      const data = queryCache.getQueryData(["about", community]) as any;
+      const data = queryCache.getQueryData<{ data: CommunityInfoData }>([
+        "about",
+        community,
+      ]);
       if (data) {
         queryCache.setQueryData(["about", community], {
-          kind: data.kind,
           data: {
             ...data.data,
             user_is_subscriber: action === "sub",
           },
         });
       }
-      const communitiesData = queryCache.getQueryData(["myCommunities"]) as any;
+      const communitiesData = queryCache.getQueryData<
+        { data: CommunityInfoData }[]
+      >(["myCommunities"]);
       if (communitiesData) {
         const newData = communitiesData.slice();
         if (action === "sub") {
           newData.push(info);
         } else {
           const index = newData.findIndex(
-            (x: any) => x.data.display_name === info.data.display_name
+            (x) => x.data.display_name === info.data.display_name
           );
           newData.splice(index, 1);
         }
-        newData.sort(
-          (a: any, b: any) => b.data.subscribers - a.data.subscribers
-        );
+        newData.sort((a, b) => b.data.subscribers - a.data.subscribers);
         queryCache.setQueryData(["myCommunities"], newData);
       }
       return () => {
@@ -167,8 +169,8 @@ function JoinButton({
       };
     },
     onSuccess: () => {
-      queryCache.refetchQueries(["about", community]);
-      queryCache.refetchQueries("myCommunities");
+      queryCache.invalidateQueries(["about", community]);
+      queryCache.invalidateQueries("myCommunities");
     },
     onError: (_error, _action, rollback: any) => {
       rollback();

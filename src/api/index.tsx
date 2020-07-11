@@ -26,6 +26,7 @@ import type {
   PostData,
   PostKind,
   Vote,
+  PostCommentsData,
 } from "../types";
 import { fetchJson } from "../utils/fetch";
 import { fetchAuth, getFetchMore } from "./common";
@@ -99,10 +100,7 @@ export function getPostComments(token?: string) {
     query = query || "";
     pathname = `${pathname}?q=${query}&raw_json=1&sort=${sort}&limit=100`;
     return fetchAuth(pathname, token).then(
-      (x) =>
-        ({ comments: x[1].data.children } as {
-          comments: CommentChild[];
-        })
+      (x) => ({ comments: x[1].data.children } as PostCommentsData)
     );
   };
 }
@@ -143,18 +141,19 @@ export function prefetchCommunityInfo(
   token: string | undefined,
   community: string
 ) {
-  return queryCache.prefetchQuery(
-    !isCombinedCommunity(community) && ["about", community],
-    () => getCommunityInfo(token)(community)
-  );
+  return !isCombinedCommunity(community)
+    ? queryCache.prefetchQuery(["about", community], () =>
+        getCommunityInfo(token)(community)
+      )
+    : noop;
 }
 
 export function useCommunityInfo(community: string) {
   const token = useAccessToken();
   return useQuery(
-    !isCombinedCommunity(community) && ["about", community],
+    ["about", community],
     () => getCommunityInfo(token)(community),
-    { suspense: true }
+    { suspense: true, enabled: !isCombinedCommunity(community) }
   );
 }
 
@@ -164,16 +163,17 @@ function getCommunityRules(community: string) {
 }
 
 export function prefetchCommunityRules(community: string) {
-  return queryCache.prefetchQuery(
-    !isCombinedCommunity(community) && ["rules", community],
-    () => getCommunityRules(community)
-  );
+  return !isCombinedCommunity(community)
+    ? queryCache.prefetchQuery(["rules", community], () =>
+        getCommunityRules(community)
+      )
+    : noop;
 }
 
 export function useCommunityRules(community: string) {
-  return useQuery(!isCombinedCommunity(community) && ["rules", community], () =>
-    getCommunityRules(community)
-  );
+  return useQuery(["rules", community], () => getCommunityRules(community), {
+    enabled: !isCombinedCommunity(community),
+  });
 }
 
 function getSearchResults(searchTerm: string) {
@@ -189,19 +189,18 @@ function getSearchResults(searchTerm: string) {
 }
 
 export function prefetchSearch(searchTerm: string) {
-  return queryCache.prefetchQuery(
-    //@ts-ignore
-    searchTerm.trim() !== "" && ["search", searchTerm],
-    (_, searchTerm) => getSearchResults(searchTerm)
-  );
+  return searchTerm.trim() !== ""
+    ? queryCache.prefetchQuery(["search", searchTerm], (_, searchTerm) =>
+        getSearchResults(searchTerm)
+      )
+    : noop;
 }
 
 export function useSearch(searchTerm: string) {
   return useQuery(
-    //@ts-ignore
-    searchTerm.trim() !== "" && ["search", searchTerm],
+    ["search", searchTerm],
     (_, searchTerm) => getSearchResults(searchTerm),
-    { suspense: true }
+    { suspense: true, enabled: searchTerm.trim() !== "" }
   );
 }
 
@@ -238,11 +237,7 @@ export function prefetchInfinitePosts(
   return queryCache.prefetchQuery(
     ["infinitePosts", community, sort, query, !!token],
     () =>
-      getInfinitePosts(token)(
-        community,
-        sort,
-        query
-      )("", "").then((x: any) => [x])
+      getInfinitePosts(token)(community, sort, query)("", "").then((x) => [x])
   );
 }
 
@@ -253,7 +248,7 @@ export function useInfinitePosts(
 ) {
   const token = useAccessToken();
   return useInfiniteQuery(
-    ["infinitePosts", community, sort, query, !!token] as any,
+    ["infinitePosts", community, sort, query, !!token],
     getInfinitePosts(token)(community, sort, query),
     {
       getFetchMore,
@@ -286,7 +281,7 @@ function getMe(token?: string) {
 
 export function useMe() {
   const token = useAccessToken();
-  return useQuery(token && "me", () => getMe(token));
+  return useQuery("me", () => getMe(token), { enabled: !!token });
 }
 
 function getMyCommunities(token?: string) {
@@ -303,7 +298,9 @@ function getMyCommunities(token?: string) {
 
 export function useMyCommunities() {
   const token = useAccessToken();
-  return useQuery(token && "myCommunities", () => getMyCommunities(token));
+  return useQuery("myCommunities", () => getMyCommunities(token), {
+    enabled: !!token,
+  });
 }
 
 function vote(token?: string) {
@@ -373,7 +370,7 @@ export function useMoreChildren({
 }) {
   const token = useAccessToken();
   return useQuery(
-    should_fetch && ["morechildren", postId, id, children.join(","), !!token],
+    ["morechildren", postId, id, children.join(","), !!token],
     () =>
       getMoreChildren(token)(
         `${Type.Link}_${postId}`,
@@ -381,7 +378,10 @@ export function useMoreChildren({
         children,
         sort,
         limit_children
-      )
+      ),
+    {
+      enabled: should_fetch,
+    }
   );
 }
 
@@ -602,3 +602,5 @@ function revokeToken({
 export function useRevokeToken() {
   return useMutation(revokeToken);
 }
+
+function noop() {}

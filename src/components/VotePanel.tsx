@@ -67,8 +67,8 @@ export default function VotePanel({
     onSuccess: (_data, mutationVariables) => {
       mounted.current && setScore({ dir: mutationVariables.dir });
       mounted.current && setVote(mutationVariables.dir);
-      queryCache.refetchQueries([postId]);
-      queryCache.refetchQueries(["infinitePosts", community]);
+      queryCache.invalidateQueries([postId]);
+      queryCache.invalidateQueries(["infinitePosts", community]);
     },
   });
   const sendVote = useCallback(

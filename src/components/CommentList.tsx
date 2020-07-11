@@ -14,6 +14,7 @@ import Comment from "./Comment";
 import Skeleton from "./Skeleton";
 import Stack from "./Stack";
 import CommentForm from "./CommentForm";
+import { useAccessToken } from "../contexts/authContext";
 
 const maxSkeletonComments = 100;
 export default function CommentList({
@@ -29,6 +30,7 @@ export default function CommentList({
   const { data: post } = usePostContent(postId, community);
   const comments = data?.comments;
   useScrollToTopCommentOnSortChange(sort);
+  const token = useAccessToken();
 
   return (
     <Stack space={[0, null, 3]} sx={{ width: "100%" }}>
@@ -36,7 +38,7 @@ export default function CommentList({
         <CommentForm
           postId={postId}
           contentQueryKey={["content", postId]}
-          commentsQueryKey={["comments", postId, community, sort, ""]}
+          commentsQueryKey={["comments", postId, community, sort, "", !!token]}
         />
       )}
       <div sx={{ width: "100%" }} id="comments">
