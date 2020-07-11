@@ -23,8 +23,12 @@ Additional features after login:
 - Frontpage based on subscribed communities
 - The default community list is replaced by your communities
 
+## Notes
+
+- **Firefox** users: Reddit data may not load if Enhanced Tracking Protection is ON for this site. If you wish to disable it, use the shield icon in the address bar.
+
 ## Development
 
-`npm start or yarn start` to run the app in development mode.
+`npm start` or `yarn start` to run the app in development mode.
 
-`npm run build or yarn build` to build the app for production to the build folder.
+`npm run build` or `yarn build` to build the app for production to the build folder.
