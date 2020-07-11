@@ -16,7 +16,8 @@ export default function PostContent({
 }) {
   const { data: me } = useMe();
   const { data: post, status } = usePostContent(postId, community);
-  if (status === "loading" || !post) return <Skeleton as={Card} />;
+  if (status === "loading" || status === "idle" || !post)
+    return <Skeleton as={Card} />;
   else if (status === "error") return <CardError />;
   return (
     <React.Fragment>

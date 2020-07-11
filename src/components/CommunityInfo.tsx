@@ -7,8 +7,7 @@ import {
   AccordionPanel,
 } from "@reach/accordion";
 import * as React from "react";
-import { ComponentProps, Suspense, useState } from "react";
-import { ErrorBoundary } from "react-error-boundary";
+import { ComponentProps, useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { queryCache } from "react-query";
 import { useLocation } from "react-router-dom";
@@ -26,14 +25,14 @@ import Skeleton from "./Skeleton";
 import Stack from "./Stack";
 
 const show_description = false;
-function Success({ community }: { community: string }) {
-  let { data: info } = useCommunityInfo(community);
+function Content({ community }: { community: string }) {
+  let { status, data: info } = useCommunityInfo(community);
   info = info!;
   const t = useTranslation();
   const isAuthenticated = useIsAuthenticated();
   const location = useLocation();
   const format = useFormat();
-  return (
+  return status === "success" ? (
     <Wrapper>
       <SideCard>
         <Stack space={4}>
@@ -96,25 +95,19 @@ function Success({ community }: { community: string }) {
         </SideCard>
       )}
     </Wrapper>
+  ) : status === "loading" || status === "idle" ? (
+    <Wrapper>
+      <Skeleton as={SideCard} height={rem(150)} />
+      <CommunityRules community={community} />
+      <Skeleton as={SideCard} height={rem(150)} />
+    </Wrapper>
+  ) : (
+    <Error />
   );
 }
 export default function CommunityInfo({ community }: { community: string }) {
   if (isCombinedCommunity(community)) return null;
-  return (
-    <ErrorBoundary FallbackComponent={Error}>
-      <Suspense
-        fallback={
-          <Wrapper>
-            <Skeleton as={SideCard} height={rem(150)} />
-            <CommunityRules community={community} />
-            <Skeleton as={SideCard} height={rem(150)} />
-          </Wrapper>
-        }
-      >
-        <Success community={community} />
-      </Suspense>
-    </ErrorBoundary>
-  );
+  return <Content community={community} />;
 }
 
 function SideCard(props: ComponentProps<typeof Card>) {
@@ -212,7 +205,7 @@ function JoinButton({
 function CommunityRules({ community }: { community: string }) {
   const { data: rules, status: rulesStatus } = useCommunityRules(community);
   const t = useTranslation();
-  return rulesStatus === "loading" ? (
+  return rulesStatus === "loading" || rulesStatus === "idle" ? (
     <Skeleton as={SideCard} height={rem(150)} />
   ) : rulesStatus === "error" ? (
     <SideCard sx={{ height: rem(150) }} />

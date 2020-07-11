@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Suspense, Fragment } from "react";
-import { ErrorBoundary } from "react-error-boundary";
 import { Helmet } from "react-helmet-async";
 import { useSearchParams } from "react-router-dom";
 import { Card, jsx } from "theme-ui";
@@ -26,26 +25,7 @@ export default function PostList({
 }) {
   return (
     <div sx={{ width: "100%" }}>
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <Suspense
-          fallback={
-            <Fragment>
-              <Suspense fallback={null}>
-                <Meta community={community} />
-              </Suspense>
-              <Stack space={[0, null, 3]} aria-hidden>
-                {Array(50)
-                  .fill(null)
-                  .map((_, index) => (
-                    <Skeleton as={Card} key={index} />
-                  ))}
-              </Stack>
-            </Fragment>
-          }
-        >
-          <Content community={community} sort={sort} />
-        </Suspense>
-      </ErrorBoundary>
+      <Content community={community} sort={sort} />
     </div>
   );
 }
@@ -61,12 +41,13 @@ function Content({
   let {
     data: posts,
     fetchMore,
+    status,
     //@ts-ignore
     canFetchMore,
     isFetchingMore,
   } = useInfinitePosts(community, sort, query);
   const t = useTranslation();
-  return (
+  return status === "success" ? (
     <Fragment>
       <Meta community={community} />
       <Stack space={[0, null, 3]}>
@@ -98,6 +79,28 @@ function Content({
         </Button>
       )}
     </Fragment>
+  ) : status === "loading" || status === "idle" ? (
+    <Fragment>
+      <Suspense fallback={null}>
+        <Meta community={community} />
+      </Suspense>
+      <Stack space={[0, null, 3]} aria-hidden>
+        {Array(50)
+          .fill(null)
+          .map((_, index) => (
+            <Skeleton as={Card} key={index} />
+          ))}
+      </Stack>
+    </Fragment>
+  ) : (
+    <React.Fragment>
+      <CardError />
+      <Stack space={[0, null, 3]} aria-hidden>
+        {Array(10).map((_, index) => (
+          <Card sx={{ height: rem(150) }} key={index} />
+        ))}
+      </Stack>
+    </React.Fragment>
   );
 }
 
@@ -117,18 +120,5 @@ function Meta({ community }: { community: string }) {
     <Helmet>
       <title>{info?.data.title || ""}</title>
     </Helmet>
-  );
-}
-
-function ErrorFallback() {
-  return (
-    <React.Fragment>
-      <CardError />
-      <Stack space={[0, null, 3]} aria-hidden>
-        {Array(10).map((_, index) => (
-          <Card sx={{ height: rem(150) }} key={index} />
-        ))}
-      </Stack>
-    </React.Fragment>
   );
 }

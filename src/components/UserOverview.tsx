@@ -38,7 +38,7 @@ export default function UserOverview({
   const t = useTranslation();
   return (
     <div sx={{ width: "100%" }} id="userOverview">
-      {status === "loading" ? (
+      {status === "loading" || status === "idle" ? (
         <Stack space={[0, null, 3]} aria-hidden>
           {Array(25)
             .fill(undefined)

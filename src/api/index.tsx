@@ -11,7 +11,7 @@ import {
   nove_auth_session_key,
   nove_auth_state_session_key,
 } from "../constants";
-import { useAccessToken } from "../contexts/authContext";
+import { useAccessToken, useIsPending } from "../contexts/authContext";
 import { useIsDesktop } from "../contexts/MediaQueryContext";
 import type {
   CommentChild,
@@ -59,6 +59,7 @@ export function prefetchPostContent(
 
 export function usePostContent(postId: string, community?: string) {
   const token = useAccessToken();
+  const isPending = useIsPending();
   return useQuery(
     ["content", postId, !!token],
     () => getPostContent(token)(postId),
@@ -66,6 +67,7 @@ export function usePostContent(postId: string, community?: string) {
       ...(community && {
         initialData: postContentInitialData(postId, community),
       }),
+      enabled: !isPending,
     }
   );
 }
@@ -112,8 +114,13 @@ export function usePostComments(
   query: string
 ) {
   let token = useAccessToken();
-  return useQuery(["comments", postId, community, sort, query, !!token], () =>
-    getPostComments(token)(postId, community, sort, query)
+  const isPending = useIsPending();
+  return useQuery(
+    ["comments", postId, community, sort, query, !!token],
+    () => getPostComments(token)(postId, community, sort, query),
+    {
+      enabled: !isPending,
+    }
   );
 }
 
@@ -142,7 +149,7 @@ export function prefetchCommunityInfo(
   community: string
 ) {
   return !isCombinedCommunity(community)
-    ? queryCache.prefetchQuery(["about", community], () =>
+    ? queryCache.prefetchQuery(["about", community, !!token], () =>
         getCommunityInfo(token)(community)
       )
     : noop;
@@ -150,10 +157,11 @@ export function prefetchCommunityInfo(
 
 export function useCommunityInfo(community: string) {
   const token = useAccessToken();
+  const isPending = useIsPending();
   return useQuery(
-    ["about", community],
+    ["about", community, !!token],
     () => getCommunityInfo(token)(community),
-    { suspense: true, enabled: !isCombinedCommunity(community) }
+    { enabled: !isCombinedCommunity(community) && !isPending }
   );
 }
 
@@ -247,12 +255,13 @@ export function useInfinitePosts(
   query: string = ""
 ) {
   const token = useAccessToken();
+  const isPending = useIsPending();
   return useInfiniteQuery(
     ["infinitePosts", community, sort, query, !!token],
     getInfinitePosts(token)(community, sort, query),
     {
       getFetchMore,
-      suspense: true,
+      enabled: !isPending,
     }
   );
 }
@@ -281,7 +290,10 @@ function getMe(token?: string) {
 
 export function useMe() {
   const token = useAccessToken();
-  return useQuery("me", () => getMe(token), { enabled: !!token });
+  const isPending = useIsPending();
+  return useQuery(["me", !!token], () => getMe(token), {
+    enabled: !!token && !isPending,
+  });
 }
 
 function getMyCommunities(token?: string) {
@@ -298,8 +310,9 @@ function getMyCommunities(token?: string) {
 
 export function useMyCommunities() {
   const token = useAccessToken();
-  return useQuery("myCommunities", () => getMyCommunities(token), {
-    enabled: !!token,
+  const isPending = useIsPending();
+  return useQuery(["myCommunities", !!token], () => getMyCommunities(token), {
+    enabled: !!token && !isPending,
   });
 }
 
@@ -369,6 +382,7 @@ export function useMoreChildren({
   limit_children?: boolean;
 }) {
   const token = useAccessToken();
+  const isPending = useIsPending();
   return useQuery(
     ["morechildren", postId, id, children.join(","), !!token],
     () =>
@@ -380,7 +394,7 @@ export function useMoreChildren({
         limit_children
       ),
     {
-      enabled: should_fetch,
+      enabled: should_fetch && !isPending,
     }
   );
 }

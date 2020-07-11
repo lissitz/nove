@@ -14,7 +14,7 @@ export default function UserInfo({ username }: { username: string }) {
   const format = useFormat();
   return (
     <Stack as="aside" space={4} sx={{ fontSize: 1 }}>
-      {infoStatus === "loading" ? (
+      {infoStatus === "loading" || infoStatus === "idle" ? (
         <Skeleton as={SideCard} height={rem(150)} />
       ) : infoStatus === "error" ? null : (
         user && (

@@ -42,7 +42,7 @@ export default function CommentList({
         />
       )}
       <div sx={{ width: "100%" }} id="comments">
-        {status === "loading" ? (
+        {status === "loading" || status === "idle" ? (
           <Skeleton
             as={Card}
             height={rem(

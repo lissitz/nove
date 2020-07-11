@@ -1,5 +1,5 @@
 import { queryCache, useInfiniteQuery, useQuery } from "react-query";
-import { useAccessToken } from "../contexts/authContext";
+import { useAccessToken, useIsPending } from "../contexts/authContext";
 import type {
   Account,
   Fullname,
@@ -23,8 +23,13 @@ export function prefetchUserInfo(token: string | undefined, username: string) {
 
 export function useUserInfo(username: string) {
   const token = useAccessToken();
-  return useQuery(["about/user", username, !!token], () =>
-    getUserInfo(username, token)
+  const isPending = useIsPending();
+  return useQuery(
+    ["about/user", username, !!token],
+    () => getUserInfo(username, token),
+    {
+      enabled: !isPending,
+    }
   );
 }
 
@@ -68,11 +73,13 @@ export function useUserPage(
   query: string = ""
 ) {
   const token = useAccessToken();
+  const isPending = useIsPending();
   return useInfiniteQuery(
     ["userPage", username, where, query, !!token],
     getUserPage(token)(username, where, query),
     {
       getFetchMore,
+      enabled: !isPending,
     }
   );
 }
