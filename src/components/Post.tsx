@@ -22,6 +22,7 @@ import Video from "./Video";
 import VotePanel from "./VotePanel";
 import AspectRatio from "./AspectRatio";
 import { headerHeight } from "../constants";
+import { theme } from "../theme/theme";
 
 export default function Post({
   post,
@@ -312,6 +313,8 @@ export default function Post({
               srcSet={post.preview?.images?.[0].resolutions
                 .map((x) => `${x.url} ${x.width}w`)
                 .join(",")}
+              //the maximum width an image can take for desktop is ~600 pixel so anything above is overkill
+              sizes={`(min-width: ${theme.breakpoints[1]}) 610px`}
             />
           </AspectRatio>
         )}
