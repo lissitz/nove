@@ -1,5 +1,4 @@
 /** @jsx jsx */
-import * as React from "react";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Card, jsx } from "theme-ui";
@@ -52,24 +51,15 @@ export default function UserOverview({
         overview &&
         overview.length !== 0 && (
           <Stack space={[0, null, 3]}>
-            {overview &&
-              overview.map((group, index) => (
-                <React.Fragment key={index}>
-                  <Stack space={[0, null, 3]} sx={{ width: "100%" }}>
-                    {group.data.children.map((x) =>
-                      x.kind === Type.Link ? (
-                        <PostPreview
-                          key={x.data.id}
-                          post={x.data}
-                          showContext
-                        />
-                      ) : (
-                        <UserOverviewComment comment={x} key={x.data.id} />
-                      )
-                    )}
-                  </Stack>
-                </React.Fragment>
-              ))}
+            {overview
+              .flatMap((group) => group.data.children)
+              .map((x) =>
+                x.kind === Type.Link ? (
+                  <PostPreview key={x.data.id} post={x.data} showContext />
+                ) : (
+                  <UserOverviewComment comment={x} key={x.data.id} />
+                )
+              )}
           </Stack>
         )
       )}

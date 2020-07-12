@@ -1,20 +1,20 @@
 /** @jsx jsx */
 
 import * as React from "react";
-import { Suspense, Fragment } from "react";
+import { Fragment, Suspense } from "react";
 import { Helmet } from "react-helmet-async";
 import { useSearchParams } from "react-router-dom";
 import { Card, jsx } from "theme-ui";
 import { useCommunityInfo, useInfinitePosts } from "../api";
 import { useTranslation } from "../i18n";
-import type { PostData, PostSortType } from "../types";
+import type { PostSortType } from "../types";
+import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 import rem from "../utils/rem";
 import Button from "./Button";
 import CardError from "./CardError";
 import PostPreview from "./PostPreview";
 import Skeleton from "./Skeleton";
 import Stack from "./Stack";
-import { isCombinedCommunity } from "../utils/isCombinedCommunity";
 
 export default function PostList({
   community,
@@ -49,25 +49,24 @@ function Content({
   return status === "success" ? (
     <Fragment>
       <Meta community={community} />
-      <Stack space={[0, null, 3]}>
-        {posts &&
-          posts.map((group, index) => (
-            <Stack
-              as="ul"
-              asChild="li"
-              space={[0, null, 3]}
-              sx={{ maxWidth: "100%" }}
-            >
-              {group.data.children.map((post: { data: PostData }) => (
-                <PostPreview
-                  post={post.data}
-                  key={post.data.id}
-                  showContext={isCombinedCommunity(community)}
-                />
-              ))}
-            </Stack>
-          ))}
-      </Stack>
+      {posts && (
+        <Stack
+          as="ul"
+          asChild="li"
+          space={[0, null, 3]}
+          sx={{ maxWidth: "100%" }}
+        >
+          {posts
+            .flatMap((group) => group.data.children)
+            .map((post) => (
+              <PostPreview
+                post={post.data}
+                key={post.data.id}
+                showContext={isCombinedCommunity(community)}
+              />
+            ))}
+        </Stack>
+      )}
       {(canFetchMore || isFetchingMore) && (
         <Button
           sx={{ my: 3, mx: "auto", width: "100%" }}
