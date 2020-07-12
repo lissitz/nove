@@ -62,8 +62,12 @@ export function prefetchUserPage(
   query: string = ""
 ) {
   return queryCache.prefetchQuery(
+    //@ts-ignore
     ["userPage", username, where, query, !!token],
-    () => getUserPage(token)(username, where, query)("", "").then((x) => [x])
+    () => getUserPage(token)(username, where, query)("", ""),
+    {
+      infinite: true,
+    }
   );
 }
 
