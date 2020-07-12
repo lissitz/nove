@@ -434,7 +434,7 @@ function More({
         ) : null
       )}
     </React.Fragment>
-  ) : status === "loading" || status === "idle" ? (
+  ) : status === "loading" ? (
     <div sx={{ color: "link", fontSize: 1, ml: 3 }}>{t("comment.loading")}</div>
   ) : status === "error" ? (
     <div sx={{ color: "link", fontSize: 1, ml: 3 }}>
