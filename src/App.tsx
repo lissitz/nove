@@ -5,7 +5,6 @@ import { ReactQueryConfigProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query-devtools";
 import { BrowserRouter } from "react-router-dom";
 import { jsx, ThemeProvider, useThemeUI } from "theme-ui";
-import Stack from "./components/Stack";
 import { AuthProvider } from "./contexts/authContext";
 import { MediaQueryProvider } from "./contexts/MediaQueryContext";
 import { useTranslation, LanguageProvider } from "./i18n";
@@ -54,17 +53,13 @@ function Base() {
       <BaseHelmet />
       <div
         sx={{
+          width: "100%",
           display: "flex",
+          flexDirection: "column",
           bg: "background",
         }}
       >
-        <Stack
-          sx={{
-            width: "100%",
-          }}
-        >
-          <Router />
-        </Stack>
+        <Router />
       </div>
     </Fragment>
   );

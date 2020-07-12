@@ -191,7 +191,6 @@ export default function Post({
                         {t("edit")}
                       </LinkButton>
                     </Inline>
-
                     <Inline>
                       <LinkButton
                         onClick={() => {

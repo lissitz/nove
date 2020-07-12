@@ -35,20 +35,18 @@ export default function NavPanel({
               width: "100%",
             }}
           >
-            {["popular", "all"]
-              .map((x) => ({ name: x }))
-              .map((x) => (
-                <div
-                  key={x.name}
-                  sx={{
-                    width: "100%",
-                  }}
-                >
-                  <ButtonLink onClick={onClick} to={`/r/${x.name}`}>
-                    {x.name}
-                  </ButtonLink>
-                </div>
-              ))}
+            {["popular", "all"].map((x) => (
+              <div
+                key={x}
+                sx={{
+                  width: "100%",
+                }}
+              >
+                <ButtonLink onClick={onClick} to={`/r/${x}`}>
+                  {x}
+                </ButtonLink>
+              </div>
+            ))}
           </Stack>
         </Stack>
         {isPending || status === "loading" ? (

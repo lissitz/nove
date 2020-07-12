@@ -4,7 +4,6 @@ import { FiChevronDown } from "react-icons/fi";
 import { jsx } from "theme-ui";
 import { Language, languages, useLanguage, useSetLanguage } from "../i18n";
 import rem from "../utils/rem";
-import { Column, Columns } from "./Columns";
 import {
   ListboxButton,
   ListboxInput,
@@ -42,21 +41,11 @@ export default function LanguageListbox({ labelId }: { labelId: string }) {
                   overflow: "hidden",
                   px: [3, null, 2],
                   py: [2, null, 1],
+                  wordBreak: "normal",
                 }}
                 value={k}
               >
-                <Columns space={3} sx={{ width: "100%" }}>
-                  <Column>
-                    <span
-                      sx={{
-                        display: "flex",
-                        wordBreak: "normal",
-                      }}
-                    >
-                      {name}
-                    </span>
-                  </Column>
-                </Columns>
+                {name}
               </ListboxOption>
             ))}
           </ListboxList>
