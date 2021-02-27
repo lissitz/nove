@@ -53,6 +53,7 @@ function RedditVideo({ post }: { post: PostData }) {
         <iframe
           title={t("iframeVideoTitle", [post.title])}
           src={`https://reddit.com/mediaembed/${post.id}`}
+          allowFullScreen
           sx={{
             border: "none",
             position: "absolute",
