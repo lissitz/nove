@@ -1,3 +1,6 @@
+
+*No longer maintained*
+
 # Nove
 
 A client for Reddit.
