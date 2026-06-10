@@ -1,7 +1,5 @@
 # Nove
 
-https://nove.vercel.app/
-
 A client for Reddit.
 
 ## Features
